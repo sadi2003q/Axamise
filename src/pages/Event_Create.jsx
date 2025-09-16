@@ -207,12 +207,7 @@ export default function Event_Create() {
                             // InputLabelProps={{ shrink: true }}
                             required
                         />
-                        {/* <CustomDatePicker
-                            value={event.date}
-                            onChange={(newDate) =>
-                                setEvent((prev) => ({ ...prev, date: newDate }))
-                            }
-                        /> */}
+                        
 
 
 
