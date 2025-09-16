@@ -200,7 +200,7 @@ export default function Question_List() {
 
 
     const handleSolveButton = (uid) => {
-        // navigate('/')
+        navigate('/solve', {state : {questionID : uid}})
     }
 
 

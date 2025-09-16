@@ -1,7 +1,7 @@
 export const Solve_style = {
     event_description:
         // smaller section (takes 1 part)
-        "flex-1 m-2 min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-6",
+        "flex-1 m-2 min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-6 overflow-auto",
 
     event_scheduling:
         // bigger section (takes 2 parts)

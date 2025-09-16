@@ -42,9 +42,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Login />} /> */}
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
-        <Route path="/question_list" element={<Question_List />} />
+        <Route path="/" element={<Question_List />} />
         <Route path="/question_create" element={<Question_Create />} />
-        <Route path="/" element={<Event_Show />} />
+        {/* <Route path="/" element={<Event_Show />} /> */}
         <Route path="/event_show" element={<Event_Show />} />
         <Route path="/solve" element={<Solving_Section />} />
         
