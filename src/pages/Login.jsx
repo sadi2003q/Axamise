@@ -88,7 +88,7 @@ export default function Login() {
         console.log('result varification')
         handleAuthResult(result);
         // navigate('/event_show')
-        navigate('/question_create')
+        // navigate('/question_create')
     };
 
 
