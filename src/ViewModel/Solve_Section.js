@@ -1,6 +1,6 @@
 import { db } from "../firebase";
 import { doc, getDoc } from 'firebase/firestore'
-import {Database} from '../Database'
+import { Database } from '../Database'
 
 export const _Fetch_Question = async (id) => {
 
@@ -24,9 +24,44 @@ export const _Fetch_Question = async (id) => {
 
     } catch (error) {
         console.log(`Error FOund while Fetching from database ${error}`)
-        return {success: false, error: error}
+        return { success: false, error: error }
     }
+}
 
 
-} 
+
+// File: RunCodeAPI.js
+
+export const runCode = async (sourceCode) => {
+    try {
+        const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                language: "cpp",
+                version: "10.2.0", // GCC 10.2
+                files: [
+                    {
+                        name: "main.cpp",
+                        content: sourceCode
+                    }
+                ]
+            })
+        });
+
+        const result = await response.json();
+
+        // success response
+        return {
+            success: true,
+            output: result.run.stdout,
+            error: result.run.stderr,
+        };
+    } catch (error) {
+        console.error("Error while running code:", error);
+        return { success: false, error: error.message };
+    }
+};
 
