@@ -419,6 +419,8 @@ export default function Event_Create() {
                             <Drower_Open_Button handleClick={() => setDrawerOpen(true)} />
                         </div>
 
+
+                        {/* Pagination */}
                         {/* Slider and Final Button */}
                         <Box>
                             <Mark_Slider value={question.mark} handleChange={handleMarkChange} />

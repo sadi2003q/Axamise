@@ -3,6 +3,7 @@ import { ContentTimeline, ExpandableList } from "../Components/__Feed";
 import { RotatingText } from '../Components/__Animation'
 import { Feed_Header } from "../Utilities";
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
+import FlowingMenu from '../Custom/FlowingMenu.jsx'
 
 
 
@@ -100,7 +101,35 @@ const sampleItems = [
     { name: "Event One", description: "This is the description of Event One." },
     { name: "Event Two", description: "Details about Event Two go here." },
     { name: "Event Three", description: "Extra info for Event Three." },
-  ];
+];
+
+
+
+const demoItems = [
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Mojave', image: '' },
+    { link: '#', text: 'Sonoma', image: '' },
+    { link: '#', text: 'Monterey', image: '' },
+    { link: '#', text: 'Sequoia', image: '' }
+];
 
 
 
@@ -125,11 +154,11 @@ export default function Feed() {
             </HeroSection> */}
 
 
-                
+
 
 
             {/* Questions */}
-            <QuestionSection>
+            {/* <QuestionSection>
 
                 
                 <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
@@ -143,10 +172,44 @@ export default function Feed() {
                     />
                 </div>
 
-            </QuestionSection>
+            </QuestionSection> */}
 
-            
 
+            {/* <div className="w-screen h-[10vh] bh-white flex items-center justify-center"> */}
+
+                {/* <div className=" w-[25vw] h-[80vh] rounded-2xl m-2.5 overflow-auto">
+
+                    
+
+                    
+
+                </div> */}
+                
+
+
+                {/* <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
+
+
+                </div> */}
+
+            {/* </div> */}
+
+
+
+
+            <div className="w-screen h-screen flex items-center justify-center overflow-auto">
+                <div className="w-[30vh] h-[86vh] overflow-auto">
+                    <FlowingMenu items={demoItems} />
+                </div>
+
+
+                <div className="w-[55vw] h-[86vh] overflow-auto">
+                    
+                </div>
+
+
+                
+            </div>
 
 
 
