@@ -13,6 +13,15 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonIcon from "@mui/icons-material/Person";
+import InfoIcon from "@mui/icons-material/Info";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+
+import { FaCalendarAlt, FaClock, FaUser, FaRegClock } from 'react-icons/fa';
+
+
 const difficultyColor = {
     Easy: "rgba(16,185,129,0.3)",    // green tint
     Medium: "rgba(245,158,11,0.3)",  // yellow tint
@@ -195,3 +204,111 @@ export const ExpandableList = ({
         </div>
     );
 };
+
+
+
+
+
+
+
+
+
+
+
+export const EventCard = ({ event }) => {
+    return (
+        <div className="bg-black text-white rounded-2xl shadow-lg w-[80%] p-5 relative mx-2">
+            {/* Title */}
+            <div className="flex items-center gap-2 mb-3">
+                <InfoIcon className="text-blue-400" />
+                <h2 className="text-xl font-semibold">{event.title || "Untitled Event"}</h2>
+            </div>
+
+            {/* Description */}
+            <p className="text-gray-300 mb-4">
+                {event.description || "No description available."}
+            </p>
+
+            {/* Date */}
+            <div className="flex items-center gap-2 text-gray-300 mb-2">
+                <CalendarTodayIcon className="text-green-400" />
+                <span>{event.date || "No date"}</span>
+            </div>
+
+            {/* Time */}
+            <div className="flex items-center gap-2 text-gray-300 mb-2">
+                <AccessTimeIcon className="text-yellow-400" />
+                <span>
+                    {event.startTime || "00:00"} ({event.hours}h {event.minutes}m)
+                </span>
+            </div>
+
+            {/* Created By */}
+            <div className="flex items-center gap-2 text-gray-300 mb-10">
+                <PersonIcon className="text-red-400" />
+                <span>{event.createdBy || "Unknown"}</span>
+            </div>
+
+            {/* Bottom Right Button */}
+            <button className="absolute bottom-4 right-4">
+                <AddCircleIcon fontSize="large" className="text-blue-500 hover:text-blue-300 transition-colors" />
+            </button>
+        </div>
+    );
+}
+
+
+
+
+
+export const Event_Showing_Description = ({ event }) => {
+    if (!event) return null;
+
+    return (
+        <div className="flex flex-col justify-start w-full h-full p-6 space-y-6 font-mono bg-transparent text-white rounded-lg shadow-lg">
+
+            {/* Title */}
+            <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2 text-2xl font-bold">
+                    <FaCalendarAlt className="text-blue-500" />
+                    <span>{event.title}</span>
+                </div>
+                <div className="w-full border-b border-white"></div>
+            </div>
+
+            {/* Description */}
+            <div className="flex flex-col space-y-2">
+                {event.description ? (
+                    event.description.split("\n").map((line, i) => (
+                        <p key={i}>{line}</p>
+                    ))
+                ) : (
+                    <p>No description provided.</p>
+                )}
+            </div>
+
+            {/* Date, Time & Duration */}
+            <div className="flex flex-col space-y-2 text-left">
+                <div className="flex items-center space-x-2">
+                    <FaRegClock className="text-green-400" />
+                    <span>{event.startTime}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <FaCalendarAlt className="text-yellow-400" />
+                    <span>{event.date}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <FaClock className="text-red-400" />
+                    <span>{event.hours}h {event.minutes}m</span>
+                </div>
+            </div>
+
+            {/* Created By */}
+            <div className="flex items-center space-x-2">
+                <FaUser className="text-pink-400" />
+                <span>{event.createdBy}</span>
+            </div>
+        </div>
+    );
+};
+

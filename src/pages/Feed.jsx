@@ -1,9 +1,13 @@
 import Profile_Background from "../Components/__Profile";
-import { ContentTimeline, ExpandableList } from "../Components/__Feed";
+import { ContentTimeline, ExpandableList, EventCard, Event_Showing_Description } from "../Components/__Feed";
 import { RotatingText } from '../Components/__Animation'
 import { Feed_Header } from "../Utilities";
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import FlowingMenu from '../Custom/FlowingMenu.jsx'
+import { Events_Model } from "../models/Event_Model.js";
+import { useState } from "react";
+
+
 
 
 
@@ -104,43 +108,76 @@ const sampleItems = [
 ];
 
 
-
-const demoItems = [
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Mojave', image: '' },
-    { link: '#', text: 'Sonoma', image: '' },
-    { link: '#', text: 'Monterey', image: '' },
-    { link: '#', text: 'Sequoia', image: '' }
+export const demoEvents = [
+    {
+        ...Events_Model,
+        title: "Team Meeting",
+        description: "Monthly team sync-up to discuss project progress and blockers.",
+        date: "2025-09-20",
+        startTime: "10:00 AM",
+        hours: 1,
+        minutes: 30,
+        createdBy: "Adnan",
+        createdBy_uid: "123",
+    },
+    {
+        ...Events_Model,
+        title: "Code Review",
+        description: "Review new feature PRs and provide feedback to the dev team.",
+        date: "2025-09-21",
+        startTime: "2:00 PM",
+        hours: 2,
+        minutes: 0,
+        createdBy: "Adnan",
+        createdBy_uid: "123",
+    },
+    {
+        ...Events_Model,
+        title: "Client Call",
+        description: "Discuss project requirements and milestones with the client.",
+        date: "2025-09-22",
+        startTime: "11:00 AM",
+        hours: 1,
+        minutes: 0,
+        createdBy: "Adnan",
+        createdBy_uid: "123",
+    },
+    {
+        ...Events_Model,
+        title: "Design Workshop",
+        description: "Workshop with UX/UI team to finalize the app design.",
+        date: "2025-09-23",
+        startTime: "3:00 PM",
+        hours: 2,
+        minutes: 0,
+        createdBy: "Adnan",
+        createdBy_uid: "123",
+    },
+    {
+        ...Events_Model,
+        title: "Sprint Planning",
+        description: "Plan tasks for the upcoming sprint with the development team.",
+        date: "2025-09-24",
+        startTime: "9:30 AM",
+        hours: 1,
+        minutes: 30,
+        createdBy: "Adnan",
+        createdBy_uid: "123",
+    }
 ];
 
 
 
 export default function Feed() {
+    const [selectedEvent, setSelectedEvent] = useState(null);
+
     return (
         <>
             <Profile_Background />
 
 
             {/* Hero Section */}
-            {/* <HeroSection>
+            <HeroSection>
 
                 <HeroContentSection>
                     <HeaderSection Title={Feed_Header} />
@@ -151,14 +188,14 @@ export default function Feed() {
                     
                 </PageTimeline>
 
-            </HeroSection> */}
+            </HeroSection>
 
 
 
 
 
             {/* Questions */}
-            {/* <QuestionSection>
+            <QuestionSection>
 
                 
                 <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
@@ -172,22 +209,22 @@ export default function Feed() {
                     />
                 </div>
 
-            </QuestionSection> */}
+            </QuestionSection>
 
 
             {/* <div className="w-screen h-[10vh] bh-white flex items-center justify-center"> */}
 
-                {/* <div className=" w-[25vw] h-[80vh] rounded-2xl m-2.5 overflow-auto">
+            {/* <div className=" w-[25vw] h-[80vh] rounded-2xl m-2.5 overflow-auto">
 
                     
 
                     
 
                 </div> */}
-                
 
 
-                {/* <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
+
+            {/* <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
 
 
                 </div> */}
@@ -196,19 +233,29 @@ export default function Feed() {
 
 
 
-
+            {/* Event Showing Screen */}
             <div className="w-screen h-screen flex items-center justify-center overflow-auto">
-                <div className="w-[30vh] h-[86vh] overflow-auto">
-                    <FlowingMenu items={demoItems} />
+
+                {/* Flowing Menu */}
+                <div className="w-[35vw] h-[86vh] overflow-auto mx-2">
+                    <FlowingMenu
+                        items={demoEvents.map(e => ({ text: e.title, link: '#' }))}
+                        onItemClick={(title) => {
+                            const event = demoEvents.find(e => e.title === title);
+                            setSelectedEvent(event);
+                        }}
+                    />
                 </div>
 
-
-                <div className="w-[55vw] h-[86vh] overflow-auto">
-                    
+                {/* Right Panel: Display selected event */}
+                <div className="w-[45vw] h-[86vh] overflow-auto mx-2 bg-gray-800 flex flex-col items-center justify-start text-white p-4">
+                    {selectedEvent ? (
+                        <Event_Showing_Description event={selectedEvent} />
+                    ) : (
+                        <p className="text-gray-400 text-xl mt-20">Select an event from the menu</p>
+                    )}
                 </div>
 
-
-                
             </div>
 
 
