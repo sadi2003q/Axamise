@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 
 import { useState, useContext } from "react";
 import { IdContext } from "../IdContext.jsx";
@@ -53,7 +53,6 @@ export default function Signup() {
 
     
     const { text: strengthText, color: strengthColor } = student.getPasswordStrength();
-
     
     
     

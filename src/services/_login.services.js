@@ -1,18 +1,31 @@
-// src/viewmodels/LoginViewModel.js
+// src/services/_login.services.js
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
-class LoginViewModel {
-    async login(email, password) {
+export default class LoginService {
+
+    constructor(user) {
+        this.user = user;
+    }
+
+    // Login with email and password
+    async loginWithEmailPassword() {
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                this.user.email,
+                this.user.password
+            );
             return { success: true, user: userCredential.user, id: userCredential.user.uid };
         } catch (error) {
             return { success: false, error };
         }
     }
 
+
+
+    // Fetch user info from Firestore
     async getUserInfo(uid) {
         try {
             const userDoc = await getDoc(doc(db, "Students", uid));
@@ -26,5 +39,3 @@ class LoginViewModel {
         }
     }
 }
-
-export default new LoginViewModel();

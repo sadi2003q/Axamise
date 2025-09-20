@@ -43,8 +43,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Login />} /> */}
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
+
         <Route path="/" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/feed" element={<Feed />} /> */}
         
         
 
@@ -60,6 +61,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/solve" element={<Solving_Section />} />
             <Route path="/event_show" element={<Event_Show />} />
             <Route path="/question_list" element={<Question_List />} />
+            <Route path="/feed" element={<Feed />} />
         */}
 
 

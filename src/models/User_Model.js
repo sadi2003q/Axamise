@@ -1,6 +1,10 @@
-const User_Model = {
-    email: "",
-    password: "",
-};
+// src/models/User.js
+class User {
+    constructor(email = "", password = "") {
+        this.email = email;
+        this.password = password;
+    }
 
-export default User_Model;
+}
+
+export default User;
