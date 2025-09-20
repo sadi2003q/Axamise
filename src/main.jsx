@@ -43,7 +43,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Login />} /> */}
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
-        <Route path="/" element={<Feed />} />
+        <Route path="/" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         
         
 

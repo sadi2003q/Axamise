@@ -1,11 +1,13 @@
 
 export const Database = {
-    question : 'questions'
+    question : 'questions',
+    student : 'Students',
+    event : 'events',
 }
 
 export const routes = {
     feed: '/feed',
-    question_create: '/event_create',
+    event_create: '/event_create',
     login: '/login',
     signup: '/sign_up',
     profile: '/profile',
