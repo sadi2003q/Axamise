@@ -18,7 +18,7 @@ export default class QuestionController {
             this.setError("Please fill all fields.");
             return;
         }
-        const result = await this.service.upload(this.question);
+        const result = await this.service._Question_Upload(this.question);
         this.processResult(result);
     }
 
@@ -27,17 +27,14 @@ export default class QuestionController {
             this.setError("Invalid form.");
             return;
         }
-        const result = await this.service.update(id, this.question);
+        const result = await this.service._Question_Update(id, this.question);
         this.processResult(result);
     }
 
     async handleFetch(id) {
-        const result = await this.service.fetch(id);
-        if (result.success) {
-            this.setQuestion(result.data);
-        } else {
-            this.setError(result.error);
-        }
+        const result = await this.service._Fetch_Question(id);
+        if (result.success)  this.setQuestion(result.data);
+        else this.setError(result.error);
     }
 
     processResult(result) {

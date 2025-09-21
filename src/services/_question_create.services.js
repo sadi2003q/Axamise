@@ -4,7 +4,7 @@ import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { Database } from "../Database";
 
 export default class QuestionService {
-    async upload(question) {
+    async _Question_Upload(question) {
         try {
             await addDoc(collection(db, "questions"), { ...question });
             return { success: true, data: question };
@@ -13,7 +13,7 @@ export default class QuestionService {
         }
     }
 
-    async update(id, question) {
+    async _Question_Update(id, question) {
         try {
             const docRef = doc(db, Database.question, id);
             await setDoc(docRef, { ...question, updatedAt: new Date().toISOString() });
@@ -23,7 +23,7 @@ export default class QuestionService {
         }
     }
 
-    async fetch(id) {
+    async _Fetch_Question(id) {
         try {
             const docRef = doc(db, Database.question, id);
             const docSnap = await getDoc(docRef);

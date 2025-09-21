@@ -53,7 +53,7 @@ export default function Question_Create() {
        - change the name of the global variable file 'itemID' to eventId
     */
     const { itemID, questionID } = location.state || {}; // Get eventID & questionID from Router state
-    const { id, setId } = useContext(IdContext); // Global Variables
+    const { id } = useContext(IdContext); // Global Variables
     const navigate = useNavigate(); // Router Navigate
 
     // Question State
@@ -62,7 +62,7 @@ export default function Question_Create() {
             title: "demo title",
             description: "Description",
             mark: 0,
-            difficulty: "Easy",
+            difficulty: "",
             type: "Linked List",
             event_uid: itemID || "No even id FOund",
             createdBy: "Adnan",
@@ -90,7 +90,7 @@ export default function Question_Create() {
 
 
     // Controller
-    const controller = new QuestionController(question, setQuestion, setId, setError, navigate);
+    const controller = new QuestionController(question, setQuestion, setError, navigate);
 
     // Handlers
     const handleChange = (e) => {
@@ -122,8 +122,9 @@ export default function Question_Create() {
             if (result.success) setEvent(result.data);
             else console.error("Error fetching events:", result.error);
         };
-
+        
         fetchEvents();
+        
         if (questionID) controller.handleFetch(questionID);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
