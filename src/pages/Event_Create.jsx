@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // File Path: src/pages/Event_Create.jsx
 
 import { useContext, useEffect, useState } from "react";

@@ -2,7 +2,6 @@
 // File Path: controller/question_list.controller.js
 
 import { QuestionListService } from "../services/_question_list.service.js";
-// eslint-disable-next-line no-unused-vars
 import { routes } from "../Utilities"
 
 
