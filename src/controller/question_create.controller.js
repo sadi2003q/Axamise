@@ -3,16 +3,17 @@ import QuestionService from "../services/_question_create.services.js";
 import { routes } from "../Utilities"
 
 export default class QuestionController {
-    constructor(question, setQuestion, setID, setError, navigate) {
+    constructor(question, setQuestion, setError, navigate) {
         this.question = question;
         this.service = new QuestionService();
         this.setQuestion = setQuestion;
-        this.setId = setID;
         this.setError = setError;
         this.navigate = navigate;
     }
 
     async handleUpload() {
+
+        // More robust validation
         if (!this.question.isValid()) {
             this.setError("Please fill all fields.");
             return;
@@ -41,7 +42,6 @@ export default class QuestionController {
 
     processResult(result) {
         if (result.success) {
-            this.setId(result.id);
             console.log('Navigtion to question list');
             this.navigate(routes.question_list);
         } else {

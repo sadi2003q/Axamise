@@ -15,6 +15,7 @@ export const IdProvider = ({ children }) => {
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   // useEffect(() => {

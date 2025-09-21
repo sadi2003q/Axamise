@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 
 // Components
 import Profile_Background from "../Components/__Profile"; // Common Background
-import { 
+import {
     Question_style,
     Question_Description,
     Question_Specification,
@@ -47,6 +47,11 @@ export default function Question_Create() {
 
     // -------------------------Variables------------------------- //
     const location = useLocation(); // Router
+
+    /*
+    LEFT : 
+       - change the name of the global variable file 'itemID' to eventId
+    */
     const { itemID, questionID } = location.state || {}; // Get eventID & questionID from Router state
     const { id, setId } = useContext(IdContext); // Global Variables
     const navigate = useNavigate(); // Router Navigate
@@ -102,16 +107,16 @@ export default function Question_Create() {
 
         if (questionID) await controller.handleUpdate(questionID);
         else await controller.handleUpload();
-
-        // if (result?.success) {
-        //     console.log(questionID ? "Update success" : "Upload success");
-        // } else {
-        //     console.error("Save failed:", result?.error);
-        // }
     };
 
     // Load data (question + events)
     useEffect(() => {
+
+        /*
+        LEFT : 
+            - put fetchEvent in the controller class of this question create unite
+        */
+
         const fetchEvents = async () => {
             const result = await GetAllEvents(id);
             if (result.success) setEvent(result.data);
@@ -120,6 +125,7 @@ export default function Question_Create() {
 
         fetchEvents();
         if (questionID) controller.handleFetch(questionID);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -131,7 +137,7 @@ export default function Question_Create() {
         // ------------Outer Container------------ //
         <div className={Question_style.Outer_Container}>
             <Profile_Background />
-            
+
 
 
             {/* Main Content */}
@@ -142,8 +148,8 @@ export default function Question_Create() {
 
                 {/* Left side: Title && Description */}
                 <Question_Description>
-                    
-                    
+
+
                     {/* Title */}
                     <InputField
                         label="Title"
