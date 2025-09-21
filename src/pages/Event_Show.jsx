@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-refresh/only-export-components */
 // React Hooks
 import { useContext, useEffect, useState } from "react";
 
