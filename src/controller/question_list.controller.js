@@ -31,9 +31,8 @@ export class QuestionListController {
 
     async handleFetchAll() {
 
-        console.log('Before fetch')
         const result = await this.service._Fetch_All_Question();
-        console.log('after fetch ', result)
+        
         if (result.success) this.setAllQuestion(result.data);
         else this.setError(result.error);
     }

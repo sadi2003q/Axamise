@@ -1,151 +1,144 @@
-/* eslint-disable no-unused-vars */
+// File Path: src/pages/Event_Create.jsx
 
 import { useContext, useEffect, useState } from "react";
 
 // Material UI
-import TextField from '@mui/material/TextField';
 import { Stack, Box } from "@mui/material";
-import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // Model
 import { Events_Model } from "../models/Event_Model.js";
 
 // Components
-import { GetCommonProps } from "../Components/__Common.jsx";
 import Profile_Background from "../Components/__Profile";
-import { Event_style, Event_Description, Event_Scheduling, CustomTextField, DurationTextField, DescriptionField } from "../Components/__Event_Create.jsx";
+import {
+    Event_style,
+    Event_Description,
+    Event_Scheduling,
+    CustomTextField,
+    DurationTextField,
+    DescriptionField,
+} from "../Components/__Event_Create.jsx";
 
-// View Model
-import { _Upload_Event, Fetch_Event } from "../ViewModel/Event_Created_ViewModel.js";
+// Controller
+import { EventCreateServiceController } from "../controller/event_create.controller.js";
 
 // Global Context
 import { IdContext } from "../IdContext.jsx";
 
-
 // Routing
-import { useLocation } from "react-router-dom";
-
-
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Event_Create() {
+    // Context
+    const { id } = useContext(IdContext);
 
-    //  Variables
-    const { id, currentName } = useContext(IdContext);
-    const [event, setEvent] = useState({
-        ...Events_Model,
-        title: "",
-        description: "",
-        date: "2023-10-01",
-        startTime: "10:00",
-        duration: {
-            hours: 0,
-            minutes: 0,
-        },
-        question: [],
-        createdBy: currentName,
-        createdBy_uid: id
+    // State
+    const [event, setEvent] = useState(
+        new Events_Model(
+            "",
+            "",
+            "2023-10-01",
+            "10:00",
+            { hours: 0, minutes: 0 },
+            "current name is undefined",
+            id
+        )
+    );
+    const [fieldError, setFieldError] = useState({
+        field: null,
+        message: null,
     });
-    const [fieldError, setFieldError] = useState({ field: null, message: null });
-    const location = useLocation();   // ✅ Hook at top level
+
+    const location = useLocation();
+    const navigate = useNavigate();
     const { itemID } = location.state || {};
 
+    // Controller instance (re-created when event changes)
+    const controller = new EventCreateServiceController(
+        event,
+        setEvent,
+        setFieldError,
+        navigate
+    );
 
-
-    // Immidiately Run Function
+    // Fetch if editing existing event
     useEffect(() => {
+        if (itemID) controller.handleFetchEvent(itemID);
+        else console.log("🆕 Creating new event");
+        
+    }, []);
 
-
-        // If Item Id is Found on the Url thel it will automatically download all the information from the database and then add in the respected Field
-        if (itemID) {
-            const fetchEvent = async () => {
-                try {
-                    console.log(itemID);
-                    const result = await Fetch_Event(itemID);
-                    if (result.success) {
-                        setEvent({
-                            ...Events_Model,
-                            ...result.data,
-                            duration: {
-                                hours: result.data?.hours ?? 0,
-                                minutes: result.data?.minutes ?? 0,
-                            },
-                        });
-                    }
-                } catch (err) {
-                    console.error(err);
-                }
-            };
-            fetchEvent();
-        } else {
-            console.log(`You Are creating new Events`)
-        }
-    }, [itemID]);
-
-
-    // UI changes
+    // Handlers
     const handleChange = (e) => {
-        setEvent({ ...event, [e.target.name]: e.target.value });
+        setEvent((prev) => {
+            const updated = new Events_Model(
+                e.target.name === "title" ? e.target.value : prev.title,
+                e.target.name === "description" ? e.target.value : prev.description,
+                e.target.name === "date" ? e.target.value : prev.date,
+                e.target.name === "startTime" ? e.target.value : prev.startTime,
+                prev.duration,
+                prev.createdBy,
+                prev.createdBy_uid,
+                prev.createdAt
+            );
+            return updated;
+        });
+
         if (fieldError.field === e.target.name) {
             setFieldError({ field: null, message: null });
         }
     };
+
     const handleDurationChange = (e) => {
         const { name, value } = e.target;
-        setEvent((prev) => ({
-            ...prev,
-            duration: {
+        setEvent((prev) => {
+            const newDuration = {
                 ...prev.duration,
                 hours: name === "hour" ? Number(value) : prev.duration.hours,
-                minutes: name === "durationMinutes" ? Number(value) : prev.duration.minutes,
-            },
-        }));
+                minutes:
+                    name === "durationMinutes"
+                        ? Number(value)
+                        : prev.duration.minutes,
+            };
+            return new Events_Model(
+                prev.title,
+                prev.description,
+                prev.date,
+                prev.startTime,
+                newDuration,
+                prev.createdBy,
+                prev.createdBy_uid,
+                prev.createdAt
+            );
+        });
     };
+
     const isFormValid = () => {
-        return (
-            event.title.trim() !== "" &&
-            event.description.trim() !== "" &&
-            event.date.trim() !== "" &&
-            event.startTime.trim() !== "" &&
-            event.duration.hours > 0 &&
-            event.duration.minutes >= 0 &&
-            event.duration.minutes <= 59
-        );
+        return event.isValid() &&
+            (event.duration.hours > 0 ||
+                (event.duration.minutes >= 0 && event.duration.minutes <= 59));
     };
 
-    // Functions
+    // Save handler
     const handleClick = async () => {
-        console.log(event);
-
-        // Only pass itemID if it exists
-        const result = itemID
-            ? await _Upload_Event(event, itemID)
-            : await _Upload_Event(event);
-
-        if (result.success) {
-            console.log("✅ Data is being caught:", result);
-        } else {
-            console.log("❌ Failed, data is not uploaded");
-        }
+        if (itemID) await controller.handleUpdateEvent(itemID);
+        else await controller.handleUploadEvent();
+        
     };
 
-
+    // UI
     return (
         <div className={Event_style.Outer_Container}>
-
-
             {/* Background */}
             <Profile_Background />
 
             {/* Centered Event Boxes */}
             <div className={Event_style.Inner_container}>
-
                 {/* Event Description */}
                 <Event_Description>
-
-
-
                     {/* Title */}
                     <CustomTextField
                         label="Title"
@@ -156,42 +149,17 @@ export default function Event_Create() {
                     />
 
                     {/* Description */}
-                    {/* <div className={Event_style.description_container}>
-                        <textarea
-                            id="description"
-                            name="description"
-                            value={event.description}
-                            onChange={handleChange}
-                            required
-                            placeholder=" "
-                            className={Event_style.description}
-                        />
-                        <label
-                            htmlFor="description"
-                            className={Event_style.Description_label}
-                        >
-                            Description
-                        </label>
-                    </div> */}
-
                     <DescriptionField
+                        name="description"
                         value={event.description}
                         onChange={handleChange}
                         size="1rem"
                     />
-
-
-
-
                 </Event_Description>
 
                 {/* Event Scheduling */}
                 <Event_Scheduling>
-
-
                     <Stack spacing={6} className="w-full">
-
-
                         {/* Date Picker */}
                         <CustomTextField
                             label="Date (DD/MM/YYYY)"
@@ -200,8 +168,6 @@ export default function Event_Create() {
                             value={event.date}
                             onChange={handleChange}
                         />
-
-
 
                         {/* Start Time */}
                         <CustomTextField
@@ -212,11 +178,7 @@ export default function Event_Create() {
                             onChange={handleChange}
                         />
 
-
                         <Stack direction="row" spacing={4} className="w-full mt-4">
-
-
-
                             {/* Hours */}
                             <DurationTextField
                                 label="Hours"
@@ -226,9 +188,6 @@ export default function Event_Create() {
                                 onChange={handleDurationChange}
                                 min={0}
                             />
-
-
-
 
                             {/* Minutes */}
                             <DurationTextField
@@ -242,26 +201,19 @@ export default function Event_Create() {
                             />
                         </Stack>
 
-
-
-
-
-                        {/* Mark Slider & Buttons */}
+                        {/* Buttons */}
                         <Box className="w-full">
                             <div className="flex w-full h-10 mt-4 items-center justify-between">
                                 <div></div>
                                 <div className="flex gap-4">
-
-
-
-
-                                    {/* Add Mode button */}
+                                    {/* Add More Button */}
                                     <Button
                                         onClick={handleClick}
                                         variant="contained"
                                         endIcon={<AddShoppingCartIcon />}
                                         disabled={!isFormValid()}
                                         sx={{
+                                            display: itemID ? "none" : "inline-flex",
                                             backgroundColor: "purple",
                                             "&.Mui-disabled": {
                                                 backgroundColor: "gray",
@@ -273,10 +225,6 @@ export default function Event_Create() {
                                     >
                                         More
                                     </Button>
-
-
-
-
 
                                     {/* Publish Button */}
                                     <Button
@@ -293,10 +241,8 @@ export default function Event_Create() {
                                             },
                                         }}
                                     >
-                                        Publish
+                                        { itemID ?  "Update" : "Create" }
                                     </Button>
-
-
                                 </div>
                             </div>
                         </Box>
