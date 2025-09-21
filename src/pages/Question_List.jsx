@@ -71,7 +71,7 @@ export default function Question_List() {
                         /*
                         LEFT
                             - Loading screen
-                            - Error showing
+                            - Error Visual
                         */
                         <p>Select a question</p>
                     )}
