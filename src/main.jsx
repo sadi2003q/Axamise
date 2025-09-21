@@ -44,9 +44,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Question_Create />} />
-        <Route path="/question_list" element={<Question_List />} />
-        
+        <Route path="/" element={<Question_List />} />
+        <Route path="/solve" element={<Solving_Section />} />
+        <Route path="/question_create" element={<Question_Create />} />
         
 
         

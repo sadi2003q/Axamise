@@ -1,5 +1,5 @@
 // src/controllers/LoginController.js
-import LoginService from "../services/_login.services";
+import LoginService from "../services/_login.service";
 import { routes } from "../Utilities"
 
 export default class LoginController {

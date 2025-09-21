@@ -1,5 +1,9 @@
+
+
+// File Path: services/_question_list.services.js
+
 // Firestore connection from firebase
-import { db } from "../firebase";
+import { db } from "../firebase.js";
 import { Database } from "../Database.js";
 
 // Firestore methods

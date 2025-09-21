@@ -1,5 +1,5 @@
 // controllers/SignUpController.js
-import SignUpService from "../services/_signup.services";
+import SignUpService from "../services/_signup.service";
 
 export default class SignUpController {
     constructor(student, setId, navigate, setFieldError) {

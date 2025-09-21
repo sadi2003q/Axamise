@@ -1,5 +1,5 @@
 // controllers/QuestionController.js
-import QuestionService from "../services/_question_create.services.js";
+import QuestionService from "../services/_question_create.service.js";
 import { routes } from "../Utilities"
 
 export default class QuestionController {

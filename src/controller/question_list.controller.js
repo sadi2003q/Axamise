@@ -1,29 +1,69 @@
 
-import { QuestionListService } from "../services/_question_list.services.js";
+// File Path: controller/question_list.controller.js
+
+import { QuestionListService } from "../services/_question_list.service.js";
 // eslint-disable-next-line no-unused-vars
 import { routes } from "../Utilities"
 
 
 export class QuestionListController {
 
-    constructor(questions, setAllQuestion, setError, navigate) {
-        this.questions = questions;
+    constructor(questions, setAllQuestion, setSelectedQuestion, setError, navigate) {
         this.service = new QuestionListService();
+
+
+        this.questions = questions;
         this.setAllQuestion = setAllQuestion;
+        this.setSelectedQuestion = setSelectedQuestion
         this.setError = setError;
         this.navigate = navigate;
     }
 
+    /*
+    const controller = new QuestionListController(
+        allQuestion,
+        setAllQuestion,
+        setSelectedQuestion,
+        setError,
+        navigate
+    );
+    */
+
     async handleFetchAll() {
-        const result = await this.service._Fetch_All_Questions();
+
+        console.log('Before fetch')
+        const result = await this.service._Fetch_All_Question();
+        console.log('after fetch ', result)
         if (result.success) this.setAllQuestion(result.data);
         else this.setError(result.error);
     }
 
 
-    
+    handleEditButton = (uid) => {
+
+        this.navigate(routes.question_create, { state: { questionID: uid } })
+        console.log(`Question ID : ${uid}`)
+    }
+    handleSolveButton = (uid) => {
+        this.navigate(routes.solving_page, { state: { questionID: uid } })
+    }
+
+    handleDeleteQuestion = async (uid) => {
+        const result = await this.service._Delete_Specific_Function(uid);
+        if (result.success) {
+            this.setAllQuestion((prev) => prev.filter((q) => q.id !== uid));
+            this.setSelectedQuestion((prev) => (prev?.id === uid ? "" : prev));
+        }
+    };
+
 
 
 
 }
+
+
+
+
+
+
 
