@@ -1,4 +1,5 @@
 // MAterial Icons and Components
+import { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,7 +14,15 @@ import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import AddIcon from "@mui/icons-material/Add";
 import HelpTwoToneIcon from "@mui/icons-material/HelpTwoTone";
 import SearchIcon from "@mui/icons-material/Search";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Button } from "@mui/material";
+
+
+
+
+
+
+
 
 // Styles for the Event Show component
 export const Event_Show_Style = {
@@ -328,4 +337,62 @@ export function EventSearchBar({ searchQuery, setSearchQuery, onAddEvent }) {
             </Button>
         </div>
     );
+}
+
+
+
+
+// =======================
+// =======================
+// Component: Event List
+// =======================
+export const EventList = ({ loading, error, events, controller, onAccordionClick }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // 🟢 Loading/Error States
+  if (loading) return <EventListLoading />;
+  if (error) return <EventListError message={error} />;
+  if (events.length === 0) return <EventListError message="No events found" />;
+
+  // 🔎 Filter events by title
+  const filteredEvents = events.filter((item) => {
+    const query = searchQuery.toLowerCase().trim();
+    const title = item.title?.toLowerCase().trim() ?? "";
+    return title.includes(query);
+  });
+
+  return (
+    <div className={Event_Show_Style.listBox}>
+      {/* Search Bar */}
+      <EventSearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onAddEvent={() => controller.handleEdit({ id: null })}
+      />
+
+      {/* Render Event Accordions */}
+      {filteredEvents.length > 0 ? (
+        filteredEvents.map((item) => (
+          <EventAccordion
+            key={item.id}
+            item={{
+              ...item,
+              content: item.description,
+              date: item.date,
+              time: formatTimeWithMeridiem(item.startTime),
+              duration: formatDuration(item.hours, item.minutes),
+              icon: <ArrowDownwardIcon sx={{ color: "#ffffff" }} />,
+            }}
+            onClick={onAccordionClick}
+            onAction={() => controller.handleEdit(item)}
+            deleteAction={() => controller.handleDelete(item)}
+            addAction={() => controller.handleAddQuestion(item)}
+            allQuestion={() => controller.handleAllQuestions(item)}
+          />
+        ))
+      ) : (
+        <EventListError message="No matching events found" />
+      )}
+    </div>
+  );
 }

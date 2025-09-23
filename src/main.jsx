@@ -48,7 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/event_create" element={<Event_Create />} />
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />
-        
+        <Route path="/question_list" element={<Question_List />} />
 
         
 
