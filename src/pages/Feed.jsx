@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-unused-vars */
 import Profile_Background from "../Components/__Profile";
 import { ContentTimeline, ExpandableList, EventCard, Event_Showing_Description } from "../Components/__Feed";
 import { RotatingText } from '../Components/__Animation'

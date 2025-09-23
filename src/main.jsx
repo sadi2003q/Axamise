@@ -17,6 +17,7 @@ import Solving_Section from "./pages/Solving_Section.jsx";
 import Event_Show from "./pages/Event_Show.jsx"
 import Question_List from "./pages/Question_List.jsx";
 import Feed from "./pages/Feed.jsx";
+import Admin_login from "./pages/Admin_login.jsx";
 
 /*
   import CreateStudent from "./pages/CreateStudent";
@@ -44,7 +45,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Event_Show />} />
+        <Route path="/" element={<Admin_login />} />
         <Route path="/event_create" element={<Event_Create />} />
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />

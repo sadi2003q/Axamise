@@ -90,6 +90,7 @@ int main() {
         if (questionID) {
             controller.fetchQuestion(questionID);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionID]);
 
     // Drag functions
