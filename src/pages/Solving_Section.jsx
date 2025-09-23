@@ -1,3 +1,5 @@
+// Path : src/pages/Solving_Section.jsx
+
 /* eslint-disable no-unused-vars */
 import { useContext, useState, useRef, useEffect } from "react";
 
@@ -10,48 +12,73 @@ import {
     Question_Showing_Description,
 } from "../Components/__Solving_Section.jsx";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // View Model
 import { IdContext } from "../IdContext.jsx";
-import { _Fetch_Question, runCode } from "../ViewModel/Solve_Section.js";
 
 // Editor
 import Editor from "@monaco-editor/react";
 
 // Models
-import { Question_Model } from "../models/Question_Model.js";
+import Question from "../models/Question_Model.js";
+
 
 // Router Decoder
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+// Controller
+import { SolvingSectionController } from "../controller/solving_section.controller.js";
 
 export default function Solving_Section() {
     // Variables
     const location = useLocation();
     const { questionID } = location.state || {};
     const { id } = useContext(IdContext);
+    const navigate = useNavigate();
 
 
+    const defaultCode = `#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello World" << endl;
+    return 0;
+}`;
 
 
-    const [question, setQuestion] = useState({
-        ...Question_Model,
-        title: "Demo",
-        description: "Demo",
-        mark: 100,
-        difficulty: "",
-        type: "Medium",
-        result: "",
-        event_uid: "sdfjh",
-        createdBy: "currentName",
-        createdBy_uid: "id",
-    });
+    // ✅ Question State
+    const [question, setQuestion] = useState(
+        new Question({
+            title: "Demo",
+            description: "Demo",
+            mark: 100,
+            difficulty: "",
+            type: "Medium",
+            event_uid: "sdfjh",
+            createdBy: "currentName",
+            createdBy_uid: "id",
+        })
+    );
 
     // ✅ UseRef for editor instance
     const editorRef = useRef(null);
+    const [isRunning, setIsRunning] = useState(false);
+
 
     // ✅ State to hold run result
     const [runResult, setRunResult] = useState("");
     const [isSuccess, setIsSuccess] = useState(null);
+
+    // ✅ Controller instance
+    const controller = new SolvingSectionController(
+        setQuestion,
+        setRunResult,
+        setIsSuccess,
+        editorRef,
+        setIsRunning,
+        navigate
+    );
 
     // Drag-resize state
     const [editorWidth, setEditorWidth] = useState(0.6);
@@ -60,39 +87,10 @@ export default function Solving_Section() {
 
     // Immediate Load
     useEffect(() => {
-        console.log(questionID);
-        const fetchQuestion = async () => {
-            try {
-                const result = await _Fetch_Question(questionID);
-                if (result.success) {
-                    setQuestion(result.data);
-                } else {
-                    console.log(`Failed to Download Data from Firestore`);
-                }
-            } catch (error) {
-                console.log(`Error Fetching : ${error}`);
-            }
-        };
-        fetchQuestion();
-    }, []);
-
-    // Submit Button Function
-    const handleClick = async () => {
-        if (editorRef.current) {
-            const code = editorRef.current.getValue();
-
-            const result = await runCode(code);
-            if (result.success) {
-                setRunResult(result.output || "");
-                setIsSuccess(true);
-            } else {
-                setRunResult(result.error || "Unknown error");
-                setIsSuccess(false);
-            }
-        } else {
-            console.log("⚠️ Editor is not ready yet!");
+        if (questionID) {
+            controller.fetchQuestion(questionID);
         }
-    };
+    }, [questionID]);
 
     // Drag functions
     const startDrag = (e) => {
@@ -129,21 +127,30 @@ export default function Solving_Section() {
                 {/* Problem Description */}
                 <div style={{ flex: 1 - editorWidth, minWidth: "200px" }}>
                     <Solve_Description>
-
                         <div className="flex flex-col space-y-3 mx-1.5">
                             <Button
-                                onClick={handleClick}
+                                onClick={controller.handleRunCode}
                                 variant="contained"
-                                disabled={!code.trim()} // disable if empty
+                                disabled={!code.trim() || isRunning}
                                 sx={{
-                                    backgroundColor: !code.trim() ? "gray" : "primary.main",
+                                    backgroundColor: !code.trim() || isRunning ? "gray" : "primary.main",
                                     color: "white",
                                     "&:hover": {
-                                        backgroundColor: !code.trim() ? "gray" : "primary.dark",
+                                        backgroundColor: !code.trim() || isRunning ? "gray" : "primary.dark",
                                     },
                                 }}
                             >
-                                Run the code
+                                {isRunning ? (
+                                    <div className="flex items-center gap-2 text-white">
+                                        <CircularProgress
+                                            size={20}
+                                            sx={{ color: "white" }}
+                                        />
+                                        Running...
+                                    </div>
+                                ) : (
+                                    "Run the code"
+                                )}
                             </Button>
 
                             {/* ✅ Output/Error Box */}
@@ -151,23 +158,31 @@ export default function Solving_Section() {
                                 <div
                                     style={{
                                         backgroundColor: "rgba(0,0,0,0.7)",
-                                        color: isSuccess ? "#4ade80" : "#f87171", // green-400 for success, red-400 for error
+                                        color: isSuccess ? "#4ade80" : "#f87171",
                                         padding: "10px",
                                         borderRadius: "6px",
                                         fontFamily: "monospace",
                                         whiteSpace: "pre-wrap",
                                         maxHeight: "200px",
-                                        overflowY: "auto",
+                                        overflowY: "scroll",
+                                        scrollbarWidth: "none", // Firefox
+                                        msOverflowStyle: "none", // IE 10+
                                     }}
                                 >
                                     {runResult}
+                                    <style>
+                                        {`
+                div::-webkit-scrollbar {
+                    display: none; /* Chrome, Safari, Opera */
+                }
+            `}
+                                    </style>
                                 </div>
                             )}
+
                         </div>
 
-
                         <Question_Showing_Description question={question} />
-
                     </Solve_Description>
                 </div>
 
@@ -187,7 +202,7 @@ export default function Solving_Section() {
                         <Editor
                             height="100%"
                             defaultLanguage="cpp"
-                            defaultValue="// Start coding here..."
+                            defaultValue={defaultCode}
                             theme="vs-dark"
                             options={{
                                 fontSize: 16,

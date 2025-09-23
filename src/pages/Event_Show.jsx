@@ -49,8 +49,11 @@ export default function Event_Show() {
   // ✅ Fetch events through controller
   useEffect(() => {
     controller.fetchEvents(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+
+  // Future Purpose
   const handleAccordionClick = () => {
     // Accordion click handler (currently unused)
   };
