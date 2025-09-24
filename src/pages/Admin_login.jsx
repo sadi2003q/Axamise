@@ -9,6 +9,11 @@ import LoginIcon from "@mui/icons-material/Login";
 // Common props (same as in Login.jsx)
 import { GetCommonProps } from "../Components/__Common.jsx";
 
+import { LoginHeader } from '../Components/__Admin_Login.jsx'
+
+
+
+
 export default function Admin_login() {
     // State
     const [email, setEmail] = useState("");
@@ -34,15 +39,23 @@ export default function Admin_login() {
 
             <div className="z-40 h-screen w-screen flex items-center justify-center">
 
-                <div className="w-[500px] h-[450px] p-6 rounded-2xl shadow-lg flex flex-col gap-4 bg-white">
+                <div className="w-[500px] h-[450px] p-6 rounded-2xl shadow-lg flex flex-col gap-4 bg-white justify-center">
+
+                    <LoginHeader header="Admin Login"/>
+
+
+
                     {/* Email Field */}
                     <TextField
                         {...GetCommonProps}
                         name="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        label="Email"
+                        label="Admin ID"
                         variant="standard"
+                        sx={{
+                            margin: '20px'
+                        }}
                         required
                     />
 
@@ -55,6 +68,9 @@ export default function Admin_login() {
                         onChange={(e) => setPassword(e.target.value)}
                         label="Password"
                         variant="standard"
+                        sx={{
+                            margin: '20px'
+                        }}
                         required
                     />
 
@@ -68,6 +84,9 @@ export default function Admin_login() {
                         endIcon={<LoginIcon />}
                         type="submit"
                         disabled={!isFormValid}
+                        sx={{
+                            margin: '20px'
+                        }}
                     >
                         Login
                     </Button>

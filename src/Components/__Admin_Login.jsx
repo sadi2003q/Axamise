@@ -9,7 +9,7 @@ export const Background_Particles = () => {
                 position: "fixed", // so it stays behind everything
                 top: 0,
                 left: 0,
-                 // push behind
+                // push behind
             }}
         >
             <Particles
@@ -25,3 +25,14 @@ export const Background_Particles = () => {
         </div>
     );
 };
+
+
+
+
+export const LoginHeader = ({ header = "Admin Login" }) => {
+    return (
+        <div className="flex items-center justify-start px-4 py-2 text-2xl font-bold text-black bg-white">
+            {header}
+        </div>
+    );
+}
