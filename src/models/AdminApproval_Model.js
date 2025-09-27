@@ -11,5 +11,7 @@ export class AdminApproval_Question {
         this.params = params || [];
         this.returnType = returnType || "";
         this.status = status || "Pending"; // Possible values: Pending, Approved, Rejected
+        // this.input = 
+        // output
     }
 }
