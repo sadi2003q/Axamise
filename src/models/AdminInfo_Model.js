@@ -1,9 +1,10 @@
 
 
 export class Admin_Info {
-    constructor(name, email, role, phoneNumber, address, profilePicture = "", lastLogin, status, createdAt = new Date(), updatedAt = new Date()) {
+    constructor({name, email, password, role, phoneNumber, address, profilePicture = "", lastLogin, status, createdAt = new Date(), updatedAt = new Date()}) {
         this.name = name;
         this.email = email;
+        this.password = password || "defaultPassword123"; // Default password if not provided
         this.role = role;
         this.phoneNumber = phoneNumber;
         this.address = address;

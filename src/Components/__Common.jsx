@@ -77,13 +77,15 @@ export const GetCommonProps = (
     focusColor = "#ff9800",
     fontSize = "1rem",
     paddingY = "20px", // extra padding for input
-height = "56px" // 👈 default TextField height in MUI
+height = "56px", // 👈 default TextField height in MUI
+    textColor = "white",
+    labelColor = "gray"
 ) => ({
     variant: "standard",
     fullWidth: true,
     InputProps: {
         sx: {
-            color: "white",
+            color: textColor,
             fontFamily: "Roboto Mono, monospace",
             fontSize,
             paddingY, // adds vertical padding between input text and label
@@ -95,7 +97,7 @@ height = "56px" // 👈 default TextField height in MUI
     },
     InputLabelProps: {
         sx: {
-            color: "gray",
+            color: labelColor,
             fontFamily: "Roboto Mono, monospace",
             fontSize: "1rem",
             "&.Mui-focused": {
@@ -108,4 +110,40 @@ height = "56px" // 👈 default TextField height in MUI
 });
 
 
+export const GetCommonProps2 = ({
+    borderColor = "gray",
+    hoverColor = "white",
+    focusColor = "#ff9800",
+    fontSize = "1rem",
+    paddingY = "20px",
+    height = "56px",
+    textColor = "white",
+    labelColor = "gray"
+}) => ({
+    variant: "standard",
+    fullWidth: true,
+    InputProps: {
+        sx: {
+            color: textColor,
+            fontFamily: "Roboto Mono, monospace",
+            fontSize,
+            paddingY,
+            height,
+            "&:before": { borderBottom: `1px solid ${borderColor}` },
+            "&:hover:not(.Mui-disabled):before": { borderBottom: `1px solid ${hoverColor}` },
+            "&:after": { borderBottom: `2px solid ${focusColor}` },
+        },
+    },
+    InputLabelProps: {
+        sx: {
+            color: labelColor,
+            fontFamily: "Roboto Mono, monospace",
+            fontSize: "1rem",
+            "&.Mui-focused": {
+                color: focusColor,
+                transform: "translateY(-4px) scale(0.9)",
+            },
+        },
+    },
+});
 
