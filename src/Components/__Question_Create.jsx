@@ -21,6 +21,7 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    InputAdornment,
 } from "@mui/material";
 
 
@@ -33,8 +34,8 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import AlignHorizontalLeftOutlinedIcon from "@mui/icons-material/AlignHorizontalLeftOutlined";
-
-
+import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
+import SearchIcon from "@mui/icons-material/Search";
 
 
 
@@ -187,17 +188,17 @@ export const Mark_Slider = ({
 export const FinalButton = ({ passQuestion, handleChange }) => {
     return (
         <div className="flex justify-end w-full h-10 mt-4 items-center">
-            
-                <SpeedDial
-                    ariaLabel="Form actions"
-                    sx={{ position: "absolute", bottom: 16, right: 16 }}
-                    icon={<SpeedDialIcon />}
-                    direction="left"
-                >
-                    <SpeedDialAction icon={<SendIcon />} tooltipTitle="Publish" onClick={handleChange} />
-                    <SpeedDialAction icon={<AddShoppingCartIcon />} tooltipTitle="More" onClick={handleChange} />
-                </SpeedDial>
-            
+
+            <SpeedDial
+                ariaLabel="Form actions"
+                sx={{ position: "absolute", bottom: 16, right: 16 }}
+                icon={<SpeedDialIcon />}
+                direction="left"
+            >
+                <SpeedDialAction icon={<SendIcon />} tooltipTitle="Publish" onClick={handleChange} />
+                <SpeedDialAction icon={<AddShoppingCartIcon />} tooltipTitle="More" onClick={handleChange} />
+            </SpeedDial>
+
         </div>
     );
 };
@@ -344,4 +345,155 @@ export const Drawer_Input = ({
             </Box>
         </Drawer>
     );
+};
+
+
+
+
+
+export const Drawer_Input2 = ({
+  drawerOpen,
+  onClose = () => {},
+  anchor = "left",
+  heading = "All Events",
+  item = [],
+  iconColor = "orange",
+  onItemClick = () => {},
+}) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // 🔎 Filter items based on search query
+  const filteredItems = item.filter(
+    (event) =>
+      event.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.date?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.startTime?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <Drawer
+      anchor={anchor}
+      open={drawerOpen}
+      onClose={onClose}
+      variant="temporary"
+      ModalProps={{ keepMounted: true }}
+      sx={{
+        "& .MuiDrawer-paper": {
+          width: 400,
+          backgroundColor: "rgba(0,0,0,0.9)",
+          color: "white",
+          padding: 3,
+          height: "100vh",
+        },
+      }}
+    >
+      {/* Close Button */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <IconButton onClick={onClose} sx={{ color: "white" }}>
+          <MenuIcon />
+        </IconButton>
+      </Box>
+
+      <Divider sx={{ my: 2, borderColor: "white" }} />
+
+      {/* Heading */}
+      <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+        {heading}
+      </Typography>
+
+      {/* 🔎 Search Bar with bottom border + icon */}
+      <TextField
+        fullWidth
+        placeholder="Search events..."
+        variant="standard" // standard variant removes full border
+        size="small"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ color: "white", opacity: 0.6 }} />
+            </InputAdornment>
+          ),
+          disableUnderline: false, // keeps bottom border only
+          style: { color: "white" },
+        }}
+        sx={{
+          mb: 2,
+          "& .MuiInput-underline:before": { borderBottomColor: "white" },
+          "& .MuiInput-underline:hover:before": { borderBottomColor: iconColor },
+          "& .MuiInput-underline:after": { borderBottomColor: iconColor },
+        }}
+      />
+
+      {/* Event List */}
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          height: "65vh",
+          "&::-webkit-scrollbar": { display: "none" },
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        }}
+      >
+        <List>
+          {filteredItems.length > 0 ? (
+            filteredItems.map((event, index) => (
+              <ListItem
+                key={event.id || index}
+                onClick={() => onItemClick(event)}
+                button
+                sx={{
+                  borderRadius: 2,
+                  mb: 1,
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    transform: "translateX(6px)",
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 40,
+                    transition: "transform 0.3s ease, color 0.3s ease",
+                    color: iconColor,
+                    "&:hover": {
+                      transform: "rotate(20deg) scale(1.2)",
+                      color: "lime",
+                    },
+                  }}
+                >
+                  <EventAvailableOutlinedIcon />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontWeight: "bold", color: "white" }}>
+                      {event.title}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography sx={{ color: "gray", fontSize: "0.85rem" }}>
+                      {event.difficulty}
+                        {" | "}
+                    {event.type}
+                    </Typography>
+                  }
+                />
+              </ListItem>
+            ))
+          ) : (
+            <Typography
+              variant="body2"
+              sx={{ color: "gray", textAlign: "center", mt: 2 }}
+            >
+              No matching events found
+            </Typography>
+          )}
+        </List>
+      </Box>
+    </Drawer>
+  );
 };
