@@ -1,6 +1,6 @@
 // services/SignUpService.js
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { doc, setDoc, getDocs, deleteDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { Database } from "../Utilities";
 
@@ -39,9 +39,9 @@ export default class AdminSetUserService {
         } catch (error) {
             return { success: false, error };
         }
-        
+
     }
-    
+
 
     async getAllAdmins() {
         try {
@@ -57,7 +57,39 @@ export default class AdminSetUserService {
     }
 
 
-}
-    
+    async updateAdmin(id, adminInfo) {
+        try {
+            const docRef = doc(db, Database.admins, id);
+            await setDoc(docRef, {
+                name: adminInfo.name,
+                email: adminInfo.email,
+                role: adminInfo.role,
+                phoneNumber: adminInfo.phoneNumber,
+                address: adminInfo.address,
+                profilePicture: adminInfo.profilePicture,
+                updatedAt: new Date().toISOString() // good practice to track updates
+            }, { merge: true });
 
-    
+            return { success: true };
+        } catch (error) {
+            return { success: false, error };
+        }
+    }
+
+
+    async deleteAdmin(id) {
+        try {
+            console.log('ID ', id);
+            const docRef = doc(db, Database.admins, id);
+            await deleteDoc(docRef);
+            console.log('Admin deleted successfully from services file');
+            return { success: true };
+        } catch (error) {
+            return { success: false, error };
+        }
+    }
+
+
+}
+
+

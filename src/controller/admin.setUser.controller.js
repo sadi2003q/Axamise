@@ -2,10 +2,11 @@
 import AdminSetUserService from "../services/_admin.setUser.service";
 
 export class Admin_InfoController {
-    constructor(adminInfo, setAdmins) {
+    constructor(adminInfo, setAdmins, adminID) {
         this.adminInfo = adminInfo;
         this.service = new AdminSetUserService(adminInfo);
         this.setAdmins = setAdmins;
+        this.adminID = adminID;
     }
 
     async handleEmailSignUp() {
@@ -18,6 +19,17 @@ export class Admin_InfoController {
         const result = await this.service.getAllAdmins();
         this.setAdmins(result.data || []);
     }
+
+    async updateAdmin() {
+        const result = await this.service.updateAdmin(this.adminID, this.adminInfo);
+        this.processResult(result);
+    }
+
+    async deleteAdmin(id) {
+        await this.service.deleteAdmin(id);
+        console.log('Admin user deleted successfully from controller file');
+    }
+
 
     processResult(result) {
         if (result.success) {

@@ -9,35 +9,31 @@ import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
 import { Admin_InfoController } from "../controller/admin.setUser.controller.js";
 import SearchIcon from "@mui/icons-material/Search";
-import { set } from "date-fns";
+import IconButton from '@mui/material/IconButton';
+import AdminPanelSettingsTwoToneIcon from '@mui/icons-material/AdminPanelSettingsTwoTone';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-
+/**
+ * LEFT: CHANGE EMAIL AND PASSWORD
+ * @returns {JSX.Element}
+ * @constructor
+ */
 
 export default function Admin_SetUsr() {
 
     const [admins, setAdmins] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
-    const allNames = [
-        "John Doe",
-        "Jane Smith",
-        "Alice Johnson",
-        "Bob Brown",
-        "Charlie Wilson",
-        "Diana Prince",
-        "Ethan Hunt",
-        "Fiona Gallagher",
-        "George Martin",
-        "Hannah Baker",
-    ];
+
+    const [buttonText, setButtonText] = useState("Add");
+    const [headingText, setHeadingText] = useState("Add New Admin");
+
+    const [adminID, setAdminID] = useState("");
+
 
     const filteredNames = admins.filter(admin =>
         admin.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-
-
-
 
     const [adminInfo, setAdminInfo] = useState(
         new Admin_Info({
@@ -56,7 +52,7 @@ export default function Admin_SetUsr() {
     );
 
 
-    const controller = new Admin_InfoController(adminInfo, setAdmins);
+    const controller = new Admin_InfoController(adminInfo, setAdmins, adminID);
 
     const handleChange = (e) => {
         setAdminInfo(prev => ({
@@ -64,6 +60,21 @@ export default function Admin_SetUsr() {
             [e.target.name]: e.target.value
         }));
     };
+
+    const handleAddNewAdmin = () => {
+        setAdminInfo(new Admin_Info({
+            name: "",
+            email: "",
+            password: "",
+            role: "Approval Department",
+            phoneNumber: "",
+            address: "",
+            profilePicture: "",
+            lastLogin: "",
+        }))
+        setButtonText("Add");
+        setHeadingText("Add New Admin");
+    }
 
     const handleListItemClick = (admin) => {
         setAdminInfo(new Admin_Info({
@@ -79,10 +90,10 @@ export default function Admin_SetUsr() {
             createdAt: admin.createdAt || new Date(),
             updatedAt: admin.updatedAt || new Date(),
         }));
+        setButtonText("Update");
+        setHeadingText("Update Admin");
+        setAdminID(admin.id);
     };
-
-
-    // Handle profile picture selection
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -96,6 +107,55 @@ export default function Admin_SetUsr() {
             reader.readAsDataURL(file);
         }
     };
+    const handleDelete = (id) => {
+        controller.deleteAdmin(id).then(() => {
+            console.log("Admin Deleted Successfully from UI file");
+            setAdmins(prevAdmins => prevAdmins.filter(admin => admin.id !== id));
+        }).catch((error) => {
+            console.log("Error deleting admin:", error);
+        });
+    }
+
+
+    /**
+     * Handle form submission
+     * @param e
+     * @returns {Promise<void>}
+     * @description This function handles the form submission based on the button text.
+     * If the button text is "Add", it calls the handleEmailSignUp method from the controller.
+     * If the button text is "Update", it calls the updateAdmin method from the controller.
+     * It also logs the result of the operation.
+     */
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        switch (buttonText) {
+            case "Add":
+                controller.handleEmailSignUp().then(() => {
+                    console.log("Admin Added Successfully");
+                }).catch((error) => {
+                    console.log("Error adding admin:", error);
+                });
+
+                // Append it to the existing admins array
+                setAdmins(prevAdmins => [...prevAdmins, adminInfo]);
+
+                break;
+            case "Update":
+                controller.updateAdmin().then(() => {
+                    console.log("Admin Updated Successfully");
+                    // Update local state without fetching again
+                    setAdmins(prevAdmins =>
+                        prevAdmins.map(admin =>
+                            admin.id === adminID ? { ...admin, ...adminInfo } : admin
+                        )
+                    );
+                }).catch((error) => {
+                    console.log("Error updating admin:", error);
+                });
+                break;
+        }
+
+    };
 
     useEffect(() => {
         controller.getAllAdmins()
@@ -104,13 +164,7 @@ export default function Admin_SetUsr() {
 
 
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Submit the form data
-        console.log(`Before submit:`, adminInfo);
-        controller.handleEmailSignUp();
-        console.log(`After submit:`, adminInfo);
-    };
+
 
     return (
         <>
@@ -131,6 +185,22 @@ export default function Admin_SetUsr() {
       }
     `}
                     </style>
+
+                    {/*  Heading */}
+                    <div className="w-full h-auto m-2 flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                            <h1 className="text-2xl font-roboto font-bold text-gray-300">
+                                {headingText}
+                            </h1>
+                        </div>
+                        <IconButton aria-label="Add new Amdin" color="inherit" className="text-white"
+                        onClick={handleAddNewAdmin}>
+                            <AdminPanelSettingsTwoToneIcon />
+                        </IconButton>
+                    </div>
+
+
+                    {/*  Profile Image and Name*/}
                     <div className="w-full flex justify-between">
                         <div className="m-1 flex flex-col gap-4">
                             {/* Name */}
@@ -151,6 +221,11 @@ export default function Admin_SetUsr() {
                                 value={adminInfo.email}
                                 onChange={handleChange}
                                 required
+                                slotProps={{
+                                    input: {
+                                        readOnly: buttonText === "Update"
+                                    }
+                                }}
                             />
                         </div>
 
@@ -200,6 +275,11 @@ export default function Admin_SetUsr() {
                         value={adminInfo.password}
                         onChange={handleChange}
                         required
+                        slotProps={{
+                            input: {
+                                readOnly: buttonText === "Update"
+                            }
+                        }}
                     />
 
                     {/* Phone Number */}
@@ -237,7 +317,7 @@ export default function Admin_SetUsr() {
                         }}
                         onClick={handleSubmit}
                     >
-                        Add Admin
+                        {buttonText}
                     </Button>
                 </div>
 
@@ -263,10 +343,17 @@ export default function Admin_SetUsr() {
                             filteredNames.map((admin, index) => (
                                 <div
                                     key={index}
-                                    className="py-2 px-2 mb-1 rounded hover:bg-gray-300 cursor-pointer text-gray-800"
-                                    onClick={() => setAdminInfo(admin)}
+                                    className="py-2 px-2 mb-1 rounded hover:bg-gray-300 cursor-pointer text-gray-800 flex justify-between"
+                                    onClick={() => handleListItemClick(admin)}
                                 >
                                     {admin.name}
+                                    <div>
+                                        <IconButton
+                                            onClick={() => handleDelete(admin.id)}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </div>
                                 </div>
                             ))
                         ) : (
