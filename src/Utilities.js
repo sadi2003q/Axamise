@@ -3,7 +3,8 @@ export const Database = {
     question : 'questions',
     student : 'Students',
     event : 'events',
-    admins: 'Admins'
+    admins: 'Admins',
+    approvedQuestions: 'ApprovedQuestions'
 }
 
 export const routes = {

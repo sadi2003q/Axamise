@@ -1,19 +1,22 @@
 
+// File: src/models/AdminApproval_Model.js
+
+import Question from "./Question_Model.js";
 
 
-export class AdminApproval_Question {
+export class AdminApproval_Question extends Question {
     constructor({
-        question = null,
+        question = {},   // default to {}
         approvedBy = "",
         approvedBy_uid = "",
         approvedAt = new Date(),
         functionName = "",
-        paramsValue = {}, // <-- directly pass params with values here
         returnType = "",
         status = "Pending",
         mainFunctionCode = ""
-    }) {
-        this.question = question;
+    } = {}) {   // ✅ default the whole arg to {} if undefined
+        super(question);   // directly pass the object
+        this.question = { ...question }; // safe copy
         this.approvedBy = approvedBy;
         this.approvedBy_uid = approvedBy_uid;
         this.approvedAt = approvedAt;
@@ -22,35 +25,10 @@ export class AdminApproval_Question {
         this.returnType = returnType;
         this.status = status;
 
-        // Initialize paramsValue directly from input
-        this.paramsValue = {};
-
-        // Ensure all values are arrays for consistency
-        Object.entries(paramsValue).forEach(([param, value]) => {
-            this.paramsValue[param] = Array.isArray(value) ? value : [value];
-        });
+       
     }
 
-    // Optional: generate all combinations of parameter values
-    getParamCombinations() {
-        const entries = Object.entries(this.paramsValue);
-        if (!entries.length) return [];
-
-        const combine = (arr, index = 0) => {
-            if (index === arr.length) return [{}];
-            const [key, values] = arr[index];
-            const restCombinations = combine(arr, index + 1);
-            const result = [];
-            values.forEach(value => {
-                restCombinations.forEach(comb => {
-                    result.push({ ...comb, [key]: value });
-                });
-            });
-            return result;
-        };
-
-        return combine(entries);
-    }
+    
 
 
     getMainFunctionCode() {

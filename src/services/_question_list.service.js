@@ -39,7 +39,7 @@ export class QuestionListService {
 
             // Delete the document
             await deleteDoc(docRef);
-
+            console.log(`Question with ID ${id} deleted successfully`);
             return { success: true, message: `Question with ID ${id} deleted successfully` };
         } catch (error) {
             console.log(`Error while Deleting Question : ${error}`)
