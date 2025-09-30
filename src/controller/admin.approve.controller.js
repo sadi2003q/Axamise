@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 
 // File: src/controller/admin.approve.controller.js
 
@@ -92,7 +92,7 @@ export class Admin_ApproveController {
         notification.printNotification();
 
         this.notificationService.createNotification({...notification})
-        // this.service._Delete_Specific_Function(objectID);
+        this.service._Delete_Specific_Function(objectID);
 
 
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.REJECTED);

@@ -1,30 +1,21 @@
 
 // File: src/pages/Admin_Approval.jsx
-
-
-
-
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Background_Particles } from '../Components/__Admin_Login.jsx';
+
+//Libraries
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import TextField from "@mui/material/TextField";
-import { GetCommonProps2 } from '../Components/__Common.jsx';
-import MenuItem from "@mui/material/MenuItem";
 
-// MUI Components
-import Button from "@mui/material/Button";
-import IconButton from '@mui/material/IconButton';
-import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 
 // Models
 import Question from '../models/Question_Model.js';
 
 // Components
+import { Background_Particles } from '../Components/__Admin_Login.jsx';
 import { Question_Showing_Description } from '../Components/__Question_List.jsx';
 import { Drawer_Input2 } from "../Components/__Question_Create.jsx";
-import { ApprovalPanel, ObservationField } from '../Components/__Admin_Approval.jsx';
+import { ApprovalPanel, ObservationField, AdminPageHeader } from '../Components/__Admin_Approval.jsx';
 
 
 // Editor
@@ -32,18 +23,24 @@ import Editor from "@monaco-editor/react";
 
 // Model
 import { AdminApproval_Question } from '../models/AdminApproval_Model.js';
-import { Notification } from '../models/Notification_Model.js';
+
 
 // Controller 
 import { Admin_ApproveController } from '../controller/admin.approve.controller.js';
 
+
+// Utilities
 import { ADMIN_APPROVAL_DISPLAY_MODE } from '../Utilities.js';
 
 
 
 
 export default function Admin_Approval() {
+
+    //  Variables and States
     const [allPendingQuestions, setAllPendingQuestions] = useState([]);
+
+
     const [question, setQuestion] = useState(
         new Question({
             title: "3 Some Problem",
@@ -78,30 +75,14 @@ export default function Admin_Approval() {
     const [reason, setReason] = useState("");
     const [title, setTitle] = useState("");
 
-
-    const [notification, setNotification] = useState(
-        new Notification({
-            title: "Notification Title",
-            message: "Notification Message",
-            type: "info",
-            isRead: false,
-            objectID: "Obj123",
-            recipientID: "User123",
-            timestamp: new Date(),
-        })
-    );
-
-    const controller = new Admin_ApproveController(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason);
+    const controller = new Admin_ApproveController(
+        setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason);
 
 
 
     // Editor ref
     const editorRef = useRef(null);
 
-
-    const handleOnReject = () => {
-        
-    }
 
 
 
@@ -200,28 +181,23 @@ int main() {
                     animate={{ width: approvalOpen ? "40vw" : "66vw" }}
                     transition={{ duration: 0.25 }}
                 >
-                    <div className="p-4 flex justify-between">
-                        <h2 className="text-xl font-bold">Requested by {question.createdBy}</h2>
-                        <IconButton color='primary' onClick={() => setDrawerOpen(true)}>
-                            <MenuOpenOutlinedIcon />
-                        </IconButton>
-                    </div>
+                    
+                    <AdminPageHeader questionMakerName={question.createdBy} setDrawerOpen={setDrawerOpen} />
 
+                    {/* Question Description */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
-
-
                         <Question_Showing_Description
                             question={question}
                             handleDeleteButton={controller.handleReject}
                             handleEditButton={controller.moveToApprovalPage}
                             handleSolveButton={controller.revertBack}
                         />
-
-
                     </div>
+
+
                 </motion.div>
 
-                {/* Approval Panel */}
+                {/* Approval/Rejection/Modification Panel */}
                 {approvalOpen && (
                     <motion.div
                         className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
@@ -281,7 +257,8 @@ int main() {
                                     }
 
                                     buttonText={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Confirm Rejection" : 
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? 
+                                        "Confirm Rejection" : 
                                         "Request for Modification"
                                     }
 
@@ -302,16 +279,13 @@ int main() {
                         }
 
 
-                        
-
-
-
-
-
+          
                     </motion.div>
                 )}
             </div>
-
+            
+            
+            {/* Drawer for Pending Questions */}
             <Drawer_Input2
                 drawerOpen={drawerOpen}
                 onClose={() => setDrawerOpen(false)}

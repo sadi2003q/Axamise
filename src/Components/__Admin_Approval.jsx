@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 
 
 // Editor
@@ -119,6 +120,18 @@ export const ApprovalPanel = ({
                     Approve Question
                 </Button>
             </div>
+        </div>
+    );
+}
+
+
+export const AdminPageHeader = ({ questionMakerName, setDrawerOpen }) => {
+    return (
+        <div className="p-4 flex justify-between">
+            <h2 className="text-xl font-bold">Requested by {questionMakerName}</h2>
+            <IconButton color='primary' onClick={() => setDrawerOpen(true)}>
+                <MenuOpenOutlinedIcon />
+            </IconButton>
         </div>
     );
 }

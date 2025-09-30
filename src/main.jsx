@@ -20,6 +20,7 @@ import Feed from "./pages/Feed.jsx";
 import Admin_login from "./pages/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin_Approval.jsx";
+import Admin_ApprovalEvent from "./pages/Admin_ApprovalEvent.jsx";
 
 /*
   import CreateStudent from "./pages/CreateStudent";
@@ -47,7 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Admin_Approval />} />
+        <Route path="/" element={<Admin_ApprovalEvent />} />
         <Route path="/event_create" element={<Event_Create />} />
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />
