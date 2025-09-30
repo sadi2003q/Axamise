@@ -19,6 +19,13 @@ export const routes = {
     question_list: '/question_list'
 }
 
+export const ADMIN_APPROVAL_DISPLAY_MODE = {
+    APPROVED: 'ApprovalMode',
+    MODIFICATION: 'ModificationMode',
+    REJECTED: 'RejectionMode'
+}
+
+
 
 export const Feed_Header = [
     "Coding exams test your problem-solving skills",

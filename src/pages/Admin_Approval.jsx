@@ -24,6 +24,7 @@ import Question from '../models/Question_Model.js';
 // Components
 import { Question_Showing_Description } from '../Components/__Question_List.jsx';
 import { Drawer_Input2 } from "../Components/__Question_Create.jsx";
+import { ApprovalPanel, ObservationField } from '../Components/_Admin_Approval.jsx';
 
 // Editor
 import Editor from "@monaco-editor/react";
@@ -33,6 +34,11 @@ import { AdminApproval_Question } from '../models/AdminApproval_Model.js';
 
 // Controller 
 import { Admin_ApproveController } from '../controller/admin.approve.controller.js';
+
+import { ADMIN_APPROVAL_DISPLAY_MODE } from '../Utilities.js';
+
+
+
 
 export default function Admin_Approval() {
     const [allPendingQuestions, setAllPendingQuestions] = useState([]);
@@ -63,12 +69,25 @@ export default function Admin_Approval() {
 
 
 
-    const controller = new Admin_ApproveController(setAllPendingQuestions, setApprovalOpen, setQuestion, setQuestionID);
+    // approval Rejention and Modification Request
+    const [displayMode, setDisplayMode] = useState(ADMIN_APPROVAL_DISPLAY_MODE.APPROVED);
+
+    // Rejection Message Handler
+    const [reason, setReason] = useState("");
+
+
+
+    const controller = new Admin_ApproveController(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, reason);
 
 
 
     // Editor ref
     const editorRef = useRef(null);
+
+
+
+
+
 
     useEffect(() => {
         controller.fetchAllRequestedQuestions();
@@ -91,11 +110,16 @@ ${rType} ${fName}() {
 }
 
 int main() {
+    
+    ${rType} n =  ;
+
     ${rType} result = ${fName}();
     cout << result << endl;
     return 0;
+
 }
     
+
 `;
     };
 
@@ -137,6 +161,11 @@ int main() {
                 }));
                 setQuestionID("NOT selected");
             }
+
+            setFunctionName("myFunction");
+            setReturnType("int");
+            setStatus("Approved");
+            setFunctionCode(functionCode);
 
             return updated;
         });
@@ -184,81 +213,47 @@ int main() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.25 }}
                     >
-                        <div className="p-4 flex flex-col gap-4">
-                            <h3 className="text-lg font-bold text-center">Approval Panel</h3>
 
-                            {/* Function Name & Return Type */}
-                            <TextField
-                                {...GetCommonProps2({ borderColor: "gray", hoverColor: "lightgray", textColor: "white" })}
-                                label="Function Name"
-                                value={functionName}
-                                onChange={(e) => setFunctionName(e.target.value)}
-                                fullWidth
-                            />
-                            <TextField
-                                {...GetCommonProps2({ borderColor: "gray", hoverColor: "lightgray", textColor: "white" })}
-                                label="Return Type"
-                                value={returnType}
-                                onChange={(e) => setReturnType(e.target.value)}
-                                placeholder="e.g. int, string"
-                                fullWidth
-                            />
+                        {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.APPROVAL ?
+                            (
+                                <ApprovalPanel
+                                    functionName={functionName}
+                                    setFunctionName={setFunctionName}
+                                    returnType={returnType}
+                                    setReturnType={setReturnType}
+                                    status={status}
+                                    setStatus={setStatus}
+                                    functionCode={functionCode}
+                                    setFunctionCode={setFunctionCode}
+                                    editorRef={editorRef}
+                                    handleApprove={handleApprove}
+                                    questionID={questionID}
+                                    onClose={controller.OpenSidePage}
+                                    
+                                />
+                            ) : (
+                                <ObservationField
+                                    backgroundColor={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "rgba(244, 67, 54, 0.65)" : "rgba(76, 175, 80, 0.5)"}
+                                    buttonColor={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "error" : "success"}
+                                    reason={reason}
+                                    setReason={setReason}
+                                    onReject={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? controller.handleReject : controller.revertBack}
+                                    buttonText= {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Confirm Rejection" : "Request for Modification"}
+                                    onClose={controller.OpenSidePage}
+                                    HeadingText={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Reject Question" : "Ask Modification"}
+                                    inputLabelText={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Reason for Rejection" : "Things to be Modify..."}
+                                />
+                            )
+                        }
 
-                            {/* Status */}
-                            <TextField
-                                select
-                                label="Status"
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                {...GetCommonProps2({ borderColor: "gray", textColor: "white" })}
-                                fullWidth
-                            >
-                                <MenuItem value="Pending">Pending</MenuItem>
-                                <MenuItem value="Approved">Approved</MenuItem>
-                                <MenuItem value="Rejected">Rejected</MenuItem>
-                            </TextField>
 
-                            {/* Monaco Editor for Function Preview */}
-                            <div className="flex flex-col gap-2">
-                                <h4 className="text-sm font-semibold">Function Preview (Editable)</h4>
-                                <div className="h-60 border rounded overflow-hidden">
-                                    <Editor
-                                        height="100%"
-                                        defaultLanguage="cpp"
-                                        value={functionCode}
-                                        theme="vs-dark"
-                                        options={{
-                                            fontSize: 14,
-                                            minimap: { enabled: false },
-                                            scrollBeyondLastLine: false,
-                                            automaticLayout: true,
-                                        }}
-                                        onMount={(editor) => {
-                                            editorRef.current = editor;
-                                        }}
-                                        onChange={(value) => setFunctionCode(value)}
-                                    />
-                                </div>
-                            </div>
+                        {/* 
+                        /> */}
 
-                            {/* Buttons */}
-                            <div className="flex gap-2 justify-end">
-                                <Button
-                                    variant="contained"
-                                    sx={{ backgroundColor: "#f59e0b", color: "white", "&:hover": { backgroundColor: "#d97706" } }}
-                                    onClick={() => console.log("Reverted")}
-                                >
-                                    Revert Back
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    sx={{ backgroundColor: "#22c55e", color: "white", "&:hover": { backgroundColor: "#16a34a" } }}
-                                    onClick={() => handleApprove(questionID)}
-                                >
-                                    Approve
-                                </Button>
-                            </div>
-                        </div>
+
+
+
+
                     </motion.div>
                 )}
             </div>
