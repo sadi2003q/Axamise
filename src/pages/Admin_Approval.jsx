@@ -24,13 +24,15 @@ import Question from '../models/Question_Model.js';
 // Components
 import { Question_Showing_Description } from '../Components/__Question_List.jsx';
 import { Drawer_Input2 } from "../Components/__Question_Create.jsx";
-import { ApprovalPanel, ObservationField } from '../Components/_Admin_Approval.jsx';
+import { ApprovalPanel, ObservationField } from '../Components/__Admin_Approval.jsx';
+
 
 // Editor
 import Editor from "@monaco-editor/react";
 
 // Model
 import { AdminApproval_Question } from '../models/AdminApproval_Model.js';
+import { Notification } from '../models/Notification_Model.js';
 
 // Controller 
 import { Admin_ApproveController } from '../controller/admin.approve.controller.js';
@@ -74,10 +76,22 @@ export default function Admin_Approval() {
 
     // Rejection Message Handler
     const [reason, setReason] = useState("");
+    const [title, setTitle] = useState("");
 
 
+    const [notification, setNotification] = useState(
+        new Notification({
+            title: "Notification Title",
+            message: "Notification Message",
+            type: "info",
+            isRead: false,
+            objectID: "Obj123",
+            recipientID: "User123",
+            timestamp: new Date(),
+        })
+    );
 
-    const controller = new Admin_ApproveController(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, reason);
+    const controller = new Admin_ApproveController(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason);
 
 
 
@@ -85,7 +99,9 @@ export default function Admin_Approval() {
     const editorRef = useRef(null);
 
 
-
+    const handleOnReject = () => {
+        
+    }
 
 
 
@@ -229,26 +245,64 @@ int main() {
                                     handleApprove={handleApprove}
                                     questionID={questionID}
                                     onClose={controller.OpenSidePage}
-                                    
+
                                 />
                             ) : (
                                 <ObservationField
-                                    backgroundColor={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "rgba(244, 67, 54, 0.65)" : "rgba(76, 175, 80, 0.5)"}
-                                    buttonColor={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "error" : "success"}
+                                    title={title}
+                                    setTitle={setTitle}
+
+                                    backgroundColor={
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? 
+                                        "rgba(244, 67, 54, 0.65)" : 
+                                        "rgba(76, 175, 80, 0.5)"
+                                    }
+
+                                    buttonColor={
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? 
+                                        "error" : 
+                                        "success"
+                                    }
+
                                     reason={reason}
                                     setReason={setReason}
-                                    onReject={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? controller.handleReject : controller.revertBack}
-                                    buttonText= {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Confirm Rejection" : "Request for Modification"}
+
+
+                                    onReject={
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
+                                            () => controller.handleReject({
+                                                objectID: questionID,
+                                                recipientID: question.createdBy_uid
+                                            }) :
+                                            () => controller.revertBack({
+                                                objectID: questionID,
+                                                recipientID: question.createdBy_uid
+                                            })
+                                    }
+
+                                    buttonText={
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Confirm Rejection" : 
+                                        "Request for Modification"
+                                    }
+
                                     onClose={controller.OpenSidePage}
-                                    HeadingText={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Reject Question" : "Ask Modification"}
-                                    inputLabelText={displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? "Reason for Rejection" : "Things to be Modify..."}
+                                    
+                                    HeadingText={
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? 
+                                        "Reject Question" : 
+                                        "Ask Modification"
+                                    }
+                                    
+                                    inputLabelText={
+                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ? 
+                                        "Reason for Rejection" : 
+                                        "Things to be Modify..."}
                                 />
                             )
                         }
 
 
-                        {/* 
-                        /> */}
+                        
 
 
 

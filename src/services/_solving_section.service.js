@@ -3,7 +3,7 @@
 
 import { db } from "../firebase";
 import { doc, getDoc } from 'firebase/firestore'
-import { Database } from '../Database'
+import { Database } from '../Utilities.js'
 
 
 export class SolveService {

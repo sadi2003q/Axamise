@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Admin_Info } from "../models/AdminInfo_Model";
 import { Admin_InfoController } from "../controller/admin.setUser.controller.js";
 
-import { Heading, NameField, EmailField, ProfilePictureField, RoleField, PasswordField, PhoneNumberField, AddressField, SubmitButton, SearchItems, AdminList, style } from "../Components/_Admin_SetUser.jsx";
+import { Heading, NameField, EmailField, ProfilePictureField, RoleField, PasswordField, PhoneNumberField, AddressField, SubmitButton, SearchItems, AdminList, style } from "../Components/__Admin_SetUser.jsx";
 
 
 /**

@@ -2,7 +2,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, getDocs, deleteDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
-import { Database } from "../Utilities";
+import { Database } from "../Utilities.js";
 
 export default class AdminSetUserService {
     constructor(adminInfo) {

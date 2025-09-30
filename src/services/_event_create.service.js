@@ -6,6 +6,10 @@
 // Firestore connection from firebase
 import { db } from "../firebase";
 
+import { Database } from "../Utilities.js";
+
+
+
 // Firestore functions
 import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
 
@@ -23,7 +27,7 @@ export class EventCreateService {
      */
     _Upload_Event = async () => {
         try {
-            const docRef = await addDoc(collection(db, "Events"), {
+            const docRef = await addDoc(collection(db, Database.event), {
                 title: this.event.title,
                 startTime: this.event.startTime,
                 description: this.event.description,

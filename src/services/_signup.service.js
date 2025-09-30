@@ -2,7 +2,7 @@
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, googleProvider, db } from "../firebase";
-import { Database } from "../Utilities";
+import { Database } from "../Utilities.js";
 
 export default class SignUpService {
     constructor(student) {

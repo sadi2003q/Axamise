@@ -1,11 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 
 
-import { Background_Particles } from "../Components/__Admin_Login";
+import { Background_Particles } from "./__Admin_Login.jsx";
 
 import MenuItem from "@mui/material/MenuItem";
-import { Admin_Info } from "../models/AdminInfo_Model";
-import { GetCommonProps2 } from "../Components/__Common.jsx";
+import { Admin_Info } from "../models/AdminInfo_Model.js";
+import { GetCommonProps2 } from "./__Common.jsx";
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
 import { Admin_InfoController } from "../controller/admin.setUser.controller.js";

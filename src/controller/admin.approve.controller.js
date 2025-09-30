@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 // File: src/controller/admin.approve.controller.js
 
@@ -5,11 +6,18 @@
 
 import { Admin_ApproveService } from "../services/_admin.approver.service.js";
 import { ADMIN_APPROVAL_DISPLAY_MODE } from '../Utilities.js';
+import { Notification } from "../models/Notification_Model.js";
+import { NotificationService } from "../services/_Notification.service.js";
 
 
 export class Admin_ApproveController {
-    constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, reason) {
+    constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason) {
+        
         this.service = new Admin_ApproveService();
+        this.notificationService = new NotificationService();
+
+
+
         this.setAllPendingQuestions = setAllPendingQuestions;
         this.approvalOpen = approvalOpen;
         this.setApprovalOpen = setApprovalOpen;
@@ -17,6 +25,7 @@ export class Admin_ApproveController {
         this.setQuestionID = setQuestionID;
         this.displayMode = displayMode
         this.setDisplayMode = setDisplayMode;
+        this.title = title;
         this.reason = reason;
 
     }
@@ -69,13 +78,43 @@ export class Admin_ApproveController {
         if (!this.approvalOpen) this.OpenSidePage();
     }
 
-    handleReject = () => {
+
+    handleReject = ({objectID="OBject ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+        
+
+        const notification = new Notification({
+            title: `${this.title}`,
+            message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
+            type: "rejection",
+            recipientID: recipientID,
+            objectID: ""
+        })
+        notification.printNotification();
+
+        this.notificationService.createNotification({...notification})
+        // this.service._Delete_Specific_Function(objectID);
+
+
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.REJECTED);
+
         if (!this.approvalOpen) this.OpenSidePage();
+
     }
 
 
-    revertBack = () => {
+    revertBack = ({objectID="OBject ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+        const notification = new Notification({
+            title: `${this.title}`,
+            message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
+            type: "rejection",
+            recipientID: recipientID,
+            objectID: objectID
+        })
+        
+        notification.printNotification();
+        this.notificationService.createNotification({...notification})
+        // this.service._Delete_Specific_Function(objectID);
+
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION);
         if (!this.approvalOpen) this.OpenSidePage();
     }

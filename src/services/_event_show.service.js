@@ -1,6 +1,8 @@
 // Data Retrieval from Firestore
 import { doc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
 
+import { Database } from "../Utilities.js";
+
 // Firebase connection for Firestore
 import { db } from "../firebase";
 
@@ -15,7 +17,7 @@ export class EventShowService {
         try {
             console.log(`id : ${uid}`)
             // Reference to "Events" collection
-            const eventsRef = collection(db, "Events");
+            const eventsRef = collection(db, Database.event);
 
             // Query for events where createdBy_uid == uid
             const q = query(eventsRef, where("createdBy_uid", "==", uid));

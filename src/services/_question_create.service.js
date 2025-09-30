@@ -1,12 +1,12 @@
 // services/QuestionService.js
 import { db } from "../firebase";
 import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
-import { Database } from "../Database";
+import { Database } from "../Utilities.js";
 
 export default class QuestionService {
     async _Question_Upload(question) {
         try {
-            await addDoc(collection(db, "questions"), { ...question });
+            await addDoc(collection(db, Database.question), { ...question });
             return { success: true, data: question };
         } catch (error) {
             return { success: false, error };

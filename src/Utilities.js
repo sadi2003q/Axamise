@@ -2,9 +2,10 @@
 export const Database = {
     question : 'questions',
     student : 'Students',
-    event : 'events',
+    event : 'Events',
     admins: 'Admins',
-    approvedQuestions: 'ApprovedQuestions'
+    approvedQuestions: 'ApprovedQuestions',
+    notifications: 'Notifications'
 }
 
 export const routes = {
@@ -24,6 +25,9 @@ export const ADMIN_APPROVAL_DISPLAY_MODE = {
     MODIFICATION: 'ModificationMode',
     REJECTED: 'RejectionMode'
 }
+
+
+
 
 
 

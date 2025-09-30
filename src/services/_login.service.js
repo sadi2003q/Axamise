@@ -3,6 +3,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
+import { Database } from "../Utilities.js";
+
 export default class LoginService {
 
     constructor(user) {
@@ -28,7 +30,7 @@ export default class LoginService {
     // Fetch user info from Firestore
     async getUserInfo(uid) {
         try {
-            const userDoc = await getDoc(doc(db, "Students", uid));
+            const userDoc = await getDoc(doc(db, Database.student, uid));
             if (userDoc.exists()) {
                 return { success: true, data: userDoc.data() };
             } else {

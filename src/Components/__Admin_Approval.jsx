@@ -126,6 +126,8 @@ export const ApprovalPanel = ({
 
 
 export const ObservationField = ({
+    title,
+    setTitle,
     reason,
     setReason,
     onReject,
@@ -148,6 +150,17 @@ export const ObservationField = ({
             </div>
 
             <div className="flex flex-col gap-4 mt-4 flex-1">
+                <TextField
+                    {...GetCommonProps2({
+                        borderColor: "gray",
+                        hoverColor: "lightgray",
+                        textColor: "white",
+                    })}
+                    label="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    fullWidth
+                />
                 {/* TextField for rejection reason */}
                 <TextField
                     label={inputLabelText}
