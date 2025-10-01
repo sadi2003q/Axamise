@@ -5,7 +5,7 @@ import { GetCommonProps } from "../Components/__Common.jsx";
 
 // React Component
 import { useState } from "react";
-
+import { MdEvent } from "react-icons/md";
 // Material Library and Icons
 import {
   TextField,
@@ -359,6 +359,7 @@ export const Drawer_Input2 = ({
   item = [],
   iconColor = "orange",
   onItemClick = () => { },
+  showSearch = true,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -402,29 +403,37 @@ export const Drawer_Input2 = ({
       </Typography>
 
       {/* 🔎 Search Bar with bottom border + icon */}
-      <TextField
-        fullWidth
-        placeholder="Search events..."
-        variant="standard" // standard variant removes full border
-        size="small"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon sx={{ color: "white", opacity: 0.6 }} />
-            </InputAdornment>
-          ),
-          disableUnderline: false, // keeps bottom border only
-          style: { color: "white" },
-        }}
-        sx={{
-          mb: 2,
-          "& .MuiInput-underline:before": { borderBottomColor: "white" },
-          "& .MuiInput-underline:hover:before": { borderBottomColor: iconColor },
-          "& .MuiInput-underline:after": { borderBottomColor: iconColor },
-        }}
-      />
+
+      {showSearch && (
+
+        <TextField
+          fullWidth
+          placeholder="Search events..."
+          variant="standard" // standard variant removes full border
+          size="small"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "white", opacity: 0.6 }} />
+              </InputAdornment>
+            ),
+            disableUnderline: false, // keeps bottom border only
+            style: { color: "white" },
+          }}
+          sx={{
+            mb: 2,
+            "& .MuiInput-underline:before": { borderBottomColor: "white" },
+            "& .MuiInput-underline:hover:before": { borderBottomColor: iconColor },
+            "& .MuiInput-underline:after": { borderBottomColor: iconColor },
+          }}
+        />
+      )}
+
+
+
+
 
       {/* Event List */}
       <Box
@@ -476,9 +485,28 @@ export const Drawer_Input2 = ({
                   }
                   secondary={
                     <Typography sx={{ color: "gray", fontSize: "0.85rem" }}>
-                      {event.difficulty} | {event.type}
+                      {event.difficulty || event.type
+                        ? `${event.difficulty || "N/A"} | ${event.type || "N/A"}`
+                        : (() => {
+                          const eventDate = new Date(event.date);
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0); // reset time to start of today
+
+                          // Format the date nicely
+                          const formattedDate = eventDate.toLocaleDateString("en-US", {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }); // e.g., "Thu, Oct 1, 2025"
+
+                          return eventDate >= today
+                            ? `Upcoming • ${formattedDate}`
+                            : `Past • ${formattedDate}`;
+                        })()}
                     </Typography>
                   }
+
                 />
               </ListItem>
             ))
@@ -495,3 +523,5 @@ export const Drawer_Input2 = ({
     </Drawer>
   );
 };
+
+

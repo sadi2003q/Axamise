@@ -1,15 +1,20 @@
 // File: controller/admin.login.controller.js
 
+
 import { Admin_LoginService } from "../services/_admin.login.service.js";
 
 export class Admin_LoginController {
+    // Global Context
 
     constructor(user, navigate, setFieldError) {
+        
         this.user = user;
         this.service = new Admin_LoginService(user);
         this.navigate = navigate;
         this.setFieldError = setFieldError;
     }
+
+    
 
     // Handle email and password login
     async handleEmailLogin() {

@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { IdProvider } from "./IdProvider.jsx";
 
 
+import { GlobalProvider } from "./GlobalContext";
+
+
 // import CreateStudent from "./pages/CreateStudent";
 
 
@@ -21,6 +24,7 @@ import Admin_login from "./pages/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin_ApprovalEvent.jsx";
+import Dashboard from "./pages/test.jsx";
 
 /*
   import CreateStudent from "./pages/CreateStudent";
@@ -34,6 +38,7 @@ import Admin_ApprovalEvent from "./pages/Admin_ApprovalEvent.jsx";
 
 // Define route Path
 ReactDOM.createRoot(document.getElementById("root")).render(
+  <GlobalProvider>
   <IdProvider>
     <BrowserRouter>
       <Routes>
@@ -53,6 +58,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />
         <Route path="/question_list" element={<Question_List />} />
+        <Route path="/admin_approvalQuestion" element={<Admin_Approval />} />
 
         
 
@@ -93,5 +99,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </Routes>
     </BrowserRouter>
   </IdProvider>
+  </GlobalProvider>
 
 );

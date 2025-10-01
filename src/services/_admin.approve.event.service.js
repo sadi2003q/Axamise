@@ -15,13 +15,32 @@ import { EventShowService } from "./_event_show.service.js";
 
 
 
-export class Admin_ApproveEventService extends EventShowService  {
+export class Admin_ApproveEventService   {
     constructor() {
-        super();
     }
 
-    
-}
+
+    GetAllEvents = async () => {
+        
+
+        try {
+            console.log("Retrieving all events from Firestore...");
+            
+            const res = await getDocs(collection(db, Database.event));
+            const events = res.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            console.log(`Retrieved ${events.length} events.`);
+            return { success: true, data: events };
+        } catch (error) {
+            console.error("Error retrieving events:", error);
+            return { success: false, error };
+        }
+    }
+
+}   
+
 
 
 

@@ -3,6 +3,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 
+// Global Context
+import { useGlobal } from "../GlobalContext";
+
 //Libraries
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
@@ -36,6 +39,9 @@ import { ADMIN_APPROVAL_DISPLAY_MODE } from '../Utilities.js';
 
 
 export default function Admin_Approval() {
+
+    // Global Context
+    const { adminEmail } = useGlobal();
 
     //  Variables and States
     const [allPendingQuestions, setAllPendingQuestions] = useState([]);
@@ -87,6 +93,7 @@ export default function Admin_Approval() {
 
 
     useEffect(() => {
+        console.log(`Admin Email in Approval Page: ${adminEmail}`)
         controller.fetchAllRequestedQuestions();
 
     }, []);
@@ -191,6 +198,10 @@ int main() {
                             handleDeleteButton={controller.handleReject}
                             handleEditButton={controller.moveToApprovalPage}
                             handleSolveButton={controller.revertBack}
+
+                            require_Edit_Button ={true}
+                            require_Delete_Button ={true}
+                            require_Solve_Button ={true}
                         />
                     </div>
 

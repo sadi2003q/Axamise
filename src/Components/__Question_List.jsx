@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-refresh/only-export-components */
 
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -6,6 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import InfoIcon from "@mui/icons-material/Info"; // Example icon
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { FaUser, FaQuestionCircle, FaClock, FaLayerGroup, FaStar } from "react-icons/fa";
@@ -99,40 +103,92 @@ export const Edit_Delete_Button = ({
     handleEdit = (() => console.log('Edit Button')),
     handleDelete = (() => { console.log('Delete Button') }),
     handleSolve = (() => { console.log('Solve Button') }),
+    handleRevertBack = (() => { console.log('Revert Back Button') }),
+    handleDirectApprove = (() => { console.log('Direct Approve Button') }),
+
+
+
+    require_Edit_Button = false,
+    require_Delete_Button = false,
+    require_Solve_Button = false,
+    require_Revert_Back_Button = false,
+    require_direct_approve_Button = false
 }) => {
     return (
         <div className="flex items-center justify-center pb-[20px]">
-            <div className="mx-2">
 
-                {/* Edit Button */}
-                <IconButton
-                    onClick={handleEdit}
-                    className="!text-white !bg-blue-500 hover:!bg-blue-700 rounded-full"
-                >
-                    <EditIcon />
-                </IconButton>
 
-            </div>
+            {require_direct_approve_Button && (
+                <div className="mx-2">
 
-            <div className="mx-2">
-                {/* Delete Button */}
-                <IconButton
-                    onClick={handleDelete}
-                    className="!text-white !bg-red-500 hover:!bg-red-700 rounded-full"
-                >
-                    <DeleteIcon />
-                </IconButton>
-            </div>
+                    <IconButton
+                        onClick={handleDirectApprove}
+                        className={`!text-white !bg-green-500 hover:!bg-green-700 rounded-full`}
+                    >
+                        <AddTaskIcon />
+                    </IconButton>
+                </div>
+            )}
 
-            <div className="mx-2">
+            {require_Edit_Button && (
+                <div className="mx-2">
 
-                <IconButton
-                    onClick={handleSolve}
-                    className={`!text-white !bg-purple-500 hover:!bg-purple-700 rounded-full`}
-                >
-                    <TbTargetArrow />
-                </IconButton>
-            </div>
+                    {/* Edit Button */}
+                    <IconButton
+                        onClick={handleEdit}
+                        className="!text-white !bg-blue-500 hover:!bg-blue-700 rounded-full"
+                    >
+                        <EditIcon />
+                    </IconButton>
+
+                </div>
+            )}
+
+            {require_Revert_Back_Button && (
+                <div className="mx-2">
+
+                    <IconButton
+                        onClick={handleRevertBack}
+                        className={`!text-white !bg-yellow-500 hover:!bg-yellow-700 rounded-full`}
+                    >
+                        <NotificationsActiveIcon />
+                    </IconButton>
+                </div>
+            )}
+
+
+
+            {require_Delete_Button && (
+                <div className="mx-2">
+                    {/* Delete Button */}
+                    <IconButton
+                        onClick={handleDelete}
+                        className="!text-white !bg-red-500 hover:!bg-red-700 rounded-full"
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                </div>
+            )}
+
+
+            {require_Solve_Button && (
+                <div className="mx-2">
+
+                    <IconButton
+                        onClick={handleSolve}
+                        className={`!text-white !bg-purple-500 hover:!bg-purple-700 rounded-full`}
+                    >
+                        <TbTargetArrow />
+                    </IconButton>
+                </div>
+            )}
+
+
+
+
+            
+
+
 
         </div>
     );
@@ -335,7 +391,7 @@ export const Question_Showing_Description = ({
                 handleEdit={() => handleEditButton(question.id)}
                 handleDelete={() => handleDeleteButton(question.id)}
                 handleSolve={() => handleSolveButton(question.id)}
-                
+
             />
 
         </div>
@@ -445,7 +501,7 @@ export const Question_Showing_Description_admin = ({
                 handleEdit={() => handleEditButton(question.id)}
                 handleDelete={() => handleDeleteButton(question.id)}
                 handleSolve={() => handleSolveButton(question.id)}
-                
+
             />
 
         </div>

@@ -1,8 +1,13 @@
+/* eslint-disable no-unused-vars */
 
 // File : src/Page/Admin_login.jsx
 
 import { useState } from "react";
 import { Background_Particles } from "../Components/__Admin_Login.jsx";
+
+// Global Context
+import { useGlobal } from "../GlobalContext";
+
 
 // MUI Components
 import Button from "@mui/material/Button";
@@ -23,10 +28,14 @@ import { Admin_LoginController } from '../controller/admin.login.controller.js'
 import { useNavigate } from "react-router-dom";
 
 export default function Admin_login() {
-    // State
 
-    const [user, setUser] = useState(new User("axamine.controller.adnan.sadi@gmail.com"
-, "123456"))
+    // Global Context
+    const { adminEmail, setAdminEmail } = useGlobal();
+
+
+    // State
+    const [user, setUser] = useState(new User("admin.adnan@gmail.com"
+, "sadisadi112"))
     const [error, setError] = useState(null);
     const [loginError, setLoginError] = useState(null);
 
@@ -50,6 +59,12 @@ export default function Admin_login() {
 
         const controller = new Admin_LoginController(user, navigate, setLoginError);
         await controller.handleEmailLogin()
+
+
+        setAdminEmail(user.email)
+
+
+        // navigate('/admin_approvalQuestion');
     };
 
     const handleChange = (e) => {

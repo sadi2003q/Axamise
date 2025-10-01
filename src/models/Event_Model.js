@@ -29,3 +29,13 @@ export class Events_Model extends MakerModel {
         return this.title && this.description && this.date && this.startTime;
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { FaCalendarAlt, FaClock, FaHourglassHalf, FaUser, FaInfoCircle } from "react-icons/fa";
 import { Edit_Delete_Button } from "../Components/__Question_List.jsx";
 
@@ -6,6 +7,16 @@ export const Event_Showing_Description = ({
     handleEditButton = (() => { console.log('Handle Edit Button') }),
     handleDeleteButton = (() => { console.log('Handle Delete Button') }),
     handleViewButton = (() => { console.log('Handle View Button') }),
+    handleNotifyButton = (() => { console.log('Handle Notify Button') }),
+    handleDirectApprove = (() => { console.log('Handle Direct Approve Button') }),
+
+
+
+    require_Edit_Button = false,
+    require_Delete_Button = false,
+    require_Solve_Button = false,
+    require_Revert_Back_Button = false,
+    require_direct_approve_Button = false,
 }) => {
     return (
         <div className="flex flex-col justify-start w-full h-full p-2 space-y-4 font-mono bg-transparent text-white rounded-lg shadow-lg">
@@ -43,7 +54,7 @@ export const Event_Showing_Description = ({
             <div className="flex items-center space-x-2">
                 <FaHourglassHalf className="text-red-400" />
                 <span>
-                    Duration: {event.duration?.hours || 0}h {event.duration?.minutes || 0}m
+                    Duration: {event.hours || 0}h {event.minutes || 0}m
                 </span>
             </div>
 
@@ -53,10 +64,29 @@ export const Event_Showing_Description = ({
                 <span>{event.createdBy}</span>
             </div>
 
+            {/* <Edit_Delete_Button
+                handleEdit={() => handleEditButton(event.id)}
+                handleDelete={() => handleDeleteButton(event.id)}
+                handleSolve={() => handleViewButton(event.id)}
+                handleRevertBack={() => handleNotifyButton()}
+            /> */}
+
             <Edit_Delete_Button
                 handleEdit={() => handleEditButton(event.id)}
                 handleDelete={() => handleDeleteButton(event.id)}
                 handleSolve={() => handleViewButton(event.id)}
+                handleRevertBack={() => handleNotifyButton()}
+                handleDirectApprove={() => handleDirectApprove()}
+
+
+
+
+
+                require_Edit_Button={require_Edit_Button}
+                require_Delete_Button={require_Delete_Button}
+                require_Solve_Button={require_Solve_Button}
+                require_Revert_Back_Button={require_Revert_Back_Button} // <- this is needed
+                require_direct_approve_Button={require_direct_approve_Button}
             />
 
         </div>
