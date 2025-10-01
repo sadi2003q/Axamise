@@ -6,7 +6,7 @@ import { Database } from "../Utilities.js";
 // Firebase connection for Firestore
 import { db } from "../firebase";
 
-
+import { EVENT_APPROVAL_STATUS } from "../Utilities.js";
 
 
 export class EventShowService {
@@ -20,7 +20,11 @@ export class EventShowService {
             const eventsRef = collection(db, Database.event);
 
             // Query for events where createdBy_uid == uid
-            const q = query(eventsRef, where("createdBy_uid", "==", uid));
+            const q = query(
+                eventsRef,
+                where("createdBy_uid", "==", uid),
+                where("status", "==", EVENT_APPROVAL_STATUS.approved)
+            );
 
             // Execute query
             const querySnapshot = await getDocs(q);

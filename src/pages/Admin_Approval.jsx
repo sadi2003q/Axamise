@@ -18,7 +18,7 @@ import Question from '../models/Question_Model.js';
 import { Background_Particles } from '../Components/__Admin_Login.jsx';
 import { Question_Showing_Description } from '../Components/__Question_List.jsx';
 import { Drawer_Input2 } from "../Components/__Question_Create.jsx";
-import { ApprovalPanel, ObservationField, AdminPageHeader } from '../Components/__Admin_Approval.jsx';
+import { ApprovalPanel, ObservationField, AdminPageHeader, EventFetchingLoadingScreen } from '../Components/__Admin_Approval.jsx';
 
 
 // Editor
@@ -72,6 +72,8 @@ export default function Admin_Approval() {
     const [approvalOpen, setApprovalOpen] = useState(false);
     const [questionID, setQuestionID] = useState("NOT selected");
 
+    const [isEmpty, setIsEmpty] = useState(false);
+
 
 
     // approval Rejention and Modification Request
@@ -82,7 +84,7 @@ export default function Admin_Approval() {
     const [title, setTitle] = useState("");
 
     const controller = new Admin_ApproveController(
-        setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason);
+        setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason, setIsEmpty);
 
 
 
@@ -127,6 +129,19 @@ int main() {
 `;
     };
 
+
+    const ShowHeader = () => {
+        if(isEmpty) {
+            return (
+                <AdminPageHeader questionMakerName={question.createdBy} setDrawerOpen={setDrawerOpen} />
+            );
+        } else {
+            return (
+                <></>
+            );
+        }
+    }
+
     // Update editor whenever functionName or returnType changes
     useEffect(() => {
         setFunctionCode(generateFunctionCode());
@@ -164,6 +179,7 @@ int main() {
                     createdBy_uid: ""
                 }));
                 setQuestionID("NOT selected");
+                setIsEmpty(true);
             }
 
             setFunctionName("myFunction");
@@ -189,20 +205,32 @@ int main() {
                     transition={{ duration: 0.25 }}
                 >
                     
-                    <AdminPageHeader questionMakerName={question.createdBy} setDrawerOpen={setDrawerOpen} />
+                    <ShowHeader/>
 
                     {/* Question Description */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
-                        <Question_Showing_Description
-                            question={question}
-                            handleDeleteButton={controller.handleReject}
-                            handleEditButton={controller.moveToApprovalPage}
-                            handleSolveButton={controller.revertBack}
 
-                            require_Edit_Button ={true}
-                            require_Delete_Button ={true}
-                            require_Solve_Button ={true}
-                        />
+                        {isEmpty ? (
+                            <EventFetchingLoadingScreen title="No Question Found"/>
+                        ) : (
+
+                            <Question_Showing_Description
+                                question={question}
+                                handleDeleteButton={controller.handleReject}
+                                handleEditButton={controller.moveToApprovalPage}
+                                handleSolveButton={controller.revertBack}
+
+                                require_Edit_Button ={true}
+                                require_Delete_Button ={true}
+                                require_Solve_Button ={true}
+                            />
+
+                            )}
+
+                        {/*<EventFetchingLoadingScreen title="No Question Found"/>*/}
+
+
+
                     </div>
 
 
