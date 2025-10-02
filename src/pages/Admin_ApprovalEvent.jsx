@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 
-// React LIbraries
+// React Libraries
 import { useEffect, useState } from 'react';
 
 // Custom Components
 import { Background_Particles } from '../Components/__Admin_Login.jsx';
 import { motion } from 'framer-motion';
 import { Event_Showing_Description } from '../Components/__Admin_Approval_Events.jsx';
-import {AdminPageHeader, ObservationField} from '../Components/__Admin_Approval.jsx';
+import {AdminPageHeader, ObservationField, EventFetchingLoadingScreen} from '../Components/__Admin_Approval.jsx';
 import {  Drawer_Input2 } from "../Components/__Question_Create.jsx";
 
 // Models
@@ -19,22 +19,27 @@ import { Events_Model } from '../models/Event_Model.js';
 import { Admin_ApproveEventController } from '../controller/admin.approve.event.controller.js';
 import {ADMIN_APPROVAL_DISPLAY_MODE} from "../Utilities.js";
 
-
+import { useGlobal } from "../GlobalContext";
+import {ShowerHead} from "lucide-react";
 
 
 export default function Admin_ApprovalEvent() {
+
 
     // States
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [approvalOpen, setApprovalOpen] = useState(false);
 
-    const [reason, setReason] = useState("");
+    const [reason, setReason] = useState("Demo Reason");
     const [displayMode, setDisplayMode] = useState(ADMIN_APPROVAL_DISPLAY_MODE.APPROVED);
-    const [title, setTitle] = useState("");
+    const [title, setTitle] = useState("Demo Title");
+
+    const [isEmpty, setIsEmpty] = useState(false);
 
 
     // All Requested events
     const [allEvents, setAllEvents] = useState([]);
+    const [eventID, setEventID] = useState("");
 
 
     const [eventModel, setEventModel] = useState(new Events_Model(
@@ -55,31 +60,54 @@ export default function Admin_ApprovalEvent() {
 
     // Controller Instance
     const controller = new Admin_ApproveEventController({
+        allEvents: allEvents,
         setAllEvents: setAllEvents,
-        setEventModel: setEventModel
+        eventModel: eventModel,
+        setEventModel: setEventModel,
+        approvalOpen: approvalOpen,
+        setApprovalOpen: setApprovalOpen,
+        setDisplayMode: setDisplayMode,
+        title: title,
+        reason: reason,
+        setIsEmpty: setIsEmpty,
+        eventID: eventID,
+        setEventID: setEventID
     });
 
 
+    // Precompute values
+    const isRejected = displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED;
+
+    const backgroundColor = isRejected
+        ? "rgba(244, 67, 54, 0.65)"
+        : "rgba(76, 175, 80, 0.5)";
+
+    const buttonColor = isRejected ? "error" : "success";
+
+    const buttonText = isRejected
+        ? "Confirm Rejection"
+        : "Request for Modification";
+
+    const headingText = isRejected
+        ? "Reject Question"
+        : "Ask Modification";
+
+    const inputLabelText = isRejected
+        ? "Reason for Rejection"
+        : "Things to be Modify...";
 
 
-    // Handling Functions
-    const handleDirectApprove = () => {
-        setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.APPROVED);
-        setApprovalOpen(!approvalOpen)
+    const ShowHeader = () => {
+        if (isEmpty) {
+            return (
+                <AdminPageHeader questionMakerName={`Adnan Abdullah Sadi`} setDrawerOpen={setDrawerOpen} />
+            );
+        } else {
+            return (
+                <div></div>
+            )
+        }
     }
-
-    const handleNotify = () => {
-        setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION);
-        setApprovalOpen(!approvalOpen)
-    }
-
-    const handleReject = () => {
-        setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.REJECTED);
-        setApprovalOpen(!approvalOpen)
-    }
-
-
-
 
 
     // Initialization Functions
@@ -111,21 +139,30 @@ export default function Admin_ApprovalEvent() {
                     transition={{ duration: 0.25 }}
                 >
 
-                    <AdminPageHeader questionMakerName={`Adnan Abudllah Sadi`} setDrawerOpen={setDrawerOpen} />
+                    <ShowHeader/>
 
                     {/* Question Description */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
-                        <Event_Showing_Description
-                            event={eventModel}
-                            handleDeleteButton={handleReject}
-                            handleNotifyButton={handleNotify}
-                            handleDirectApprove={handleDirectApprove}
+
+                        { !isEmpty ?
+                            (
+                                <Event_Showing_Description
+                                    event={eventModel}
 
 
-                            require_Delete_Button={true}
-                            require_Revert_Back_Button={true}
-                            require_direct_approve_Button={true}
-                        />
+                                    handleDeleteButton={controller.handleRejectionPanel}
+                                    handleNotifyButton={controller.handleNotificationPanel}
+                                    handleDirectApprove={controller.handleDirectApproval}
+
+
+                                    require_Delete_Button={true}
+                                    require_Revert_Back_Button={true}
+                                    require_direct_approve_Button={true}
+                                />
+                            ) : ( <EventFetchingLoadingScreen/> )
+                        }
+
+
                     </div>
 
 
@@ -135,63 +172,29 @@ export default function Admin_ApprovalEvent() {
                 {approvalOpen && (
                     <motion.div
                         className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-                        initial={{ opacity: 0 }}
+                        initial={{opacity: 0}}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.25 }}
                     >
 
 
-
-                    <ObservationField
-                                    title={title}
-                                    setTitle={setTitle}
-
-                                    backgroundColor={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "rgba(244, 67, 54, 0.65)" :
-                                        "rgba(76, 175, 80, 0.5)"
-                                    }
-
-                                    buttonColor={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "error" :
-                                        "success"
-                                    }
-
-                                    reason={reason}
-                                    setReason={setReason}
-
-
-                                    onReject={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                            () => {
-                                            console.log(`display mode is this : ${displayMode}`)
-                                            } :
-                                            () => {
-                                                console.log(`display mode is that : ${displayMode}`)
-                                            }
-
-                                    }
-
-                                    buttonText={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "Confirm Rejection" :
-                                        "Request for Modification"
-                                    }
-
-                                    onClose={() => setApprovalOpen(false)}
-
-                                    HeadingText={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "Reject Question" :
-                                        "Ask Modification"
-                                    }
-
-                                    inputLabelText={
-                                        displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "Reason for Rejection" :
-                                        "Things to be Modify..."}
-                                />
+                        <ObservationField
+                            title={title}
+                            setTitle={setTitle}
+                            backgroundColor={backgroundColor}
+                            buttonColor={buttonColor}
+                            reason={reason}
+                            setReason={setReason}
+                            onReject={() => {
+                                controller.handleSendNotification({
+                                    type: isRejected ? "Event Rejected" : "Request Modification",
+                                })
+                            }}
+                            buttonText={buttonText}
+                            onClose={() => setApprovalOpen(false)}
+                            HeadingText={headingText}
+                            inputLabelText={inputLabelText}
+                        />
 
 
 
@@ -212,12 +215,7 @@ export default function Admin_ApprovalEvent() {
                 onItemClick={(item) => {
                     setEventModel(item);
                     setDrawerOpen(false);
-                    // console.log("Selected Question:", item);
-                    // setQuestionID(item.id);
-
-                    // setQuestion(item);
-                    // setDrawerOpen(false);
-                    // setApprovalOpen(false);
+                    setEventID(item.id);
                 }}
                 anchor="left"
                 showSearch={false}

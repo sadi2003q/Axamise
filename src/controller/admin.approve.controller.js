@@ -11,7 +11,7 @@ import { NotificationService } from "../services/_Notification.service.js";
 
 
 export class Admin_ApproveController {
-    constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason) {
+    constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason, setIsEmpty) {
         
         this.service = new Admin_ApproveService();
         this.notificationService = new NotificationService();
@@ -27,6 +27,7 @@ export class Admin_ApproveController {
         this.setDisplayMode = setDisplayMode;
         this.title = title;
         this.reason = reason;
+        this.setIsEmpty = setIsEmpty;
 
     }
 
@@ -34,8 +35,13 @@ export class Admin_ApproveController {
         try {
             const result = await this.service._Fetch_All_Question();
             this.setAllPendingQuestions(result.data);
-            this.setQuestion(result.data[0]);
-            this.setQuestionID(result.data[0].id);
+            if(result.data.length > 0) {
+                this.setQuestion(result.data[0]);
+                this.setQuestionID(result.data[0].id);
+            } else {
+                this.setIsEmpty(true);
+            }
+
 
             return { success: true, data: result.data };
         } catch (error) {
@@ -102,7 +108,7 @@ export class Admin_ApproveController {
     }
 
 
-    revertBack = ({objectID="OBject ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+    revertBack = async ({objectID="OBject ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
         const notification = new Notification({
             title: `${this.title}`,
             message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
@@ -112,7 +118,7 @@ export class Admin_ApproveController {
         })
         
         notification.printNotification();
-        this.notificationService.createNotification({...notification})
+        await this.notificationService.createNotification({...notification})
         // this.service._Delete_Specific_Function(objectID);
 
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION);

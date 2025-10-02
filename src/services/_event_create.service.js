@@ -30,6 +30,7 @@ export class EventCreateService {
             const docRef = await addDoc(collection(db, Database.event), {
                 title: this.event.title,
                 startTime: this.event.startTime,
+                status: 'pending',
                 description: this.event.description,
                 hours: this.event.duration?.hours ?? 0,
                 minutes: this.event.duration?.minutes ?? 0,

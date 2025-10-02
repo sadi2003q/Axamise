@@ -179,7 +179,7 @@ export const ObservationField = ({
                     label={inputLabelText}
                     variant="outlined"
                     multiline
-                    rows={15}
+                    rows={10}
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     fullWidth
@@ -220,6 +220,26 @@ export const ObservationField = ({
     );
 };
 
+
+
+
+export const EventFetchingLoadingScreen = ({title = "Still Nothing Found...."}) => {
+    return (
+        <>
+            <div className="w-full h-full flex flex-col items-center justify-center gap-4">
+                {/* Loading Spinner */}
+                <div
+                    className="w-10 h-10 border-4 border-t-cyan-500 border-gray-300 rounded-full animate-spin"></div>
+
+                {/* Text */}
+                <h3 className="text-lg font-medium text-gray-700">
+                    {title}
+                </h3>
+            </div>
+
+        </>
+    );
+}
 
 
 

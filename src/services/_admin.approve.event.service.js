@@ -2,7 +2,7 @@
 
 
 // Data Retrieval from Firestore
-import { doc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
+import {doc, collection, query, where, getDocs, deleteDoc, setDoc, updateDoc} from "firebase/firestore";
 
 import { Database } from "../Utilities.js";
 
@@ -10,10 +10,7 @@ import { Database } from "../Utilities.js";
 import { db } from "../firebase";
 
 
-import { EventShowService } from "./_event_show.service.js"; 
-
-
-
+import { EVENT_APPROVAL_STATUS } from "../Utilities.js";
 
 export class Admin_ApproveEventService   {
     constructor() {
@@ -25,19 +22,50 @@ export class Admin_ApproveEventService   {
 
         try {
             console.log("Retrieving all events from Firestore...");
-            
-            const res = await getDocs(collection(db, Database.event));
-            const events = res.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
+
+            const eventRef = collection(db, Database.event);
+            const q = query(
+                eventRef,
+                where("status", "==", EVENT_APPROVAL_STATUS.pending)
+            )
+
+            const querySnapshot = await getDocs(q);
+
+            // Map documents into array
+            const events = querySnapshot.docs.map((doc) => ({
+                id: doc.id,       // include doc id
+                ...doc.data(),    // spread event fields
             }));
-            console.log(`Retrieved ${events.length} events.`);
+
             return { success: true, data: events };
+
+
+
         } catch (error) {
             console.error("Error retrieving events:", error);
             return { success: false, error };
         }
     }
+
+
+
+    approveEvent = async ({eventID, modify = false}={}) => {
+        try {
+            await updateDoc(doc(db, Database.event, eventID), {
+                status: modify ?EVENT_APPROVAL_STATUS.modify : EVENT_APPROVAL_STATUS.approved,
+            });
+        } catch (error) {
+            console.error("Error retrieving events:", error);
+            return { success: false, error };
+        }
+    }
+
+
+
+
+
+
+
 
 }   
 

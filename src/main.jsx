@@ -53,12 +53,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Admin_ApprovalEvent />} />
+        <Route path="/" element={<Admin_Approval />} />
         <Route path="/event_create" element={<Event_Create />} />
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />
         <Route path="/question_list" element={<Question_List />} />
-        <Route path="/admin_approvalQuestion" element={<Admin_Approval />} />
+        {/*<Route path="/admin_approvalQuestion" element={<Admin_Approval />} />*/}
 
         
 

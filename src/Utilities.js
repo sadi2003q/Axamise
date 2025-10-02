@@ -1,4 +1,13 @@
 
+
+
+export const EVENT_APPROVAL_STATUS = {
+    approved: 'approved',
+    pending: 'pending',
+    modify: 'modify'
+}
+
+
 export const Database = {
     question : 'questions',
     student : 'Students',
