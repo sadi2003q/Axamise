@@ -1,4 +1,4 @@
-// src/services/_login.services.js
+// path: src/services/_login.services.js
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";

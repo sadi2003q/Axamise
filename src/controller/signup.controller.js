@@ -1,4 +1,6 @@
-// controllers/SignUpController.js
+// path: src/controller/signup.controller.js
+
+
 import SignUpService from "../services/_signup.service";
 
 export default class SignUpController {

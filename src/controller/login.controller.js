@@ -1,4 +1,4 @@
-// src/controllers/LoginController.js
+// path: src/controller/login.controller.js
 import LoginService from "../services/_login.service";
 import { routes } from "../Utilities"
 

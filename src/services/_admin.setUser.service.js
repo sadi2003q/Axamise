@@ -1,4 +1,4 @@
-// services/SignUpService.js
+// path: src/services/_admin.setUser.service.js
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, getDocs, deleteDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";

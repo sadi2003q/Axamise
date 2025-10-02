@@ -1,4 +1,4 @@
-// services/SignUpService.js
+// path: services/_signup.service.js
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, googleProvider, db } from "../firebase";

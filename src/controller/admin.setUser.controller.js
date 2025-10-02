@@ -1,4 +1,6 @@
-// controllers/Admin_InfoController.js
+// path: src/controller/admin.setUser.controller.js
+
+
 import AdminSetUserService from "../services/_admin.setUser.service";
 
 export class Admin_InfoController {
