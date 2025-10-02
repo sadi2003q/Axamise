@@ -2,11 +2,13 @@
 
 
 import AdminSetUserService from "../services/_admin.setUser.service";
+import { SERVICE } from "../Utilities.js";
+import { AuthenticationService } from "../services/_Authentication.service.js";
 
 export class Admin_InfoController {
     constructor(adminInfo, setAdmins, adminID) {
         this.adminInfo = adminInfo;
-        this.service = new AdminSetUserService(adminInfo);
+        this.service = AuthenticationService.getAuthenticationStatus(adminInfo, SERVICE.admin_setUser);
         this.setAdmins = setAdmins;
         this.adminID = adminID;
     }

@@ -2,11 +2,19 @@
 import LoginService from "../services/_login.service";
 import { routes } from "../Utilities"
 
+import { SERVICE } from "../Utilities.js";
+import { AuthenticationService } from "../services/_Authentication.service.js";
+
 export default class LoginController {
     constructor(user, setId, setCurrentName, navigate, setFieldError) {
         this.user = user;
-        this.service = new LoginService(user);
+        // this.service = new LoginService(user);
+
+        this.service = AuthenticationService.getAuthenticationStatus(user, SERVICE.login);
+
+
         this.setId = setId;
+
         this.setCurrentName = setCurrentName;
         this.navigate = navigate;
         this.setFieldError = setFieldError;

@@ -3,13 +3,22 @@
 
 import { Admin_LoginService } from "../services/_admin.login.service.js";
 
+import { SERVICE } from "../Utilities.js";
+import { AuthenticationService } from "../services/_Authentication.service.js";
+
 export class Admin_LoginController {
     // Global Context
 
     constructor(user, navigate, setFieldError) {
         
         this.user = user;
-        this.service = new Admin_LoginService(user);
+        // this.service = new Admin_LoginService(user);
+
+        this.service = AuthenticationService.getAuthenticationStatus(
+            user,
+            SERVICE.login
+        );
+
         this.navigate = navigate;
         this.setFieldError = setFieldError;
     }

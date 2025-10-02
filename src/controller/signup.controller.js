@@ -3,10 +3,16 @@
 
 import SignUpService from "../services/_signup.service";
 
+import { SERVICE } from "../Utilities.js";
+import { AuthenticationService } from "../services/_Authentication.service.js";
+
 export default class SignUpController {
     constructor(student, setId, navigate, setFieldError) {
         this.student = student;
-        this.service = new SignUpService(student);
+        // this.service = new SignUpService(student);
+
+        this.service = AuthenticationService.getAuthenticationStatus(student, SERVICE.signup);
+
         this.setId = setId;
         this.navigate = navigate;
         this.setFieldError = setFieldError;

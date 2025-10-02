@@ -1,5 +1,16 @@
 
 
+export const SERVICE = {
+    admin_login: 'admin_login',
+    admin_setUser: 'admin_setUser',
+    approval_question: 'approval_question',
+    approval_event: 'approval_event',
+    login: 'login',
+    signup: 'sign_up',
+}
+
+
+
 
 export const EVENT_APPROVAL_STATUS = {
     approved: 'approved',
