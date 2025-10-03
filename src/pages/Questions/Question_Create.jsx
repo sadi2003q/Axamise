@@ -25,18 +25,13 @@ import Question from "../../models/Question_Model.js";
 import QuestionController from "../../controller/Questions/question_create.controller.js";
 
 
-
-// ViewModels (Events fetcher)
-import { GetAllEvents } from "../../ViewModel/Event_Show_ViewModel.js";
-
-
 // Global Context
 import { IdContext } from "../../IdContext.jsx";
+import { useGlobal } from "../../GlobalContext.jsx";
 
 
 // Routes
 import { useNavigate } from "react-router-dom";
-
 
 
 
@@ -53,7 +48,11 @@ export default function Question_Create() {
        - change the name of the global variable file 'itemID' to eventId
     */
     const { itemID, questionID } = location.state || {}; // Get eventID & questionID from Router state
+
     const { id } = useContext(IdContext); // Global Variables
+    const { user_uid } = useGlobal()
+
+
     const navigate = useNavigate(); // Router Navigate
 
     // Question State
@@ -66,7 +65,7 @@ export default function Question_Create() {
             type: "Linked List",
             event_uid: itemID || "No even id FOund",
             createdBy: "Adnan",
-            createdBy_uid: id,
+            createdBy_uid: user_uid,
         })
     );
 
@@ -91,6 +90,8 @@ export default function Question_Create() {
 
     // Controller
     const controller = new QuestionController(question, setQuestion, setError, navigate);
+
+
 
     // Handlers
     const handleChange = (e) => {
@@ -118,7 +119,7 @@ export default function Question_Create() {
         */
 
         const fetchEvents = async () => {
-            const result = await GetAllEvents(id);
+            const result = await controller.GetAllEvents(user_uid);
             if (result.success) setEvent(result.data);
             else console.error("Error fetching events:", result.error);
         };
@@ -218,7 +219,7 @@ export default function Question_Create() {
                                 name="event_title"
                                 value={
                                     question.event_uid
-                                        ? event.find((e) => e.id === question.event_uid)?.title || ""
+                                        ? event.find((e) => e.user_uid === question.event_uid)?.title || ""
                                         : ""
                                 }
                                 handleChange={() => { }}

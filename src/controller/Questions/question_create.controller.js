@@ -37,6 +37,11 @@ export default class QuestionController {
         else this.setError(result.error);
     }
 
+    async GetAllEvents (id) {
+        return this.service.GetAllEvents(id)
+    }
+
+
     processResult(result) {
         if (result.success) {
             console.log('Navigtion to question list');

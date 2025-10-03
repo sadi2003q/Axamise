@@ -11,6 +11,8 @@ import { NotificationService } from "../../services/Others/_Notification.service
 
 
 export class Admin_ApproveController {
+
+
     constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason, setIsEmpty) {
         
         this.service = new Admin_ApproveService();
@@ -85,7 +87,7 @@ export class Admin_ApproveController {
     }
 
 
-    handleReject = ({objectID="OBject ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+    handleReject = ({objectID="Object ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
         
 
         const notification = new Notification({
@@ -108,7 +110,7 @@ export class Admin_ApproveController {
     }
 
 
-    revertBack = async ({objectID="OBject ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+    revertBack = async ({objectID="Object ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
         const notification = new Notification({
             title: `${this.title}`,
             message: `Reason: ${this.reason}. \n Please modify and resubmit.`,

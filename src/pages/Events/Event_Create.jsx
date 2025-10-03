@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // File Path: src/pages/Event_Create.jsx
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Material UI
 import { Stack, Box } from "@mui/material";
@@ -28,13 +28,15 @@ import { EventCreateServiceController } from "../../controller/Events/event_crea
 
 // Global Context
 import { IdContext } from "../../IdContext.jsx";
+import { useGlobal } from "../../GlobalContext.jsx";
 
 // Routing
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Event_Create() {
     // Context
-    const { id } = useContext(IdContext);
+    // const { id } = useContext(IdContext);
+    const { user_uid } = useGlobal()
 
     // State
     const [event, setEvent] = useState(
@@ -45,7 +47,7 @@ export default function Event_Create() {
             "10:00",
             { hours: 0, minutes: 0 },
             "current name is undefined",
-            id
+            user_uid
         )
     );
     const [fieldError, setFieldError] = useState({

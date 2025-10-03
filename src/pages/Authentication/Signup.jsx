@@ -1,7 +1,7 @@
 
 
-import { useState, useContext } from "react";
-import { IdContext } from "../../IdContext.jsx";
+import { useState } from "react";
+import { useGlobal } from "../../GlobalContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 // UI
@@ -23,7 +23,9 @@ import SignUpController from "../../controller/Authentication/signup.controller.
 export default function Signup() {
 
     // Variables
-    const { setId } = useContext(IdContext); // UID of the user from global Context
+    // UID of the user from global Context
+    const { setUser_uid } = useGlobal()
+
     const navigate = useNavigate();    // Navigation hook from react-router-dom
     const [fieldError, setFieldError] = useState({ field: null, message: null }); // Error state for form fields
 
@@ -43,7 +45,7 @@ export default function Signup() {
 
     
     // Controller
-    const controller = new SignUpController(student, setId, navigate, setFieldError);
+    const controller = new SignUpController(student, setUser_uid, navigate, setFieldError);
 
     
     const handleChange = (e) => {

@@ -1,6 +1,6 @@
 // services/QuestionService.js
 import { db } from "../../firebase.js";
-import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {collection, addDoc, doc, getDoc, setDoc, query, where, getDocs} from "firebase/firestore";
 import { Database } from "../../Utilities.ts";
 
 export default class QuestionService {
@@ -33,4 +33,30 @@ export default class QuestionService {
             return { success: false, error };
         }
     }
+
+
+    GetAllEvents = async (uid) => {
+        try {
+            console.log(`id : ${uid}`)
+            // Reference to "Events" collection
+            const eventsRef = collection(db, "Events");
+
+            // Query for events where createdBy_uid == uid
+            const q = query(eventsRef, where("createdBy_uid", "==", uid));
+
+            // Execute query
+            const querySnapshot = await getDocs(q);
+
+            // Map documents into array
+            const events = querySnapshot.docs.map((doc) => ({
+                id: doc.id,       // include doc id
+                ...doc.data(),    // spread event fields
+            }));
+
+            return { success: true, data: events };
+        } catch (error) {
+            console.error("Error retrieving events:", error);
+            return { success: false, error };
+        }
+    };
 }

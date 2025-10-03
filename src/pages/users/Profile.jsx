@@ -1,11 +1,11 @@
 import Profile_Background from "../../Components/__Profile.jsx";
 // import {CustomCard} from "../Components/__Profile.jsx"
 import { _Fetch_Information } from "../../ViewModel/Profile_ViewModel.js";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Global State Management
-import { IdContext } from "../../IdContext.jsx";
 
+import { useGlobal } from "../../GlobalContext.jsx";
 // Chart library
 import { LineChart, Line, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -158,13 +158,18 @@ const GraphSection = ({ title }) => (
 
 // Main Profile Component
 export default function Profile() {
-    const { id } = useContext(IdContext);
+
+
+    // const { id } = useContext(IdContext);
+    const { user_uid } = useGlobal()
+
+
     const [user, setUser] = useState();
 
     // Fetch user info on mount
     useEffect(() => {
-        const fetchUserInformation = async (id) => {
-            const result = await _Fetch_Information(id);
+        const fetchUserInformation = async (user_uid) => {
+            const result = await _Fetch_Information(user_uid);
             setUser(result.data);
 
             if (result.success) {
@@ -174,10 +179,10 @@ export default function Profile() {
             }
         };
 
-        if (id) {
-            fetchUserInformation(id);
+        if (user_uid) {
+            fetchUserInformation(user_uid);
         }
-    }, [id]);
+    }, [user_uid]);
 
     return (
         <div className={Profile_style.container}>

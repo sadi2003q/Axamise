@@ -1,7 +1,7 @@
 // src/views/Login.jsx
 
 // React Hooks
-import { useState, useContext } from "react";
+import { useState   } from "react";
 import { useNavigate } from "react-router-dom";
 
 // MUI Components
@@ -16,7 +16,7 @@ import bg_video from "../../asset/background_video.mp4";
 
 
 // Global Context
-import { IdContext } from "../../IdContext.jsx";
+
 import { useGlobal } from "../../GlobalContext.jsx";
 
 // Controller
@@ -30,10 +30,22 @@ export default function Login() {
     /*
         Left: Login With Google Button
 
+        adminEmail,
+        setAdminEmail,
+
+        currentUser,
+        setCurrentUser,
+
+        user_uid,
+        setUser_uid,
+
+        currentName,
+        setCurrentName,
     */
 
     // Context and Variables
-    const { setId, setCurrentName } = useContext(IdContext);
+    const { setUser_uid, setCurrentName } = useGlobal()
+
     const navigate = useNavigate();
     const [user, setUser] = useState(new User());
     const [loginError, setLoginError] = useState(null);
@@ -53,7 +65,7 @@ export default function Login() {
         e.preventDefault();
         const controller = new LoginController(
             user,
-            setId,
+            setUser_uid,
             setCurrentName,
             navigate,
             setLoginError

@@ -2,7 +2,7 @@
 
 
 // React Hooks
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Custom Components & UI
 import Profile_Background from "../../Components/__Profile.jsx";
@@ -13,7 +13,7 @@ import {
 } from "../../Components/__Event_Show.jsx";
 
 // Global Context
-import { IdContext } from "../../IdContext.jsx";
+import { useGlobal } from "../../GlobalContext.jsx";
 
 // Material Components
 
@@ -30,7 +30,8 @@ import { EventShowController } from "../../controller/Events/event_show.controll
 // =======================
 export default function Event_Show() {
   // variables
-  const { id } = useContext(IdContext);
+  const { user_uid } = useGlobal();
+
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
@@ -48,9 +49,9 @@ export default function Event_Show() {
 
   // ✅ Fetch events through controller
   useEffect(() => {
-    controller.fetchEvents(id);
+    controller.fetchEvents(user_uid);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [user_uid]);
 
 
   // Future Purpose

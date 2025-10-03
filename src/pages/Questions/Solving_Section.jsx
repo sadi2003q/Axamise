@@ -1,7 +1,7 @@
 // Path : src/pages/Solving_Section.jsx
 
 /* eslint-disable no-unused-vars */
-import { useContext, useState, useRef, useEffect } from "react";
+import {  useState, useRef, useEffect } from "react";
 
 // Components
 import Profile_Background from "../../Components/__Profile.jsx";
@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
 // View Model
-import { IdContext } from "../../IdContext.jsx";
+import { useGlobal } from "../../GlobalContext.jsx";
 
 // Editor
 import Editor from "@monaco-editor/react";
@@ -34,7 +34,10 @@ export default function Solving_Section() {
     // Variables
     const location = useLocation();
     const { questionID } = location.state || {};
-    const { id } = useContext(IdContext);
+
+    // const { id } = useContext(IdContext);
+    const { user_uid } = useGlobal()
+
     const navigate = useNavigate();
 
 
