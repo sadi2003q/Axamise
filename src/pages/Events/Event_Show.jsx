@@ -49,9 +49,10 @@ export default function Event_Show() {
 
   // ✅ Fetch events through controller
   useEffect(() => {
-    controller.fetchEvents(user_uid);
+    console.log(`user id : ${user_uid}`)
+    controller.fetchEvents(user_uid).then(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user_uid]);
+  }, []);
 
 
   // Future Purpose

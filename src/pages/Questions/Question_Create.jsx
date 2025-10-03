@@ -26,7 +26,6 @@ import QuestionController from "../../controller/Questions/question_create.contr
 
 
 // Global Context
-import { IdContext } from "../../IdContext.jsx";
 import { useGlobal } from "../../GlobalContext.jsx";
 
 
@@ -49,7 +48,6 @@ export default function Question_Create() {
     */
     const { itemID, questionID } = location.state || {}; // Get eventID & questionID from Router state
 
-    const { id } = useContext(IdContext); // Global Variables
     const { user_uid } = useGlobal()
 
 

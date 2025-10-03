@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { IdProvider } from "./IdProvider.jsx";
 
 
 import { GlobalProvider } from "./GlobalContext";
@@ -39,7 +38,6 @@ import Dashboard from "./pages/test.jsx";
 // Define route Path
 ReactDOM.createRoot(document.getElementById("root")).render(
   <GlobalProvider>
-  <IdProvider>
     <BrowserRouter>
       <Routes>
         
@@ -53,8 +51,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Feed />} />
+        <Route path="/" element={<Login />} />
         <Route path="/event_create" element={<Event_Create />} />
+          <Route path="/event_show" element={<Event_Show />} />
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />
         <Route path="/question_list" element={<Question_List />} />
@@ -98,7 +97,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
       </Routes>
     </BrowserRouter>
-  </IdProvider>
   </GlobalProvider>
 
 );

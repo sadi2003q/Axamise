@@ -4,7 +4,7 @@ import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
 import { Notification } from '../../models/Notification_Model.js'
 import { NotificationService } from "../../services/Others/_Notification.service.js";
-import { EventShowService } from "../../services/Events/_event_show.service.js";
+import { EventShowService } from "../../services/Events/_event_show.service.ts";
 
 
 export class Admin_ApproveEventController {

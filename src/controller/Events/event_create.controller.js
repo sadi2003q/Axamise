@@ -2,7 +2,7 @@
 
 
 import { Events_Model } from "../../models/Event_Model.js";
-import { EventCreateService } from "../../services/Events/_event_create.service.js";
+import { EventCreateService } from "../../services/Events/_event_create.service.ts";
 // import { routes } from "../Utilities"
 
 

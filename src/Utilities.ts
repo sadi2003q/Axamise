@@ -6,6 +6,7 @@ export interface Firebase_Response {
     data?: any
     id?: string;
     error?: any;
+    message?: string;
 }
 
 

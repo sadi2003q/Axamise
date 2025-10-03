@@ -27,7 +27,7 @@ import {
 import { EventCreateServiceController } from "../../controller/Events/event_create.controller.js";
 
 // Global Context
-import { IdContext } from "../../IdContext.jsx";
+
 import { useGlobal } from "../../GlobalContext.jsx";
 
 // Routing
@@ -69,6 +69,7 @@ export default function Event_Create() {
 
     // Fetch if editing existing event
     useEffect(() => {
+        console.log(`user id : ${user_uid}`)
         if (itemID) controller.handleFetchEvent(itemID);
         else console.log("🆕 Creating new event");
         

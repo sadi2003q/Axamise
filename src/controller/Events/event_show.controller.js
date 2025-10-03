@@ -1,7 +1,7 @@
 
 // path: src/controller/event_show.controller.js
 
-import { EventShowService } from '../../services/Events/_event_show.service.js'
+import { EventShowService } from '../../services/Events/_event_show.service.ts'
 import { routes } from '../../Utilities.ts'
 
 export class EventShowController {
@@ -45,6 +45,7 @@ export class EventShowController {
             const result = await this.service.GetAllEvents(id);
 
             if (result.success) {
+                console.log(result.data);
                 if (result.data && result.data.length > 0) this.setEvents(result.data);
                 else this.setError("No events found");
             } else {
