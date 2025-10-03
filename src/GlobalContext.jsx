@@ -8,14 +8,21 @@ const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   const [adminEmail, setAdminEmail] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [user_uid, setUser_uid] = useState("Not Defined");
 
 
   return (
     <GlobalContext.Provider value={{ 
 
         adminEmail, 
-        setAdminEmail, 
+        setAdminEmail,
 
+        currentUser,
+        setCurrentUser,
+
+        user_uid,
+        setUser_uid,
 
     }}>
       {children}

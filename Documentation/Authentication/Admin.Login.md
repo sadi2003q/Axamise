@@ -35,7 +35,7 @@ Data movement follows a unidirectional pattern for predictability:
 
 3. **Controller Invocation**: Pass `user` to `Admin_LoginController` constructor. Call `handleEmailLogin()`, which injects `user` into `Admin_LoginService`.
 
-4. **Service Execution**: `loginWithEmailPassword` sends `user.email` and `user.password` to Firebase's `signInWithEmailAndPassword`. On success, returns `{ success: true, user: { uid: "..." }, id: "..." }`; on failure, `{ success: false, error: { code: "...", message: "..." } }`.
+4. **Service Execution**: `login` sends `user.email` and `user.password` to Firebase's `signInWithEmailAndPassword`. On success, returns `{ success: true, user: { uid: "..." }, id: "..." }`; on failure, `{ success: false, error: { code: "...", message: "..." } }`.
 
 5. **Result Processing**: Controller's `processResult` receives the result. Success: Logs UID, optionally navigates. Failure: Maps error code (e.g., `auth/wrong-password` → "Incorrect password") and passes to View's `setLoginError`.
 
@@ -87,7 +87,7 @@ Firebase integration layer.
 
 - **Constructor**: Binds `user` for reuse.
 - **Methods**:
-  - `loginWithEmailPassword`: Awaits Firebase `signInWithEmailAndPassword(auth, email, password)`. Returns credential on success (with `uid`) or error object.
+  - `login`: Awaits Firebase `signInWithEmailAndPassword(auth, email, password)`. Returns credential on success (with `uid`) or error object.
 
 ## Usage
 

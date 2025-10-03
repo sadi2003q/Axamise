@@ -34,9 +34,9 @@ Data follows a unidirectional, async pattern for maintainability:
 2. **List/Selection**: On load (`useEffect`), controller fetches admins via `getAllAdmins`, populating `admins` state. Search (`searchAdmins`) filters locally by name. Clicking list item (`handleListItemClick`) populates form with selected admin data, switches to "Update" mode.
 
 3. **Submit/CRUD**: On form submit (`handleSubmit`):
-   - **Add**: Calls controller's `handleEmailSignUp` → Service's `signUpWithEmailPassword` (creates Auth user with email/password) → `storeUserInfo` (saves to Firestore `admins` collection with UID as doc ID, including profilePicture base64). Returns `{ success: true, id: uid }` or error.
-   - **Update**: Calls `updateAdmin(id, adminInfo)` → Service merges fields to Firestore doc (e.g., updates `name`, `updatedAt`).
-   - **Delete**: Calls `deleteAdmin(id)` → Service removes Firestore doc (Auth user deletion not handled – add if needed).
+   - **Add**: Calls controller's `handleEmailSignUp` → Service's `signup` (creates Auth user with email/password) → `storeUserInfo` (saves to Firestore `admins` collection with UID as doc ID, including profilePicture base64). Returns `{ success: true, id: uid }` or error.
+   - **Update**: Calls `updateUser(id, adminInfo)` → Service merges fields to Firestore doc (e.g., updates `name`, `updatedAt`).
+   - **Delete**: Calls `deleteUser(id)` → Service removes Firestore doc (Auth user deletion not handled – add if needed).
    Controller's `processResult` logs success/error; View appends/updates `admins` state optimistically.
 
 4. **Result Feedback**: Success: Logs "Admin Added/Updated Successfully", refreshes list. Failure: Logs error (e.g., duplicate email from Firebase `auth/email-already-in-use`). No UI error display yet – add state for it.
@@ -84,8 +84,8 @@ Orchestrates CRUD and state updates.
 - **Methods**:
   - `handleEmailSignUp`: Awaits service sign-up, calls `processResult`.
   - `getAllAdmins`: Fetches via service, sets `admins` state.
-  - `updateAdmin`: Awaits service update.
-  - `deleteAdmin`: Awaits service delete, logs success.
+  - `updateUser`: Awaits service update.
+  - `deleteUser`: Awaits service delete, logs success.
   - `processResult`: Logs UID on success; errors on failure (no UI propagation yet).
 
 ### AdminSetUserService
@@ -94,11 +94,11 @@ Firebase CRUD layer.
 
 - **Constructor**: Binds `adminInfo`.
 - **Methods**:
-  - `signUpWithEmailPassword`: `createUserWithEmailAndPassword` → `storeUserInfo` (sets Firestore doc with UID key, excludes password).
+  - `signup`: `createUserWithEmailAndPassword` → `storeUserInfo` (sets Firestore doc with UID key, excludes password).
   - `storeUserInfo`: `setDoc` to `admins` collection.
   - `getAllAdmins`: `getDocs` on collection, maps to `{ id, ...data }`.
-  - `updateAdmin`: `setDoc` with merge for partial updates.
-  - `deleteAdmin`: `deleteDoc` by ID (Firestore only; Auth separate).
+  - `updateUser`: `setDoc` with merge for partial updates.
+  - `deleteUser`: `deleteDoc` by ID (Firestore only; Auth separate).
 
 ## Usage
 

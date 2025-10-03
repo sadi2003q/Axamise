@@ -1,5 +1,5 @@
 // Firestore connection from firebase
-import { Database } from "../Database";
+import { Database } from "../Utilities.ts";
 import { db } from "../firebase";
 
 // Data Setting on firestore

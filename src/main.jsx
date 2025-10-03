@@ -11,19 +11,19 @@ import { GlobalProvider } from "./GlobalContext";
 
 
 // Import all pages Created within Pages folder
-import Login from "./pages/Login";
-import Signup from "./pages/Signup.jsx";
-import Profile from "./pages/Profile.jsx";
-import Event_Create from "./pages/Event_Create.jsx";
-import Question_Create from "./pages/Question_Create.jsx";
-import Solving_Section from "./pages/Solving_Section.jsx";
-import Event_Show from "./pages/Event_Show.jsx"
-import Question_List from "./pages/Question_List.jsx";
-import Feed from "./pages/Feed.jsx";
-import Admin_login from "./pages/Admin_login.jsx";
-import Admin_SetUsr from "./pages/Admin_SetUser.jsx";
-import Admin_Approval from "./pages/Admin_Approval.jsx";
-import Admin_ApprovalEvent from "./pages/Admin_ApprovalEvent.jsx";
+import Login from "./pages/Authentication/Login.jsx";
+import Signup from "./pages/Authentication/Signup.jsx";
+import Profile from "./pages/users/Profile.jsx";
+import Event_Create from "./pages/Events/Event_Create.jsx";
+import Question_Create from "./pages/Questions/Question_Create.jsx";
+import Solving_Section from "./pages/Questions/Solving_Section.jsx";
+import Event_Show from "./pages/Events/Event_Show.jsx"
+import Question_List from "./pages/Questions/Question_List.jsx";
+import Feed from "./pages/users/Feed.jsx";
+import Admin_login from "./pages/Authentication/Admin_login.jsx";
+import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
+import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
+import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
 import Dashboard from "./pages/test.jsx";
 
 /*
@@ -53,7 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Admin_login />} />
         <Route path="/event_create" element={<Event_Create />} />
         <Route path="/solve" element={<Solving_Section />} />
         <Route path="/question_create" element={<Question_Create />} />

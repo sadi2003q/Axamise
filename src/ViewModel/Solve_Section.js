@@ -1,6 +1,6 @@
 import { db } from "../firebase";
 import { doc, getDoc } from 'firebase/firestore'
-import { Database } from '../Database'
+import { Database } from '../Utilities.ts'
 
 export const _Fetch_Question = async (id) => {
 

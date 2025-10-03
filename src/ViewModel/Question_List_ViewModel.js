@@ -1,6 +1,6 @@
 // Firestore connection from firebase
 import { db } from "../firebase";
-import { Database } from "../Database.js";
+import { Database } from "../Utilities.ts";
 
 // Firestore methods
 import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";

@@ -1,4 +1,4 @@
-import Particles from '../Custom/Particels';
+import Particles from './Custom/Particels';
 
 export const Background_Particles = () => {
     return (

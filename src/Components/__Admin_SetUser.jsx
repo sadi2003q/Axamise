@@ -8,7 +8,7 @@ import { Admin_Info } from "../models/AdminInfo_Model.js";
 import { GetCommonProps2 } from "./__Common.jsx";
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
-import { Admin_InfoController } from "../controller/admin.setUser.controller.js";
+import { Admin_InfoController } from "../controller/Authentication/admin.setUser.controller.js";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from '@mui/material/IconButton';
 import AdminPanelSettingsTwoToneIcon from '@mui/icons-material/AdminPanelSettingsTwoTone';
