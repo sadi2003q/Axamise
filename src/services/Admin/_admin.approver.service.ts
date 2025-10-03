@@ -5,11 +5,14 @@
 
 // Firestore connection from firebase
 import { db } from "../../firebase.js";
-import { Database } from "../../Utilities.ts";
+import { Database } from "../../Utilities";
 import { QuestionListService } from "../Questions/_question_list.service.js";
 
 // Firestore methods
 import { doc, collection, getDocs, deleteDoc, setDoc, serverTimestamp  } from "firebase/firestore";
+import { BaseApprovalService } from './_base/_base.approval.service'
+import { Firebase_Response} from "../../Utilities";
+import Question from '../../models/Question_Model.js'
 
 
 export class Admin_ApproveService extends QuestionListService {
@@ -26,7 +29,7 @@ export class Admin_ApproveService extends QuestionListService {
      */
 
 
-    async approveQuestion(id, question) {
+    async getAllPending(id: string, question: any) {
         try {
 
             // console.log(`Approving question with ID: ${id}`);
@@ -52,7 +55,7 @@ export class Admin_ApproveService extends QuestionListService {
             });
             console.log('Document successfully written!');
             
-            this._Delete_Specific_Function(id);
+            await this._Delete_Specific_Function(id);
 
             
 

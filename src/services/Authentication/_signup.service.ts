@@ -5,7 +5,7 @@ import { auth, googleProvider, db } from "../../firebase.js";
 import { Database } from "../../Utilities";
 import { Firebase_Response} from "../../Utilities";
 import Student from '../../models/Student_Model.js'
-import { _Base_SignUp} from "./__base/_base_signup.service";
+import { _Base_SignUp} from "./_base/_base_signup.service";
 
 
 export default class SignUpService extends _Base_SignUp<Student>{

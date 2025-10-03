@@ -6,7 +6,7 @@ import { Database } from "../../Utilities";
 
 import { Firebase_Response} from "../../Utilities";
 import { Admin_Info } from '../../models/AdminInfo_Model.js'
-import { _Base_SignUp} from "./__base/_base_signup.service";
+import { _Base_SignUp} from "./_base/_base_signup.service";
 
 export default class AdminSetUserService extends _Base_SignUp<Admin_Info> {
 

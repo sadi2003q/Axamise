@@ -1,5 +1,5 @@
 
-import { Admin_ApproveEventService } from "../../services/Admin/_admin.approve.event.service.js";
+import { Admin_ApproveEventService } from "../../services/Admin/_admin.approve.event.service.ts";
 import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
 import { Notification } from '../../models/Notification_Model.js'
@@ -45,7 +45,7 @@ export class Admin_ApproveEventController {
     fetchAllPendingEvents = async () => {
         try {
             
-            const result = await this.service.GetAllEvents();
+            const result = await this.service.getAllPending();
             this.setAllEvents(result.data);
             if(result.data.length > 0 ) {
 
@@ -82,7 +82,7 @@ export class Admin_ApproveEventController {
         if( isRejected )  this.eventService.Delete_Event(this.eventID).then(() => console.log('Event removed'))
 
 
-        this.service.approveEvent({ eventID: this.eventID, modify: true }).then(() => {
+        this.service.approve({ eventID: this.eventID, modify: true }).then(() => {
             console.log('event approved')
         });
 
@@ -130,7 +130,7 @@ export class Admin_ApproveEventController {
             });
 
             // Update event status to "approved"
-            await this.service.approveEvent({ eventID: this.eventID});
+            await this.service.approve({ eventID: this.eventID});
 
             // Save notification
             await this.notificationService.createNotification({...notification});

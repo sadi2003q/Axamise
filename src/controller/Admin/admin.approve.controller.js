@@ -4,7 +4,7 @@
 
 
 
-import { Admin_ApproveService } from "../../services/Admin/_admin.approver.service.js";
+import { Admin_ApproveService } from "../../services/Admin/_admin.approver.service.ts";
 import { ADMIN_APPROVAL_DISPLAY_MODE } from '../../Utilities.ts';
 import { Notification } from "../../models/Notification_Model.js";
 import { NotificationService } from "../../services/Others/_Notification.service.js";
@@ -76,7 +76,7 @@ export class Admin_ApproveController {
         // console.log(`mainFunctionCode : ${approveQuestion.mainFunctionCode}`)
 
 
-        this.service.approveQuestion(questionID, approveQuestion);
+        this.service.getAllPending(questionID, approveQuestion);
     }
 
     OpenSidePage = () => this.setApprovalOpen(prev => !prev);
@@ -131,7 +131,7 @@ export class Admin_ApproveController {
 
     approveQuestion = async (id, question) => {
         try {
-            const result = await this.service.approveQuestion(id, question);
+            const result = await this.service.getAllPending(id, question);
             if (result.success) console.log('Data set Successful')
         } catch (error) {
             console.log("Error approving question:", error);
