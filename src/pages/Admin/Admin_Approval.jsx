@@ -110,7 +110,7 @@ export default function Admin_Approval() {
 
 #include <iostream>
 #include <string>
-#include <cstdlib>  // For std::exit
+#include <cstdlib>  
 using namespace std;
 
 ${rType} ${fName}() {

@@ -2,10 +2,10 @@
 // services/_solving_section.service.js
 
 import { db } from "../../firebase.js";
-import { doc, getDoc } from 'firebase/firestore'
+import {doc, getDoc, addDoc, collection} from 'firebase/firestore'
 import { Database, Firebase_Response } from "../../Utilities";
 import Question from '../../models/Question_Model'
-
+import { Solve_Model} from "../../models/Solve_Model";
 
 
 export class SolveService {
@@ -65,6 +65,18 @@ export class SolveService {
             return { success: false, error: error.message };
         }
     };
+
+
+    upload_solver = async(solver: Solve_Model) : Promise<Firebase_Response> => {
+        try {
+            console.log(solver)
+            await addDoc(collection(db, Database.solves), { ...solver });
+            return { success: true, message: 'Solve Accepted' }
+
+        } catch(error) {
+            console.log('Error Found while uploading Solver : \n', error);
+        }
+    }
 
 }
 

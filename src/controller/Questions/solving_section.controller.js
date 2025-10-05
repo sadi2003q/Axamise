@@ -4,10 +4,12 @@ import { SolveService } from "../../services/Questions/_solving_section.service.
 import { routes } from "../../Utilities.ts";
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
 import { SERVICE} from "../../Utilities.ts";
+import { Solve_Model} from "../../models/Solve_Model.js";
 
 export class SolvingSectionController {
     constructor(setQuestion, setRunResult, setIsSuccess, editorRef,
-                setIsRunning, setCurrentCode, libraryPart, mainPart, navigate) {
+                setIsRunning, setCurrentCode, libraryPart, mainPart,
+                solver, setSolver, navigate) {
         // this.service = new SolveService();
         this.service = QuestionService.createService(SERVICE.SOLVE);
 
@@ -21,6 +23,8 @@ export class SolvingSectionController {
         this.libraryPart = libraryPart;
         this.mainPart = mainPart;
         this.editorRef = editorRef;
+        this.solver = solver;
+        this.setSolver = setSolver;
     }
 
     // ✅ Fetch a question by ID
@@ -50,8 +54,6 @@ ${code}
             
 ${this.mainPart}`
 
-
-
             // console.log(fullCode)
 
             this.setIsRunning(true);
@@ -67,6 +69,13 @@ ${this.mainPart}`
                     // Successful execution
                     this.setRunResult(result.output || "");
                     this.setIsSuccess(true);
+                    const updatedSolver = new Solve_Model({
+                        ...this.solver,
+                        solve_code: fullCode
+                    });
+
+                    this.setSolver(updatedSolver);
+                    await this.service.upload_solver(updatedSolver);
                 }
             } catch (error) {
                 this.setRunResult(`Runtime error: ${error.message}`);

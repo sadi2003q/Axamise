@@ -22,6 +22,7 @@ import Editor from "@monaco-editor/react";
 
 // Models
 import Question from "../../models/Question_Model.js";
+import { Solve_Model } from "../../models/Solve_Model";
 
 
 // Router Decoder
@@ -88,6 +89,15 @@ add required library as necessary
     
 `
 
+    const [solver, setSolver] = useState(new Solve_Model({
+        solver_id: user_uid,
+        question_id: questionID || '0eY0SFWEwdFssbpzWQxb',
+        date: new Date(),
+        solve_code: "int main() { return 0; }",
+        event_id: ""
+    }))
+
+
     // ✅ Controller instance
     const controller = new SolvingSectionController(
         setQuestion,
@@ -98,6 +108,8 @@ add required library as necessary
         setCurrentCode,
         libraryPart,
         mainPart,
+        solver,
+        setSolver,
         navigate
     );
 
@@ -105,6 +117,10 @@ add required library as necessary
     const [editorWidth, setEditorWidth] = useState(0.6);
     const [code, setCode] = useState("");
     const containerRef = useRef(null);
+
+
+
+    // console.log(solver.solve_code);
 
     const splitCppCode = (codeString) => {
         // Match all #include lines
@@ -137,7 +153,7 @@ add required library as necessary
     useEffect(() => {
         if (questionID) controller.fetchQuestion(questionID);
         else controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb')
-
+        console.log(question)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionID]);
 
