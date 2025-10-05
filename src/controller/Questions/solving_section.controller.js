@@ -1,16 +1,25 @@
 // path: src/controller/solving_section.controller.js
 
-import { SolveService } from "../../services/Questions/_solving_section.service.js";
+import { SolveService } from "../../services/Questions/_solving_section.service.ts";
 import { routes } from "../../Utilities.ts";
+import { QuestionService } from "../../services/Questions/_factory.question.service.js";
+import { SERVICE} from "../../Utilities.ts";
 
 export class SolvingSectionController {
-    constructor(setQuestion, setRunResult, setIsSuccess, editorRef, setIsRunning, navigate) {
-        this.service = new SolveService();
+    constructor(setQuestion, setRunResult, setIsSuccess, editorRef,
+                setIsRunning, setCurrentCode, libraryPart, mainPart, navigate) {
+        // this.service = new SolveService();
+        this.service = QuestionService.createService(SERVICE.SOLVE);
+
+
         this.navigate = navigate;
         this.setQuestion = setQuestion;
         this.setRunResult = setRunResult;
         this.setIsSuccess = setIsSuccess;
         this.setIsRunning = setIsRunning;
+        this.setCurrentCode = setCurrentCode;
+        this.libraryPart = libraryPart;
+        this.mainPart = mainPart;
         this.editorRef = editorRef;
     }
 
@@ -20,6 +29,8 @@ export class SolvingSectionController {
             const result = await this.service._Fetch_Question(questionID);
             if (result.success) {
                 this.setQuestion(result.data);
+                this.setCurrentCode(result.data.mainFunctionCode);
+
             } else {
                 console.log(`❌ Failed to fetch question`);
             }
@@ -33,11 +44,20 @@ export class SolvingSectionController {
         if (this.editorRef.current) {
             const code = this.editorRef.current.getValue();
 
+            const fullCode = `
+${this.libraryPart}
+${code}
+            
+${this.mainPart}`
 
-            this.setIsRunning(true);  
+
+
+            // console.log(fullCode)
+
+            this.setIsRunning(true);
 
             try {
-                const result = await this.service.runCode(code);
+                const result = await this.service.runCode(fullCode);
 
                 if (result.error && result.error.trim() !== "") {
                     // Syntax/Compilation error
@@ -52,7 +72,7 @@ export class SolvingSectionController {
                 this.setRunResult(`Runtime error: ${error.message}`);
                 this.setIsSuccess(false);
             } finally {
-                this.setIsRunning(false);  
+                this.setIsRunning(false);
             }
         } else {
             console.log("⚠️ Editor is not ready yet!");

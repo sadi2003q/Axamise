@@ -7,6 +7,7 @@ export interface Firebase_Response {
     id?: string;
     error?: any;
     message?: string;
+    output?: string;
 }
 
 
@@ -14,12 +15,23 @@ export interface Firebase_Response {
 
 
 export const SERVICE = {
-    admin_login: 'admin_login',
-    admin_setUser: 'admin_setUser',
-    approval_question: 'approval_question',
-    approval_event: 'approval_event',
-    login: 'login',
-    signup: 'sign_up',
+    ADMIN_LOGIN: 'admin_login',
+    ADMIN_SET_USER: 'admin_setUser',
+    LOGIN: 'login',
+    SIGNUP: 'sign_up',
+
+
+    APPROVAL_QUESTION: 'approval_question',
+    APPROVAL_EVENT: 'approval_event',
+
+
+    EVENT_CREATE: 'event_create',
+    EVENT_SHOW: 'event_show',
+
+
+    QUESTION_CREATE: 'question_create',
+    QUESTION_LIST: 'question_list',
+    SOLVE: 'solve',
 }
 
 
@@ -38,7 +50,8 @@ export const Database = {
     event : 'Events',
     admins: 'Admins',
     approvedQuestions: 'ApprovedQuestions',
-    notifications: 'Notifications'
+    notifications: 'Notifications',
+    solves: 'Solves'
 }
 
 export const routes = {

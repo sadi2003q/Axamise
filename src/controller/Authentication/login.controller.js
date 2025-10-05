@@ -3,14 +3,14 @@ import LoginService from "../../services/Authentication/_login.service.ts";
 import { routes } from "../../Utilities.ts"
 
 import { SERVICE } from "../../Utilities.ts";
-import { AuthenticationService } from "../../services/Authentication/_Authentication.service.ts";
+import { AuthenticationService } from "../../services/Authentication/_factory.Authentication.service.ts";
 
 export default class LoginController {
     constructor(user, setId, setCurrentName, navigate, setFieldError) {
         this.user = user;
         // this.service = new LoginService(user);
 
-        this.service = AuthenticationService.create(user, SERVICE.login);
+        this.service = AuthenticationService.create(user, SERVICE.LOGIN);
 
 
         this.setId = setId;

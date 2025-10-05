@@ -23,16 +23,16 @@ export class AuthenticationService {
     ): LoginService | SignUpService | Admin_LoginService | AdminSetUserService {
 
         switch (serviceType) {
-            case SERVICE.login:
+            case SERVICE.LOGIN:
                 return new LoginService(user as User);
 
-            case SERVICE.signup:
+            case SERVICE.SIGNUP:
                 return new SignUpService(user as Student);
 
-            case SERVICE.admin_login:
+            case SERVICE.ADMIN_LOGIN:
                 return new Admin_LoginService(user as User);
 
-            case SERVICE.admin_setUser:
+            case SERVICE.ADMIN_SET_USER:
                 return new AdminSetUserService(user as Admin_Info);
 
             default:

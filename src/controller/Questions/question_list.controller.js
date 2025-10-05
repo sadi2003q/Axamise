@@ -1,15 +1,18 @@
 
 // File Path: controller/question_list.controller.js
 
-import { QuestionListService } from "../../services/Questions/_question_list.service.js";
+import { QuestionListService } from "../../services/Questions/_question_list.service.ts";
 import { routes } from "../../Utilities.ts"
+
+import { QuestionService } from "../../services/Questions/_factory.question.service.js";
+import { SERVICE} from "../../Utilities.ts";
 
 
 export class QuestionListController {
 
     constructor(questions, setAllQuestion, setSelectedQuestion, setError, navigate) {
-        this.service = new QuestionListService();
-
+        // this.service = new QuestionListService();
+        this.service = QuestionService.createService(SERVICE.QUESTION_LIST)
 
         this.questions = questions;
         this.setAllQuestion = setAllQuestion;

@@ -9,7 +9,7 @@ This directory contains the complete authentication module for the application, 
 
 ## Overview
 
-The primary goal of this module is to centralize all authentication-related operations, such as user login, signup, and admin-specific user management. By using abstract base classes and a factory, we ensure that the core business logic is separated from the client-side implementation, making it easy to manage and extend.
+The primary goal of this module is to centralize all authentication-related operations, such as user LOGIN, SIGNUP, and admin-specific user management. By using abstract base classes and a factory, we ensure that the core business logic is separated from the client-side implementation, making it easy to manage and extend.
 
 ## Folder Structure
 
@@ -19,13 +19,13 @@ The directory is organized to separate different concerns, with base classes pro
 /Authentication
 │
 ├── _base/
-│   ├── _base.login.service.ts    # Abstract base class for all login services.
-│   └── _base_signup.service.ts   # Abstract base class for all signup/user creation services.
+│   ├── _base.LOGIN.service.ts    # Abstract base class for all LOGIN services.
+│   └── _base_signup.service.ts   # Abstract base class for all SIGNUP/user creation services.
 │
-├── _Authentication.service.ts    # The main factory for creating authentication service instances.
-├── _login.service.ts             # Concrete implementation for student login.
-├── _signup.service.ts            # Concrete implementation for student signup.
-├── _admin.login.service.ts       # Concrete implementation for admin login.
+├── _factory.Authentication.service.ts    # The main factory for creating authentication service instances.
+├── _login.service.ts             # Concrete implementation for student LOGIN.
+├── _signup.service.ts            # Concrete implementation for student SIGNUP.
+├── _admin.LOGIN.service.ts       # Concrete implementation for admin LOGIN.
 └── _admin.setUser.service.ts     # Concrete implementation for creating and managing admin users.
 ```
 
@@ -37,13 +37,13 @@ The `create` method in `AuthenticationService` takes a `user` object and a `serv
 
 ### Core Components of the Pattern:
 
-1.  **Abstract Base Classes (`__base/`)**: These define a common interface (`login()`, `signup()`, etc.) that all concrete services must implement. This enforces a consistent API across different authentication types.
+1.  **Abstract Base Classes (`__base/`)**: These define a common interface (`LOGIN()`, `SIGNUP()`, etc.) that all concrete services must implement. This enforces a consistent API across different authentication types.
 
     ```typescript
-    // src/services/Authentication/_base/_base.login.service.ts
+    // src/services/Authentication/_base/_base.LOGIN.service.ts
     export abstract class _Base_Login {
         // ...
-        abstract login() : Promise<Firebase_Response>
+        abstract LOGIN() : Promise<Firebase_Response>
     }
     ```
 
@@ -53,8 +53,8 @@ The `create` method in `AuthenticationService` takes a `user` object and a `serv
     // src/services/Authentication/_login.service.ts
     export default class LoginService extends _Base_Login {
         // ...
-        async login() : Promise<Firebase_Response> {
-            // Implementation for student login
+        async LOGIN() : Promise<Firebase_Response> {
+            // Implementation for student LOGIN
         }
     }
     ```
@@ -62,13 +62,13 @@ The `create` method in `AuthenticationService` takes a `user` object and a `serv
 3.  **The Factory (`AuthenticationService`)**: The static `create` method is the heart of the factory. It contains the logic to select and instantiate the correct service based on the `serviceType` provided by the client.
 
     ```typescript
-    // src/services/Authentication/_Authentication.service.ts
+    // src/services/Authentication/_factory.Authentication.service.ts
     export class AuthenticationService {
         static create(user, serviceType) {
             switch (serviceType) {
-                case SERVICE.login:
+                case SERVICE.LOGIN:
                     return new LoginService(user);
-                case SERVICE.signup:
+                case SERVICE.SIGNUP:
                     return new SignUpService(user);
                 // ... other cases
                 default:
@@ -85,7 +85,7 @@ To use the authentication module, a controller or component imports the `Authent
 ### Example: Controller
 
 ```javascript
-// Example from a login controller
+// Example from a LOGIN controller
 import { AuthenticationService } from '../services/Authentication/_Authentication.service';
 import { SERVICE } from '../Utilities';
 
@@ -99,6 +99,6 @@ const loginService = AuthenticationService.create(userModel, SERVICE.login);
 const response = await loginService.login();
 
 if (response.success) {
-    // Handle successful login
+    // Handle successful LOGIN
 }
 ```

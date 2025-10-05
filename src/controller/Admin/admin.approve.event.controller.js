@@ -5,13 +5,18 @@ import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 import { Notification } from '../../models/Notification_Model.js'
 import { NotificationService } from "../../services/Others/_Notification.service.js";
 import { EventShowService } from "../../services/Events/_event_show.service.ts";
-
+import { ApprovalService } from '../../services/Admin/_base/_factory.approval.service.ts'
+import { SERVICE} from "../../Utilities.ts";
 
 export class Admin_ApproveEventController {
     constructor({allEvents,  setAllEvents, eventModel, setEventModel, approvalOpen, setApprovalOpen, setDisplayMode, title, reason, setIsEmpty, eventID, setEventID}) {
 
-        this.service = new Admin_ApproveEventService();
+        // this.service = new Admin_ApproveEventService();
+        this.service = ApprovalService.createService(SERVICE.APPROVAL_EVENT)
         this.notificationService = new NotificationService();
+
+
+
         this.eventService = new EventShowService();
         this.eventModel = eventModel;
         this.allEvents = allEvents;

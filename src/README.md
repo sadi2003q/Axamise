@@ -34,17 +34,17 @@ This document outlines the file structure for the `frontend/src` directory.
 │   │   ├───admin.approve.controller.js
 │   │   └───admin.approve.event.controller.js
 │   ├───Authentication/
-│   │   ├───admin.login.controller.js
+│   │   ├───admin.LOGIN.controller.js
 │   │   ├───admin.setUser.controller.js
-│   │   ├───login.controller.js
-│   │   └───signup.controller.js
+│   │   ├───LOGIN.controller.js
+│   │   └───SIGNUP.controller.js
 │   ├───Events/
-│   │   ├───event_create.controller.js
-│   │   └───event_show.controller.js
+│   │   ├───EVENT_CREATE.controller.js
+│   │   └───EVENT_SHOW.controller.js
 │   ├───Others/
 │   └───Questions/
-│       ├───question_create.controller.js
-│       ├───question_list.controller.js
+│       ├───QUESTION_CREATE.controller.js
+│       ├───QUESTION_LIST.controller.js
 │       └───solving_section.controller.js
 ├───models/
 │   ├───AdminApproval_Model.js
@@ -80,16 +80,16 @@ This document outlines the file structure for the `frontend/src` directory.
 │   ├───Admin/
 │   │   ├───_base/
 │   │   │   ├───_base.approval.service.ts
-│   │   │   └───_factory.ts
+│   │   │   └───_factory.approval.service.ts
 │   │   ├───_admin.approve.event.service.ts
 │   │   └───_admin.approver.service.ts
 │   ├───Authentication/
 │   │   ├───_base/
-│   │   │   ├───_base.login.service.ts
+│   │   │   ├───_base.LOGIN.service.ts
 │   │   │   └───_base_signup.service.ts
-│   │   ├───_admin.login.service.ts
+│   │   ├───_admin.LOGIN.service.ts
 │   │   ├───_admin.setUser.service.ts
-│   │   ├───_Authentication.service.ts
+│   │   ├───_factory.Authentication.service.ts
 │   │   ├───_login.service.ts
 │   │   ├───_signup.service.ts
 │   │   └───README.md
@@ -101,9 +101,9 @@ This document outlines the file structure for the `frontend/src` directory.
 │   ├───Others/
 │   │   └───_Notification.service.js
 │   └───Questions/
-│       ├───_question_create.service.js
-│       ├───_question_list.service.js
-│       └───_solving_section.service.js
+│       ├───_question_create.service.ts
+│       ├───_question_list.service.ts
+│       └───_solving_section.service.ts
 ├───ViewModel/
 │   └───Profile_ViewModel.js
 ├───firebase.js

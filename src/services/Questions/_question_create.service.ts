@@ -1,10 +1,13 @@
 // services/QuestionService.js
 import { db } from "../../firebase.js";
 import {collection, addDoc, doc, getDoc, setDoc, query, where, getDocs} from "firebase/firestore";
-import { Database } from "../../Utilities.ts";
+import { Database } from "../../Utilities";
+import Question from '../../models/Question_Model'
+import { Firebase_Response} from "../../Utilities";
 
-export default class QuestionService {
-    async _Question_Upload(question) {
+
+export default class QuestionCreateService {
+    async _Question_Upload(question: Question): Promise<Firebase_Response> {
         try {
             await addDoc(collection(db, Database.question), { ...question });
             return { success: true, data: question };
@@ -13,7 +16,7 @@ export default class QuestionService {
         }
     }
 
-    async _Question_Update(id, question) {
+    async _Question_Update(id: string, question: Question): Promise<Firebase_Response> {
         try {
             const docRef = doc(db, Database.question, id);
             await setDoc(docRef, { ...question, updatedAt: new Date().toISOString() });
@@ -23,9 +26,9 @@ export default class QuestionService {
         }
     }
 
-    async _Fetch_Question(id) {
+    async _Fetch_Question(id: string): Promise<Firebase_Response>{
         try {
-            const docRef = doc(db, Database.question, id);
+            const docRef = doc(db, Database.approvedQuestions, id);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) return { success: true, data: { uid: docSnap.id, ...docSnap.data() } };
             return { success: false, error: "Not found" };
@@ -35,7 +38,7 @@ export default class QuestionService {
     }
 
 
-    GetAllEvents = async (uid) => {
+    GetAllEvents = async (uid: string) : Promise<Firebase_Response> => {
         try {
             console.log(`id : ${uid}`)
             // Reference to "Events" collection

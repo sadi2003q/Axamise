@@ -34,7 +34,7 @@ Data follows a unidirectional, async pattern for maintainability:
 2. **List/Selection**: On load (`useEffect`), controller fetches admins via `getAllAdmins`, populating `admins` state. Search (`searchAdmins`) filters locally by name. Clicking list item (`handleListItemClick`) populates form with selected admin data, switches to "Update" mode.
 
 3. **Submit/CRUD**: On form submit (`handleSubmit`):
-   - **Add**: Calls controller's `handleEmailSignUp` → Service's `signup` (creates Auth user with email/password) → `storeUserInfo` (saves to Firestore `admins` collection with UID as doc ID, including profilePicture base64). Returns `{ success: true, id: uid }` or error.
+   - **Add**: Calls controller's `handleEmailSignUp` → Service's `SIGNUP` (creates Auth user with email/password) → `storeUserInfo` (saves to Firestore `admins` collection with UID as doc ID, including profilePicture base64). Returns `{ success: true, id: uid }` or error.
    - **Update**: Calls `updateUser(id, adminInfo)` → Service merges fields to Firestore doc (e.g., updates `name`, `updatedAt`).
    - **Delete**: Calls `deleteUser(id)` → Service removes Firestore doc (Auth user deletion not handled – add if needed).
    Controller's `processResult` logs success/error; View appends/updates `admins` state optimistically.
@@ -94,7 +94,7 @@ Firebase CRUD layer.
 
 - **Constructor**: Binds `adminInfo`.
 - **Methods**:
-  - `signup`: `createUserWithEmailAndPassword` → `storeUserInfo` (sets Firestore doc with UID key, excludes password).
+  - `SIGNUP`: `createUserWithEmailAndPassword` → `storeUserInfo` (sets Firestore doc with UID key, excludes password).
   - `storeUserInfo`: `setDoc` to `admins` collection.
   - `getAllAdmins`: `getDocs` on collection, maps to `{ id, ...data }`.
   - `updateUser`: `setDoc` with merge for partial updates.
@@ -102,7 +102,7 @@ Firebase CRUD layer.
 
 ## Usage
 
-1. Import and render `<Admin_SetUsr />` in a protected route (e.g., after admin login).
+1. Import and render `<Admin_SetUsr />` in a protected route (e.g., after admin LOGIN).
 2. Ensure Firebase config in `../firebase` (exports `auth`, `db`) and `Database` utility (e.g., `{ admins: "admins" }`).
 3. Add: Fill form, submit – creates Auth user + Firestore doc.
 4. Update/Delete: Select from list, edit/submit or delete.

@@ -72,6 +72,21 @@ int main() {
     // ✅ State to hold run result
     const [runResult, setRunResult] = useState("");
     const [isSuccess, setIsSuccess] = useState(null);
+    const [currentCode, setCurrentCode] = useState("");
+    const [libraryPart, setLibraryPart] = useState("");
+    const [editablePart, setEditablePart] = useState("");
+    const [mainPart, setMainPart] = useState("");
+
+    const overView = `
+/*
+#include <iostream>
+
+this part is not changeable
+make your code from below
+add required library as necessary
+*/
+    
+`
 
     // ✅ Controller instance
     const controller = new SolvingSectionController(
@@ -80,6 +95,9 @@ int main() {
         setIsSuccess,
         editorRef,
         setIsRunning,
+        setCurrentCode,
+        libraryPart,
+        mainPart,
         navigate
     );
 
@@ -88,13 +106,65 @@ int main() {
     const [code, setCode] = useState("");
     const containerRef = useRef(null);
 
+    const splitCppCode = (codeString) => {
+        // Match all #include lines
+        const includeRegex = /#include\s+[<"][^>"]+[>"]/g;
+        const mainRegex = /int\s+main\s*\(/;
+
+        // Find last #include to separate part1
+        const includes = [...codeString.matchAll(includeRegex)];
+        const lastInclude = includes.length ? includes[includes.length - 1] : null;
+
+        const mainMatch = codeString.match(mainRegex);
+        if (!mainMatch) {
+            throw new Error("Could not find main() in provided code.");
+        }
+
+        const part1End = lastInclude ? lastInclude.index + lastInclude[0].length : 0;
+        const part1 = codeString.slice(0, part1End).trim(); // Only #include lines
+
+        const part2 = codeString.slice(part1End, mainMatch.index).trim(); // Function(s) + namespace
+        const part3 = codeString.slice(mainMatch.index).trim(); // Main function
+
+        return { part1, part2, part3 };
+    };
+
+
+
+
+
     // Immediate Load
     useEffect(() => {
-        if (questionID) {
-            controller.fetchQuestion(questionID);
-        }
+        if (questionID) controller.fetchQuestion(questionID);
+        else controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb')
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionID]);
+
+    useEffect(() => {
+        if (editorRef.current && question.mainFunctionCode) {
+
+            // / Split using 'int main()' as the divider
+            // const [part1, part2WithMain] = question.mainFunctionCode.split(/(?=int main\s*\()/);
+            const { part1, part2, part3 } = splitCppCode(question.mainFunctionCode);
+
+
+            setLibraryPart(part1)
+            setEditablePart(part2)
+            setMainPart(part3)
+
+            // editorRef.current.setValue(question.mainFunctionCode);
+            editorRef.current.setValue(overView + part2);
+
+
+            setCode(question.mainFunctionCode);
+        }
+    }, [question.mainFunctionCode]);
+
+
+
+
+
 
     // Drag functions
     const startDrag = (e) => {
@@ -206,7 +276,7 @@ int main() {
                         <Editor
                             height="100%"
                             defaultLanguage="cpp"
-                            defaultValue={defaultCode}
+                            defaultValue={currentCode.length === 0 ? defaultCode : question.mainFunctionCode}
                             theme="vs-dark"
                             options={{
                                 fontSize: 16,

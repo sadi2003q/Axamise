@@ -3,17 +3,19 @@
 
 import { db } from "../../firebase.js";
 import { doc, getDoc } from 'firebase/firestore'
-import { Database } from '../../Utilities.ts'
+import { Database, Firebase_Response } from "../../Utilities";
+import Question from '../../models/Question_Model'
+
 
 
 export class SolveService {
 
 
-    _Fetch_Question = async (id) => {
+    _Fetch_Question = async (id: string): Promise<Firebase_Response> => {
 
         try {
 
-            const docRef = doc(db, Database.question, id)
+            const docRef = doc(db, Database.approvedQuestions, id)
             const docSnap = await getDoc(docRef)
 
             if (docSnap.exists()) return { success: true, data: { id: docSnap.id, ...docSnap.data() } };
@@ -31,7 +33,7 @@ export class SolveService {
 
 
     // File: RunCodeAPI.js
-    runCode = async (sourceCode) => {
+    runCode = async (sourceCode: string): Promise<Firebase_Response> => {
         try {
             const response = await fetch("https://emkc.org/api/v2/piston/execute", {
                 method: "POST",

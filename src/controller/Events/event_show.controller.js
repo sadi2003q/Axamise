@@ -3,10 +3,16 @@
 
 import { EventShowService } from '../../services/Events/_event_show.service.ts'
 import { routes } from '../../Utilities.ts'
+import { EventService } from "../../services/Events/_repositories/_factory.event.service.js";
+import { SERVICE } from '../../Utilities.js'
+
 
 export class EventShowController {
     constructor(events, setEvents, searchQuery, setLoading, setError, navigate) {
-        this.service = new EventShowService();
+        // this.service = new EventShowService();
+        this.service = EventService.createService(SERVICE.EVENT_SHOW)
+
+
         this.navigate = navigate;
         this.setEvents = setEvents;
         this.searchQuery = searchQuery;

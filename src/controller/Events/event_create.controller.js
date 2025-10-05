@@ -3,6 +3,9 @@
 
 import { Events_Model } from "../../models/Event_Model.js";
 import { EventCreateService } from "../../services/Events/_event_create.service.ts";
+import { EventService } from "../../services/Events/_repositories/_factory.event.service.js";
+import { SERVICE } from '../../Utilities.js'
+
 // import { routes } from "../Utilities"
 
 
@@ -11,7 +14,9 @@ export class EventCreateServiceController {
 
     constructor(event, setEvent, setFieldError, navigate) {
         this.event = event;
-        this.service = new EventCreateService(event);
+        // this.service = new EventCreateService(event);
+        this.service = EventService.createService(SERVICE.EVENT_CREATE, this.event);
+
         this.setEvent = setEvent;
         this.setFieldError = setFieldError;
         this.navigate = navigate;

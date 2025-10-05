@@ -51,12 +51,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Login />} />
-        <Route path="/event_create" element={<Event_Create />} />
-          <Route path="/event_show" element={<Event_Show />} />
-        <Route path="/solve" element={<Solving_Section />} />
-        <Route path="/question_create" element={<Question_Create />} />
-        <Route path="/question_list" element={<Question_List />} />
+        <Route path="/" element={<Solving_Section />} />
+        <Route path="/EVENT_CREATE" element={<Event_Create />} />
+          <Route path="/EVENT_SHOW" element={<Event_Show />} />
+        <Route path="/SOLVE" element={<Solving_Section />} />
+        <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+        <Route path="/QUESTION_LIST" element={<Question_List />} />
         {/*<Route path="/admin_approvalQuestion" element={<Admin_Approval />} />*/}
 
         
@@ -64,13 +64,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         {/* 
             <Route path="/" element={<Profile />} />
-            <Route path="/event_create" element={<Event_Create />} />
+            <Route path="/EVENT_CREATE" element={<Event_Create />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} /> 
-            <Route path="/question_create" element={<Question_Create />} />
-            <Route path="/solve" element={<Solving_Section />} />
-            <Route path="/event_show" element={<Event_Show />} />
-            <Route path="/question_list" element={<Question_List />} />
+            <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+            <Route path="/SOLVE" element={<Solving_Section />} />
+            <Route path="/EVENT_SHOW" element={<Event_Show />} />
+            <Route path="/QUESTION_LIST" element={<Question_List />} />
             <Route path="/feed" element={<Feed />} />
         */}
 

@@ -109,6 +109,8 @@ export default function Admin_Approval() {
         return `
 
 #include <iostream>
+#include <string>
+#include <cstdlib>  // For std::exit
 using namespace std;
 
 ${rType} ${fName}() {
@@ -118,9 +120,19 @@ ${rType} ${fName}() {
 int main() {
     
     ${rType} n =  ;
-
+    
+    _ output =  ;
+    
     ${rType} result = ${fName}();
-    cout << result << endl;
+    
+    if(output == result) cout<<"Submission Accepted"<<endl;
+    else {
+        // Simpler error: Print to stderr and exit
+        cerr << "Wrong Answer" << endl;
+        cerr << "Expected: " << expected << "\nFound: " << result << endl;
+        exit(1);  // Exit with error code (non-zero)
+    }
+ 
     return 0;
 
 }

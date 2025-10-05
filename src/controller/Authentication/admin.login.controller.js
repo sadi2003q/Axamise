@@ -4,7 +4,7 @@
 import { Admin_LoginService } from "../../services/Authentication/_admin.login.service.ts";
 
 import { SERVICE } from "../../Utilities.ts";
-import { AuthenticationService } from "../../services/Authentication/_Authentication.service.ts";
+import { AuthenticationService } from "../../services/Authentication/_factory.Authentication.service.ts";
 
 export class Admin_LoginController {
     // Global Context
@@ -14,7 +14,7 @@ export class Admin_LoginController {
         this.user = user;
         // this.service = new Admin_LoginService(user);
 
-        this.service = AuthenticationService.create( user, SERVICE.admin_login );
+        this.service = AuthenticationService.create( user, SERVICE.ADMIN_LOGIN );
 
         this.navigate = navigate;
         this.setFieldError = setFieldError;

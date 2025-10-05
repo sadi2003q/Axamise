@@ -3,12 +3,12 @@
 
 import AdminSetUserService from "../../services/Authentication/_admin.setUser.service.ts";
 import { SERVICE } from "../../Utilities.ts";
-import { AuthenticationService } from "../../services/Authentication/_Authentication.service.ts";
+import { AuthenticationService } from "../../services/Authentication/_factory.Authentication.service.ts";
 
 export class Admin_InfoController {
     constructor(adminInfo, setAdmins, adminID) {
         this.adminInfo = adminInfo;
-        this.service = AuthenticationService.create(adminInfo, SERVICE.admin_setUser);
+        this.service = AuthenticationService.create(adminInfo, SERVICE.ADMIN_SET_USER);
         this.setAdmins = setAdmins;
         this.adminID = adminID;
     }

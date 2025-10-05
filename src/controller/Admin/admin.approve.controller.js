@@ -8,14 +8,17 @@ import { Admin_ApproveService } from "../../services/Admin/_admin.approver.servi
 import { ADMIN_APPROVAL_DISPLAY_MODE } from '../../Utilities.ts';
 import { Notification } from "../../models/Notification_Model.js";
 import { NotificationService } from "../../services/Others/_Notification.service.js";
-
+import { ApprovalService } from '../../services/Admin/_base/_factory.approval.service.ts'
+import { SERVICE} from "../../Utilities.ts";
 
 export class Admin_ApproveController {
 
 
     constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason, setIsEmpty) {
         
-        this.service = new Admin_ApproveService();
+        // this.service = new Admin_ApproveService();
+        this.service = ApprovalService.createService(SERVICE.APPROVAL_QUESTION)
+
         this.notificationService = new NotificationService();
 
 

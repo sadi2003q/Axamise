@@ -4,14 +4,14 @@
 import SignUpService from "../../services/Authentication/_signup.service.ts";
 
 import { SERVICE } from "../../Utilities.ts";
-import { AuthenticationService } from "../../services/Authentication/_Authentication.service.ts";
+import { AuthenticationService } from "../../services/Authentication/_factory.Authentication.service.ts";
 
 export default class SignUpController {
     constructor(student, setId, navigate, setFieldError) {
         this.student = student;
         // this.service = new SignUpService(student);
 
-        this.service = AuthenticationService.create(student, SERVICE.signup);
+        this.service = AuthenticationService.create(student, SERVICE.SIGNUP);
 
         this.setId = setId;
         this.navigate = navigate;

@@ -4,7 +4,8 @@
 
 // Firestore connection from firebase
 import { db } from "../../firebase.js";
-import { Database } from "../../Utilities.ts";
+import { Database, Firebase_Response } from "../../Utilities";
+import Question from '../../models/Question_Model'
 
 // Firestore methods
 import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
@@ -13,7 +14,7 @@ import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
 export class QuestionListService {
 
     
-    _Fetch_All_Question = async () => {
+    _Fetch_All_Question = async (): Promise<Firebase_Response> => {
         try {
             const querySnapshot = await getDocs(collection(db, Database.question));
 
@@ -31,7 +32,7 @@ export class QuestionListService {
     };
 
 
-    _Delete_Specific_Function = async (id) => {
+    _Delete_Specific_Function = async (id:string): Promise<Firebase_Response> => {
         try {
 
             // Reference to the specific document

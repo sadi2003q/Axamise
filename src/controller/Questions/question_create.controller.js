@@ -1,11 +1,18 @@
 // controllers/QuestionController.js
-import QuestionService from "../../services/Questions/_question_create.service.js";
+import QuestionCreateService from "../../services/Questions/_question_create.service.ts";
 import { routes } from "../../Utilities.ts"
+
+import { QuestionService } from "../../services/Questions/_factory.question.service.js";
+import { SERVICE} from "../../Utilities.ts";
+
 
 export default class QuestionController {
     constructor(question, setQuestion, setError, navigate) {
         this.question = question;
-        this.service = new QuestionService();
+        // this.service = new QuestionCreateService();
+        this.service = QuestionService.createService(SERVICE.QUESTION_CREATE)
+
+
         this.setQuestion = setQuestion;
         this.setError = setError;
         this.navigate = navigate;
