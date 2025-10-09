@@ -5,7 +5,7 @@
 [![React Version](https://img.shields.io/badge/react-^19.1.1-blue)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/vite-^7.1.2-purple)](https://vitejs.dev/)
 
-**Examise** is a modern, full-featured web application designed to streamline the creation, management, and execution of online assessments. It provides a seamless experience for both administrators and students, featuring role-based access, real-time code evaluation, and a comprehensive event and question management system.
+**Axamise** is a modern, full-featured web application designed to streamline the creation, management, and execution of online assessments. It provides a seamless experience for both administrators and students, featuring role-based access, real-time code evaluation, and a comprehensive event and question management system.
 
 ---
 
@@ -17,10 +17,11 @@
     -   [Design Patterns](#design-patterns)
 3.  [**Module Breakdown**](#module-breakdown)
     -   [State Management (`GlobalContext.jsx`)](#state-management-globalcontextjsx)
-    -   [Authentication Module (`services/Authentication`)](#authentication-module-servicesauthentication)
-    -   [Event Management Module (`pages/Events`)](#event-management-module-pagesevents)
-    -   [Question & Solving Module (`pages/Questions`)](#question--solving-module-pagesquestions)
-    -   [Admin Approval Module (`pages/Admin`)](#admin-approval-module-pagesadmin)
+    -   [Authentication Module (`Authentication`)](#authentication-module-servicesauthentication)
+    -   [Event Management Module (`Events`)](#event-management-module-pagesevents)
+    -   [Question & Solving Module (`Questions`)](#question--solving-module-pagesquestions)
+    -   [Admin Approval Module (`Admin`)](#admin-approval-module-pagesadmin)
+    -   [Others Module(`Others`)]()
 4.  [**Detailed File Reference**](#detailed-file-reference)
     -   [Root `src` Files](#root-src-files)
     -   [Components (`src/Components/`)](#components-srccomponents)
@@ -44,21 +45,109 @@
 ## Overall Project Structure
 
 ```
-/Examise
-├── .idea/              # IDE (IntelliJ/WebStorm) specific configuration files.
-├── frontend/
-│   ├── .gitignore        # Specifies intentionally untracked files to ignore.
-│   ├── Documentation/    # Detailed markdown documentation for specific features.
-│   ├── node_modules/     # Project dependencies (managed by npm).
-│   ├── src/              # Main application source code.
-│   ├── eslint.config.js  # ESLint configuration for code quality.
-│   ├── index.html        # The main HTML entry point for the Vite app.
-│   ├── package.json      # Lists project dependencies and scripts.
-│   ├── package-lock.json # Records the exact versions of dependencies.
-│   ├── style.css         # Main stylesheet, imports Tailwind CSS.
-│   ├── tailwind.config.js# Configuration for Tailwind CSS framework.
-│   └── vite.config.js    # Configuration for the Vite build tool.
-└── ... (other root files)
+Axamise/
+├── Documentation/                    # Feature docs (Authentication, etc.)
+├── src/
+│   ├── asset/                        # Static assets (images, video, docs)
+│   │   ├── background_video.mp4
+│   │   ├── component.md
+│   │   └── logo.jpg
+│   ├── Components/                   # Reusable and page-level components
+│   │   ├── Custom/
+│   │   │   ├── FlowingMenu.jsx
+│   │   │   └── Particels.jsx
+│   │   ├── __Admin_Approval.jsx
+│   │   ├── __Admin_Approval_Events.jsx
+│   │   ├── __Admin_Login.jsx
+│   │   ├── __Admin_SetUser.jsx
+│   │   ├── __Animation.jsx
+│   │   ├── __Common.jsx
+│   │   ├── __Event_Create.jsx
+│   │   ├── __Event_Show.jsx
+│   │   ├── __Feed.jsx
+│   │   ├── __LogIn.jsx
+│   │   ├── __Profile.jsx
+│   │   ├── __Question_Create.jsx
+│   │   ├── __Question_List.jsx
+│   │   ├── __SignUp.jsx
+│   │   └── __Solving_Section.jsx
+│   ├── controller/
+│   │   ├── Admin/
+│   │   │   ├── admin.approve.controller.js
+│   │   │   └── admin.approve.event.controller.js
+│   │   ├── Authentication/
+│   │   │   ├── admin.login.controller.js
+│   │   │   ├── admin.setUser.controller.js
+│   │   │   ├── login.controller.js
+│   │   │   └── signup.controller.js
+│   │   ├── Events/
+│   │   │   ├── event_create.controller.js
+│   │   │   └── event_show.controller.js
+│   │   └── Questions/
+│   │       ├── question_create.controller.js
+│   │       ├── question_list.controller.js
+│   │       └── solving_section.controller.js
+│   ├── models/
+│   │   ├── AdminApproval_Model.js
+│   │   ├── AdminInfo_Model.js
+│   │   ├── Base_Model.js
+│   │   ├── Event_Model.js
+│   │   ├── Notification_Model.js
+│   │   ├── Question_Model.js
+│   │   ├── Solve_Model.ts
+│   │   ├── Student_Model.js
+│   │   ├── User_Model.js
+│   │   └── Validaiton_Model.js
+│   ├── pages/
+│   │   ├── Admin/
+│   │   │   ├── Admin_Approval.jsx
+│   │   │   └── Admin_ApprovalEvent.jsx
+│   │   ├── Authentication/
+│   │   │   ├── Admin_login.jsx
+│   │   │   ├── Admin_SetUser.jsx
+│   │   │   ├── Login.jsx
+│   │   │   └── Signup.jsx
+│   │   ├── Events/
+│   │   │   ├── Event_Create.jsx
+│   │   │   └── Event_Show.jsx
+│   │   ├── Questions/
+│   │   │   ├── Question_Create.jsx
+│   │   │   ├── Question_List.jsx
+│   │   │   └── Solving_Section.jsx
+│   │   ├── users/
+│   │   │   ├── Feed.jsx
+│   │   │   └── Profile.jsx
+│   │   └── test.jsx
+│   ├── services/
+│   │   ├── Admin/
+│   │   │   ├── _admin.approve.event.service.ts
+│   │   │   └── _admin.approver.service.ts
+│   │   ├── Authentication/
+│   │   │   ├── README.md
+│   │   │   ├── _admin.login.service.ts
+│   │   │   ├── _admin.setUser.service.ts
+│   │   │   ├── _factory.Authentication.service.ts
+│   │   │   ├── _login.service.ts
+│   │   │   └── _signup.service.ts
+│   │   ├── Events/
+│   │   ├── Others/
+│   │   └── Questions/
+│   ├── ViewModel/
+│   │   └── Profile_ViewModel.js
+│   ├── GlobalContext.jsx
+│   ├── Utilities.ts
+│   ├── firebase.js
+│   └── main.jsx
+├── test/
+│   ├── admin.login.controller.test.js
+│   ├── login.controller.test.js
+│   └── signup.controller.test.js
+├── index.html
+├── style.css
+├── tailwind.config.js
+├── vite.config.js
+├── eslint.config.js
+└── package.json
 ```
 
 ---
@@ -69,10 +158,10 @@
 
 The project follows a scalable architecture inspired by **MVC (Model-View-Controller)**, promoting a clear separation of concerns.
 
--   **Views (`pages/` & `Components/`)**: React components responsible for rendering the UI. They capture user input and delegate logic to controllers.
--   **Controllers (`controller/`)**: Act as the "brain" for each feature. They orchestrate the data flow, process user actions, and communicate between the Views and Services.
--   **Models (`models/`)**: ES6 classes that define the shape and default values of our data entities (e.g., `User`, `Event`, `Question`). This ensures data consistency throughout the app.
--   **Services (`services/`)**: This layer encapsulates all external interactions, primarily with **Firebase**. It handles all Firestore queries, Firebase Authentication calls, and any other external API interactions. This abstraction prevents Firebase logic from leaking into the rest of the application.
+-   **Views (`src/pages/` & `src/Components/`)**: React components responsible for rendering the UI. They capture user input and delegate logic to controllers.
+-   **Controllers (`src/controller/`)**: Act as the "brain" for each feature. They orchestrate the data flow, process user actions, and communicate between the Views and Services.
+-   **Models (`src/models/`)**: ES6 classes that define the shape and default values of our data entities (e.g., `User`, `Event`, `Question`). This ensures data consistency throughout the app.
+-   **Services (`src/services/`)**: This layer encapsulates all external interactions, primarily with **Firebase**. It handles all Firestore queries, Firebase Authentication calls, and any other external API interactions. This abstraction prevents Firebase logic from leaking into the rest of the application.
 
 ### Design Patterns
 
@@ -128,6 +217,38 @@ This pattern allows us to easily swap or add new authentication methods (e.g., S
 ### Authentication Module (`services/Authentication`)
 
 -   **Description**: Manages all user and admin authentication. It includes services for login, signup, and admin user management (CRUD).
+-   **File Structure**:
+```
+/Axamise
+
+├── frontend/
+
+│   ├── src/                  # Main application source code.
+|   ├── components/           # Components related to UI rendering
+|   |   ├── _Login.jsx        # All components reguarding to Login page
+|   |   ├── _SignUP.jsx       # All Components reguarding Signup Page
+|   |   ├── _Admin_Login.jsx  # All Componentrs for 
+|   |   ├── 
+│   ├── models/               # Contain the Data Models for the Authe Operation
+|   |   ├── User_Model.js     # Data Model for Authentication
+|   ├── pages/Authentication                # Render all UI related to Authentication
+|   |   ├── Login.jsx         # User Login UI
+|   |   ├── Signup.jsx        # User Signup UI
+|   |   ├── Admin_Login.jsx   # Login UI for Admins
+|   |   ├── Admin_SetUser.jsx # Authentication new user 
+|   ├── controller/Authentication           # Contain all Business Logic which connect with UI
+|   |   ├── admin.login.controller.js   # Business logic for admin Login Controller
+|   |   ├── admin.setUser.controller.js # Business logic for admin Login Controller
+|   |   ├── login.controller.js         # Business logic for admin Login Controller
+|   |   ├── sign.controller.js          # Business logic for admin Login Controller
+|   ├── service/Authentication              # Connect with Database, authenticate Operation
+|   |   ├── _admin.login.service.ts
+|   |   ├── 
+|   |   ├── 
+|   |   ├── 
+|   
+└── ... (other root files)
+```
 -   **Key Files**:
     -   `_base.login.service.ts` / `_base_signup.service.ts`: Abstract base classes that define the common interface for all auth services.
     -   `_login.service.ts` / `_signup.service.ts`: Concrete implementations for student authentication.
@@ -172,6 +293,56 @@ This pattern allows us to easily swap or add new authentication methods (e.g., S
     3.  **On Approve**: The controller calls the `Admin_ApproveService`. The service copies the question data to the `ApprovedQuestions` collection and deletes the original from `questions`. It also allows the admin to define the C++ function signature and boilerplate code.
     4.  **On Reject/Modify**: The controller uses the `NotificationService` to create a notification for the user, explaining the reason for rejection or the required changes. The original question may be deleted or its status updated.
 
+
+
+
+### Others Module
+-   **Description**: Provide the interface for Notificaitons Which Notify the Status reguarding the Problem/Event Status Requested by the User.
+    **Key Files**
+    -   `Notification`
+
+### Assets Module (`src/asset/`)
+-   **Description**: Static and content assets for the app (media, docs). Keep large media here and reference via import/URL. The `component.md` provides internal notes or component documentation.
+-   **Key Files**: `background_video.mp4`, `logo.jpg`, `component.md`
+
+### ViewModel Layer (`src/ViewModel/`)
+-   **Description**: Prepares and shapes data for specific views without UI concerns. Helps keep pages lean.
+-   **Key Files**: `Profile_ViewModel.js` – orchestrates profile data fetch and transform.
+
+### Utilities (`src/Utilities.ts`)
+-   **Description**: Centralized enums, constants, and types used across modules, e.g., `SERVICE`, `Database`, `routes`, `Firebase_Response` typings.
+-   **Used By**: Controllers, Services, and UI for consistent references.
+
+### Firebase Bootstrapping (`src/firebase.js`)
+-   **Description**: Initializes Firebase app, exports Firestore/Auth/Storage instances. Single source of truth for Firebase config.
+
+### Services: Admin (`src/services/Admin/`)
+-   **Description**: Admin-only operations for approving questions and events.
+-   **Key Files**:
+    - `_admin.approver.service.ts`: Approve/reject questions; moves items between collections and triggers notifications.
+    - `_admin.approve.event.service.ts`: Approve/reject events; updates event status and notifies creators.
+
+### Services: Authentication (`src/services/Authentication/`)
+-   **Description**: All auth flows using Factory Pattern.
+-   **Docs**: See `src/services/Authentication/README.md` for deep-dive.
+-   **Key Files**: `_factory.Authentication.service.ts`, `_login.service.ts`, `_signup.service.ts`, `_admin.login.service.ts`, `_admin.setUser.service.ts`, `_base/*`.
+
+### Services: Events (`src/services/Events/`)
+-   **Description**: CRUD operations for Events collection; factory-ready design mirroring Authentication for consistency.
+-   **Typical Methods**: createEvent, updateEvent, listEventsByUser, getEventById, deleteEvent.
+-   **Used By**: `event_create.controller.js`, `event_show.controller.js` and `pages/Events/*`.
+
+### Services: Questions (`src/services/Questions/`)
+-   **Description**: Question authoring, listing, approval move, and code execution via Piston API.
+-   **Typical Methods**: createQuestion, listQuestions, getQuestionDetails, submitSolution, runCode (Piston).
+-   **Integration**: Used by `question_*` controllers and `Solving_Section` page.
+
+### Services: Others (`src/services/Others/`)
+-   **Description**: Cross-cutting utilities such as Notifications.
+-   **Key Files**: `_Notification.service.js` – create user notifications for approvals, rejections, and updates.
+
+
+
 ---
 
 ## Detailed File Reference
@@ -204,12 +375,22 @@ This section provides a file-by-file breakdown of the `src` directory.
 -   **`Custom/FlowingMenu.jsx`**: A highly stylized, animated menu component using GSAP.
 -   **`Custom/Particels.jsx`**: The reusable WebGL particle background component using OGL.
 
+#### Component Conventions
+- Page-specific composites are prefixed with double underscores (e.g., `__Question_List.jsx`).
+- Low-level reusable widgets live under `Custom/`.
+- Common styling props and helpers are centralized in `__Common.jsx` to ensure consistency.
+
 ### Controllers (`src/controller/`)
 -   **`Admin/admin.approve.controller.js`**: Logic for fetching pending questions, handling approvals, rejections, and modification requests.
 -   **`Admin/admin.approve.event.controller.js`**: Logic for the event approval workflow.
 -   **`Authentication/`**: Controllers for all authentication-related actions (admin login, user management, student login/signup).
 -   **`Events/`**: Controllers for creating, showing, and managing events.
 -   **`Questions/`**: Controllers for creating, listing, and the code solving section.
+
+#### Controller Responsibilities
+- Validate incoming form/page data against Models
+- Call appropriate Services via factories
+- Map service responses to view-ready shapes (or delegate to ViewModels)
 
 ### Models (`src/models/`)
 -   **`AdminApproval_Model.js`**: Extends the `Question` model to include approval-specific fields like `approvedBy`, `functionName`.
@@ -223,6 +404,11 @@ This section provides a file-by-file breakdown of the `src` directory.
 -   **`User_Model.js`**: A simple model for login credentials (email/password).
 -   **`Validaiton_Model.js`**: A simple model for validation state.
 
+#### Modeling Notes
+- Use models to standardize Firestore documents and app data shapes.
+- Prefer constructors that set sensible defaults (`createdAt`, `status`).
+- `Solve_Model.ts` leverages TypeScript for stricter typing of submissions.
+
 ### Pages (`src/pages/`)
 -   **`Admin/`**: Admin-only pages for approval workflows.
 -   **`Authentication/`**: Pages for login and signup for both admins and students.
@@ -231,12 +417,21 @@ This section provides a file-by-file breakdown of the `src` directory.
 -   **`users/`**: Pages for the student dashboard/feed and profile.
 -   **`test.jsx`**: A test page for debugging `GlobalContext`.
 
+#### Routing Notes
+- `main.jsx` wires routes using `react-router-dom`.
+- Pages compose feature-specific Components and bind to Controllers.
+
 ### Services (`src/services/`)
 -   **`Admin/`**: Services for the admin approval process, interacting with `questions` and `approvedQuestions` collections.
 -   **`Authentication/`**: Services for Firebase Auth operations and user data management. Contains the `AuthenticationService` factory.
 -   **`Events/`**: Services for CRUD operations on the `Events` collection. Contains the `EventService` factory.
 -   **`Others/`**: Miscellaneous services, like `_Notification.service.js`.
 -   **`Questions/`**: Services for CRUD operations on questions and interacting with the Piston API. Contains the `QuestionService` factory.
+
+#### Service Standards
+- Keep Firebase queries and external API calls inside services only.
+- Use factories to select concrete implementations by intent (e.g., LOGIN, SIGNUP).
+- Return normalized responses, e.g., `{ success, data, error }` following `Firebase_Response` typing.
 
 ---
 
@@ -284,7 +479,7 @@ To get the project up and running locally, follow these steps:
 1.  **Clone the repository:**
     ```sh
     git clone <your-repository-url>
-    cd frontend
+    cd Axamise
     ```
 
 2.  **Install dependencies:**
@@ -304,6 +499,10 @@ To get the project up and running locally, follow these steps:
     npm run dev
     ```
     The application will be available at `http://localhost:5173` (or another port if 5173 is in use).
+
+5.  **Quick check:**
+    - Open `http://localhost:5173` and navigate through Authentication → Events → Questions.
+    - Try creating an event and a question, then run a sample C++ snippet in Solving Section to verify Piston execution.
 
 ---
 

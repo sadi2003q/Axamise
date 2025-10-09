@@ -23,7 +23,9 @@ import Admin_login from "./pages/Authentication/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
+import Event_Questions from "./pages/Events/Event_Questions.jsx";
 import Dashboard from "./pages/test.jsx";
+
 
 /*
   import CreateStudent from "./pages/CreateStudent";
@@ -51,7 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/* <Route path="/" element={<Solving_Section />} /> */}
         {/* <Route path="/" element={<Profile />} /> */}
 
-        <Route path="/" element={<Solving_Section />} />
+        <Route path="/" element={<Event_Questions />} />
         <Route path="/EVENT_CREATE" element={<Event_Create />} />
           <Route path="/EVENT_SHOW" element={<Event_Show />} />
         <Route path="/SOLVE" element={<Solving_Section />} />
