@@ -216,44 +216,256 @@ This pattern allows us to easily swap or add new authentication methods (e.g., S
 
 ### Authentication Module (`services/Authentication`)
 
--   **Description**: Manages all user and admin authentication. It includes services for login, signup, and admin user management (CRUD).
--   **File Structure**:
-```
-/Axamise
+The **Authentication Module** (`services/Authentication`) is a robust, modular component within the Axamise application, dedicated to handling secure user and admin authentication workflows. It supports login, signup, admin-specific access, and user management (CRUD operations), ensuring role-based security and seamless integration with Firebase Authentication and Firestore.
 
+Key features:
+- **User Flows**: Secure login and signup for students/users with email/password validation.
+- **Admin Flows**: Dedicated admin login and tools for managing users (e.g., creating new admins).
+- **Security**: Password hashing, JWT-like session management via Firebase, and role checks.
+- **Extensibility**: Factory-based design for easy addition of providers (e.g., Google OAuth).
+
+This module adheres to the **Factory Pattern** for service creation, enabling flexible, testable authentication logic. It leverages React for UI, TypeScript for services, and abstracts Firebase interactions.
+
+For the full Axamise project overview, see the [root README](../README.md).
+
+---
+
+## Table of Contents
+
+1.  [**Module Overview**](#module-overview)
+2.  [**Core Concepts**](#core-concepts)
+    -   [Architecture](#architecture)
+    -   [Design Patterns](#design-patterns)
+3.  [**File Structure**](#file-structure)
+4.  [**Detailed Component Breakdown**](#detailed-component-breakdown)
+    -   [UI Components (`src/components/`)](#ui-components-srccomponents)
+    -   [Data Models (`src/models/`)](#data-models-srcmodels)
+    -   [Pages (`src/pages/Authentication/`)](#pages-srcpagesauthentication)
+    -   [Controllers (`src/controller/Authentication/`)](#controllers-srccontrollerauthentication)
+    -   [Services (`src/services/Authentication/`)](#services-srcservicesauthentication)
+5.  [**Data Flow Examples**](#data-flow-examples)
+    -   [User Login Flow](#user-login-flow)
+    -   [Admin User Management Flow](#admin-user-management-flow)
+6.  [**Usage & Integration**](#usage--integration)
+7.  [**Development Notes**](#development-notes)
+    -   [Testing](#testing)
+    -   [Performance & Security](#performance--security)
+8.  [**License**](#license)
+9.  [**Contact**](#contact)
+
+---
+
+## Module Overview
+
+The Authentication Module centralizes all access control in Axamise, from initial user onboarding to admin oversight. It processes credentials against Firebase Auth, stores user profiles in Firestore, and enforces roles (e.g., `student` vs. `admin`). This ensures protected routes (e.g., event creation) are only accessible post-authentication.
+
+**Tech Stack**:
+- **Frontend**: React (JSX) for interactive forms.
+- **Backend Logic**: TypeScript services with Firebase integration.
+- **Validation**: Custom models for input sanitization.
+
+**Dependencies**: `firebase/auth`, `firebase/firestore`, `bcryptjs` (for local hashing), `react-hook-form` (for form handling).
+
+---
+
+## Core Concepts
+
+#### Architecture
+
+This module follows an **MVC-inspired structure** tailored for frontend-heavy apps:
+- **Views**: React pages and components for form rendering and feedback (e.g., success modals).
+- **Controllers**: JavaScript logic that validates inputs, orchestrates services, and updates global state via `GlobalContext`.
+- **Models**: JS classes defining data schemas (e.g., `UserModel` with `email`, `role`).
+- **Services**: TS classes abstracting Firebase ops, using factories for instantiation.
+
+Data persists in Firestore collections: `users` (profiles), `admins` (elevated users).
+
+
+
+
+
+
+
+
+
+
+
+
+## Design Patterns
+
+### File Structure
+
+Organized under `frontend/src/` for modularity. Here's the tree:
+text
+```
+Axamise/
 ├── frontend/
-
-│   ├── src/                  # Main application source code.
-|   ├── components/           # Components related to UI rendering
-|   |   ├── _Login.jsx        # All components reguarding to Login page
-|   |   ├── _SignUP.jsx       # All Components reguarding Signup Page
-|   |   ├── _Admin_Login.jsx  # All Componentrs for 
-|   |   ├── 
-│   ├── models/               # Contain the Data Models for the Authe Operation
-|   |   ├── User_Model.js     # Data Model for Authentication
-|   ├── pages/Authentication                # Render all UI related to Authentication
-|   |   ├── Login.jsx         # User Login UI
-|   |   ├── Signup.jsx        # User Signup UI
-|   |   ├── Admin_Login.jsx   # Login UI for Admins
-|   |   ├── Admin_SetUser.jsx # Authentication new user 
-|   ├── controller/Authentication           # Contain all Business Logic which connect with UI
-|   |   ├── admin.login.controller.js   # Business logic for admin Login Controller
-|   |   ├── admin.setUser.controller.js # Business logic for admin Login Controller
-|   |   ├── login.controller.js         # Business logic for admin Login Controller
-|   |   ├── sign.controller.js          # Business logic for admin Login Controller
-|   ├── service/Authentication              # Connect with Database, authenticate Operation
-|   |   ├── _admin.login.service.ts
-|   |   ├── 
-|   |   ├── 
-|   |   ├── 
-|   
-└── ... (other root files)
+│   └── src/
+│       ├── components/                 # Reusable UI elements
+│       │   ├── _Login.jsx              # Login form components
+│       │   ├── _Signup.jsx             # Signup form components
+│       │   └── _AdminLogin.jsx         # Admin login components
+│       ├── models/                     # Data schemas
+│       │   └── UserModel.js            # User entity model
+│       ├── pages/Authentication/       # Top-level views
+│       │   ├── Login.jsx               # User login page
+│       │   ├── Signup.jsx              # User signup page
+│       │   ├── AdminLogin.jsx          # Admin login page
+│       │   └── AdminSetUser.jsx        # Admin user CRUD page
+│       ├── controller/Authentication/  # Business logic
+│       │   ├── adminLogin.controller.js
+│       │   ├── adminSetUser.controller.js
+│       │   ├── login.controller.js
+│       │   └── signup.controller.js
+│       └── services/Authentication/    # Firebase abstractions
+│           ├── _base/                  # Abstract bases
+│           │   ├── _baseLogin.service.ts
+│           │   └── _baseSignup.service.ts
+│           ├── _adminLogin.service.ts
+│           ├── _adminSetUser.service.ts
+│           ├── _factoryAuthentication.service.ts  # Factory core
+│           ├── _login.service.ts
+│           └── _signup.service.ts
 ```
--   **Key Files**:
-    -   `_base.login.service.ts` / `_base_signup.service.ts`: Abstract base classes that define the common interface for all auth services.
-    -   `_login.service.ts` / `_signup.service.ts`: Concrete implementations for student authentication.
-    -   `_admin.login.service.ts` / `_admin.setUser.service.ts`: Concrete implementations for admin-specific authentication and user management.
--   **Design Pattern**: As detailed above, this module is a prime example of the **Factory Pattern**.
+
+### Data Models (`src/models/`)
+
+ES6 classes for data integrity.
+
+- **`UserModel.js`**: Core entity.
+  ```javascript
+  export class UserModel {
+    constructor({ id, email, password, role = 'student', createdAt = new Date() }) {
+      this.id = id;
+      this.email = email;
+      this.password = password; // Hashed in service
+      this.role = role;
+      this.createdAt = createdAt;
+    }
+    validate() { /* Email regex, etc. */ }
+  }
+
+
+### Pages (`src/pages/Authentication/`)
+
+Orchestrate full UI flows with routing.
+
+- **`Login.jsx`**: Renders `_Login.jsx`, submits to `login.controller.js`; redirects via `useNavigate` on success.
+- **`Signup.jsx`**: Similar to Login; handles duplicate email checks via service.
+- **`AdminLogin.jsx`**: Role-gated; updates `GlobalContext.adminEmail` on auth.
+- **`AdminSetUser.jsx`**: CRUD table for users; includes search/filter.
+
+### Controllers (`src/controller/Authentication/`)
+
+Bridge UI to services; handle errors/states.
+
+- **`login.controller.js`**: `async login(userData) { validate(userData); return factory.create(SERVICE.LOGIN_USER, userData).authenticate(); }`
+- **`signup.controller.js`**: Checks existence, hashes password, creates Firestore doc.
+- **`adminLogin.controller.js`**: Adds role verification.
+- **`adminSetUser.controller.js`**: CRUD wrappers (e.g., `createAdminUser`).
+
+### Services (`src/services/Authentication/`)
+
+TS classes for Firebase ops.
+
+- **`_baseLogin.service.ts & _baseSignup.service.ts`**: Abstracts `authenticate()`, `hashPassword()`.
+- **`_login.service.ts & _signup.service.ts`**: User impls; `login()` calls `signInWithEmailAndPassword`.
+- **`_adminLogin.service.ts & _adminSetUser.service.ts`**: Admin impls; queries `admins` collection.
+- **`_factoryAuthentication.service.ts`**: See Design Patterns.
+
+## Data Flow Examples
+
+### User Login Flow
+
+1. User enters credentials in `Login.jsx` → `_Login.jsx` validates locally.
+2. Submits to `login.controller.js` → Factory creates `LoginService`.
+3. Service: `firebase.auth().signInWithEmailAndPassword()` → Updates `GlobalContext.user_uid`.
+4. On success: Redirect to `/events`; on error: Display toast.
+
+### Admin User Management Flow
+
+1. Admin logs in via `AdminLogin.jsx`.
+2. Navigates to `AdminSetUser.jsx` → Fetches users via `adminSetUser.controller.js`.
+3. Controller: Factory → `AdminSetUserService.getAllUsers()`.
+4. CRUD actions update Firestore `users` collection.
+## Development Notes
+
+### Testing
+
+- **Unit Tests**: Jest for controllers/services (e.g., mock Firebase, test factory returns).
+- **Integration**: Cypress for end-to-end flows (login → dashboard).
+- **Example**: `test/admin.login.controller.test.js` covers edge cases like invalid creds.
+
+### Performance & Security
+
+- **Perf**: Lazy-load services; debounce form inputs.
+- **Sec**: Never store plain passwords; use Firebase rules for role enforcement.
+- **Improvements**: Add 2FA via Firebase extensions; OAuth via factory.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### UI Components (`src/components/`)
+
+Reusable JSX elements for forms and interactions.
+
+- **`_Login.jsx`**: Form with email/password fields, validation hooks, and loading spinner. Uses `react-hook-form` for state.
+- **`_Signup.jsx`**: Extended form adding name/role fields; includes password strength indicator.
+- **`_AdminLogin.jsx`**: Simplified form with admin-only role checkbox; integrates particle background for branding.****
+
+
+
+
+
+
+
+#### Factory Pattern
+Central to services: `_factory.Authentication.service.ts` dynamically creates instances (e.g., `LoginService` for users, `AdminLoginService` for admins) based on `serviceType` (e.g., `LOGIN_USER`).
+
+**Benefits**:
+- Decouples controllers from implementations.
+- Enables mocking for tests.
+- Supports future extensions (e.g., `OAuthService`).
+
+**Example Snippet**:
+```typescript
+// In factory
+export class AuthenticationService {
+  static create(type: string, userData: UserModel) {
+    switch (type) {
+      case SERVICE.LOGIN_USER: return new LoginService(userData);
+      case SERVICE.ADMIN_LOGIN: return new AdminLoginService(userData);
+      // ...
+    }
+  }
+}
 
 ### Event Management Module (`pages/Events`)
 

@@ -32,6 +32,13 @@ export class Events_Model extends MakerModel {
 
 
 
+export const Event_Question_Model = {
+    title: "",
+    description: "",
+    difficulty: "",
+    point: 0,
+    type: ""
+}
 
 
 

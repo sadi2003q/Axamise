@@ -25,6 +25,7 @@ import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
 import Event_Questions from "./pages/Events/Event_Questions.jsx";
 import Dashboard from "./pages/test.jsx";
+import {EventList} from "./Components/__Event_Show.jsx";
 
 
 /*
