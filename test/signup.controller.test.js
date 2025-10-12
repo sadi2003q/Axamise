@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import SignUpController from "../src/controller/Authentication/signup.controller.js"; // Adjust path as needed
-import { AuthenticationService } from "../src/services/Authentication/_Authentication.service.js";
+import { AuthenticationService } from "../src/services/Authentication/_factory.Authentication.service.js";
 import { SERVICE } from "../src/Utilities.js"; // For verification
 
 describe("SignUpController", () => {
@@ -38,7 +38,7 @@ describe("SignUpController", () => {
 
             await controller.handleEmailSignUp();
 
-            expect(AuthenticationService.create).toHaveBeenCalledWith(mockStudent, SERVICE.signup);
+            expect(AuthenticationService.create).toHaveBeenCalledWith(mockStudent, SERVICE.SIGNUP);
             expect(mockService.signup).toHaveBeenCalled();
             expect(setId).toHaveBeenCalledWith("user123");
             expect(navigate).toHaveBeenCalledWith("/login");

@@ -2,7 +2,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Admin_LoginController } from '../src/controller/Authentication/admin.login.controller.js';
-import { AuthenticationService } from "../src/services/Authentication/_Authentication.service.js";
+import { AuthenticationService } from "../src/services/Authentication/_factory.Authentication.service.js";
 import { SERVICE } from '../src/Utilities.js'
 
 describe("Admin_LoginController", () => {
@@ -40,7 +40,7 @@ describe("Admin_LoginController", () => {
 
             await controller.handleEmailLogin();
 
-            expect(AuthenticationService.create).toHaveBeenCalledWith(mockUser, SERVICE.admin_login);
+            expect(AuthenticationService.create).toHaveBeenCalledWith(mockUser, SERVICE.ADMIN_LOGIN);
             expect(mockService.login).toHaveBeenCalledWith();
             expect(setFieldError).not.toHaveBeenCalled();
             // Note: navigate is commented out in the code, so not expected

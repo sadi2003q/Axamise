@@ -143,3 +143,34 @@ export const AddQuestionButton = ({
 }
 
 
+
+export const ConfirmButton = ({
+    handleConfirm = () =>  console.log('Button is working')
+ }) => {
+    return (
+        <div className="w-full h-auto flex justify-center items-center my-auto py-3">
+            <Button
+                variant="contained"
+                color="success"
+                onClick={handleConfirm}
+                size="large"
+                sx={{
+                    width: "300px",
+                    textTransform: "none",
+                    borderRadius: "12px",
+                    paddingY: 1.4,
+                    fontSize: "1rem",
+                    fontWeight: 600,
+                    backgroundColor: "#4CAF50",
+                    "&:hover": {
+                        backgroundColor: "#43A047",
+                    },
+                }}
+            >
+                Confirm
+            </Button>
+        </div>
+    );
+}
+
+

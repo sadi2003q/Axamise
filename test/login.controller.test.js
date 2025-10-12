@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import LoginController from "../src/controller/Authentication/login.controller.js";
-import { AuthenticationService } from "../src/services/Authentication/_Authentication.service.js"; // real import
+import { AuthenticationService } from "../src/services/Authentication/_factory.Authentication.service.js"; // real import
 
 describe("LoginController", () => {
     let controller;

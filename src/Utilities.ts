@@ -67,7 +67,8 @@ export const routes = {
     admin_login: '/admin_login',
     admin_setUser: '/admin_setUser',
     approval_question: '/admin_approvalQuestion',
-    approval_event: '/admin_approvalEvent'
+    approval_event: '/admin_approvalEvent',
+
 }
 
 export const ADMIN_APPROVAL_DISPLAY_MODE = {

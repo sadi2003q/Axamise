@@ -12,20 +12,26 @@ import { SERVICE } from '../../Utilities.js'
 export class EventCreateServiceController {
 
 
-    constructor(event, setEvent, setFieldError, navigate) {
+    constructor({event, setEvent,  setFieldError, navigate}) {
         this.event = event;
         // this.service = new EventCreateService(event);
-        this.service = EventService.createService(SERVICE.EVENT_CREATE, this.event);
+        // this.service = EventService.createService(SERVICE.EVENT_CREATE, this.event);
+        this.service = EventService.createService(SERVICE.EVENT_CREATE, event);
+
 
         this.setEvent = setEvent;
         this.setFieldError = setFieldError;
         this.navigate = navigate;
     }
 
+    isValid = () => {
+        return this.event.title && this.event.description && this.event.date && this.event.startTime;
+    }
+
 
     // upload a new event
     async handleUploadEvent() {
-        if (!this.event.isValid()) {
+        if (!this.isValid()) {
             this.setFieldError({
                 field: "general",
                 message: "Please fill in all required fields.",
@@ -35,8 +41,10 @@ export class EventCreateServiceController {
 
         const result = await this.service._Upload_Event();
         this.processResult(result);
-
     }
+
+
+
 
 
 
