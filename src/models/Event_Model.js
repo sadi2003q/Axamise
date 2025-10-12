@@ -13,7 +13,8 @@ export class Events_Model extends MakerModel {
         duration = { hours: 0, minutes: 0 },
         createdBy = "",
         createdBy_uid = "",
-        createdAt = Date.now()
+        createdAt = Date.now(),
+        allQuestions = []
     ) {
         super(createdBy, createdBy_uid, createdAt);
         this.title = title;
@@ -21,6 +22,7 @@ export class Events_Model extends MakerModel {
         this.date = date;
         this.startTime = startTime;
         this.duration = duration;
+        this.allQuestions = allQuestions;
     }
 
 
