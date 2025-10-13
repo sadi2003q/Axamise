@@ -98,7 +98,7 @@ export default function Admin_ApprovalEvent() {
 
 
     const ShowHeader = () => {
-        if (isEmpty) {
+        if (!isEmpty) {
             return (
                 <AdminPageHeader questionMakerName={`Adnan Abdullah Sadi`} setDrawerOpen={setDrawerOpen} />
             );
