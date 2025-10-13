@@ -73,7 +73,7 @@ export default function Admin_login() {
     };
 
     return (
-        <>
+        <div className={'w-screen h-screen'}>
             <Background_Particles />
 
             <div className="z-40 h-screen w-screen flex items-center justify-center">
@@ -134,7 +134,7 @@ export default function Admin_login() {
                 </div>
 
             </div>
-        </>
+        </div>
     );
 }
 

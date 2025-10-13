@@ -35,7 +35,12 @@ export class Admin_LoginController {
             console.log('✅ Successfully Login into Admin');
             console.log(`UID : ${result.id}`)
             // You can navigate here if you want:
+
+
             // this.navigate("/admin/dashboard");
+
+
+
         } else {
             console.log(`❌ Error Found while Login : ${result.error.code}`);
             

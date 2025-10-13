@@ -98,7 +98,7 @@ export default function Admin_ApprovalEvent() {
 
 
     const ShowHeader = () => {
-        if (isEmpty) {
+        if (!isEmpty) {
             return (
                 <AdminPageHeader questionMakerName={`Adnan Abdullah Sadi`} setDrawerOpen={setDrawerOpen} />
             );
@@ -128,9 +128,11 @@ export default function Admin_ApprovalEvent() {
 
     return (
         <>
-            <Background_Particles />
+
 
             <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+
+                <Background_Particles />
 
                 {/* Main Div */}
                 <motion.div

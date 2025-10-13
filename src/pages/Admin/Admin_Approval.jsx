@@ -143,7 +143,7 @@ int main() {
 
 
     const ShowHeader = () => {
-        if(isEmpty) {
+        if(!isEmpty) {
             return (
                 <AdminPageHeader questionMakerName={question.createdBy} setDrawerOpen={setDrawerOpen} />
             );
