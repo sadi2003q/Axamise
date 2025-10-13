@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 // React Libraries
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 // Custom Components
 import { Background_Particles } from '../../Components/__Admin_Login.jsx';
@@ -101,9 +101,13 @@ export default function Admin_ApprovalEvent() {
         ? "Reason for Rejection"
         : "Things to be Modify...";
 
+    // editorRef,
+    //     setFunctionCode,
+    //     onApprove = () => console.log('Approved')
 
-
-
+    const [functionCode, setFunctionCode] = useState("");
+    const editorRef = useRef(null);
+    const onApprove = () => console.log(functionCode)
 
 
 

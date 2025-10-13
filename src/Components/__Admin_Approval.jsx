@@ -154,7 +154,8 @@ export const ObservationField = ({
 
     directApproval = false,
     editorRef,
-    setFunctionCode
+    setFunctionCode,
+    onApprove = () => console.log('Approved')
 }) => {
     return (
         <div className="p-4 flex flex-col justify-between h-full">
@@ -242,7 +243,7 @@ export const ObservationField = ({
             <Button
                 variant="contained"
                 color={buttonColor}
-                onClick={onReject}
+                onClick={ directApproval ? onApprove : onReject}
                 fullWidth
                 sx={{
                     py: 1.5,
