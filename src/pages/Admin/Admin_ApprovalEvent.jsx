@@ -125,6 +125,41 @@ export default function Admin_ApprovalEvent() {
     }
 
 
+
+    // Determine the panel’s configuration based on displayMode
+    const panelConfig = {
+        [ADMIN_APPROVAL_DISPLAY_MODE.APPROVED]: {
+            backgroundColor: "rgba(76, 175, 80, 0.5)",
+            buttonColor: "success",
+            buttonText: "Confirm Approval",
+            headingText: "Direct Approval",
+            inputLabelText: "Code for Approval",
+            directApproval: true,
+            onClick: onApprove,
+        },
+        [ADMIN_APPROVAL_DISPLAY_MODE.REJECTED]: {
+            backgroundColor: "rgba(244, 67, 54, 0.65)",
+            buttonColor: "error",
+            buttonText: "Confirm Rejection",
+            headingText: "Reject Event",
+            inputLabelText: "Reason for Rejection",
+            directApproval: false,
+            onClick: () =>
+                controller.handleSendNotification({ type: "Event Rejected" }),
+        },
+        [ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION]: {
+            backgroundColor: "rgba(255, 235, 59, 0.4)",
+            buttonColor: "warning",
+            buttonText: "Request Modification",
+            headingText: "Ask for Modification",
+            inputLabelText: "Things to be Modified...",
+            directApproval: false,
+            onClick: () =>
+                controller.handleSendNotification({ type: "Request Modification" }),
+        },
+    }[displayMode];
+
+
     // Initialization Functions
     useEffect(() => {
 
@@ -144,9 +179,10 @@ export default function Admin_ApprovalEvent() {
 
     return (
         <>
-            <Background_Particles />
+
 
             <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+                <Background_Particles />
 
                 {/* Main Div */}
                 <motion.div
@@ -204,21 +240,22 @@ export default function Admin_ApprovalEvent() {
                         <ObservationField
                             title={title}
                             setTitle={setTitle}
-                            backgroundColor={backgroundColor}
-                            buttonColor={buttonColor}
                             reason={reason}
                             setReason={setReason}
-                            onReject={() => {
-                                controller.handleSendNotification({
-                                    type:  isRejected ? "Event Rejected" : "Request Modification",
-                                })
-                            }}
-                            buttonText={buttonText}
                             onClose={() => setApprovalOpen(false)}
-                            HeadingText={headingText}
-                            inputLabelText={inputLabelText}
-                        />
 
+                            backgroundColor={panelConfig.backgroundColor}
+                            buttonColor={panelConfig.buttonColor}
+                            buttonText={panelConfig.buttonText}
+                            HeadingText={panelConfig.headingText}
+                            inputLabelText={panelConfig.inputLabelText}
+
+                            directApproval={panelConfig.directApproval}
+                            editorRef={editorRef}
+                            setFunctionCode={setFunctionCode}
+                            onReject={panelConfig.onClick}
+                            onApprove={panelConfig.onClick}
+                        />
 
 
 
