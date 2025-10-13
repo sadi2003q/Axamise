@@ -137,23 +137,31 @@ export const AdminPageHeader = ({ questionMakerName, setDrawerOpen }) => {
 }
 
 
-
 export const ObservationField = ({
-    title,
-    setTitle,
-    reason,
-    setReason,
-    onReject,
-    onClose, // function to handle close button
-    backgroundColor = "rgba(255, 0, 0, 0.2)", // default reddish glass
-    buttonColor = "error", // default MUI color
-    buttonText = "Confirm Rejection",
-    HeadingText = "Rejection Panel",
-    inputLabelText = "Reason for Rejection",
-}) => {
+                                     title,
+                                     setTitle,
+                                     reason,
+                                     setReason,
+                                     onReject,
+                                     onApprove = () => console.log("Approved"),
+                                     onClose,
+
+                                     // UI Config Defaults
+                                     backgroundColor = "rgba(255, 0, 0, 0.2)",
+                                     buttonColor = "error",
+                                     buttonText = "Confirm Rejection",
+                                     HeadingText = "Rejection Panel",
+                                     inputLabelText = "Reason for Rejection",
+
+                                     // Code Editor Mode
+                                     directApproval = false,
+                                     editorRef,
+                                     setFunctionCode,
+                                 }) => {
     return (
         <div className="p-4 flex flex-col justify-between h-full">
-            <div className="flex items-center justify-between gap-2">
+            {/* Header */}
+            <div className="flex items-center justify-between gap-2 my-2">
                 <h3 className="text-lg font-bold text-center flex-1">{HeadingText}</h3>
                 {onClose && (
                     <IconButton size="small" color="inherit" onClick={onClose}>
@@ -162,50 +170,78 @@ export const ObservationField = ({
                 )}
             </div>
 
-            <div className="flex flex-col gap-4 mt-4 flex-1">
-                <TextField
-                    {...GetCommonProps2({
-                        borderColor: "gray",
-                        hoverColor: "lightgray",
-                        textColor: "white",
-                    })}
-                    label="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    fullWidth
-                />
-                {/* TextField for rejection reason */}
-                <TextField
-                    label={inputLabelText}
-                    variant="outlined"
-                    multiline
-                    rows={10}
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
-                    fullWidth
-                    slotProps={{
-                        inputLabel: {
-                            style: {
-                                color: "rgba(255, 255, 255, 0.75)",
-                            }
-                        },
-                        input: {
-                            style: {
-                                color: "white",
-                                backgroundColor: backgroundColor,
-                                backdropFilter: "blur(8px)",
-                                borderRadius: "8px",
-                            },
-                        },
-                    }}
-                />
+            {/* Content */}
+            <div className="flex flex-col flex-1 overflow-y-auto">
+                {directApproval ? (
+                    <div
+                        className="flex-1 rounded-lg p-3"
+                        style={{
+                            backgroundColor: "rgba(30, 30, 30, 0.8)",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            backdropFilter: "blur(6px)",
+                        }}
+                    >
+                        <Editor
+                            height="100%"
+                            defaultLanguage="cpp"
+                            defaultValue={"// Write down the code here\n\n"}
+                            theme="vs-dark"
+                            options={{
+                                fontSize: 12,
+                                minimap: { enabled: false },
+                                scrollBeyondLastLine: false,
+                                automaticLayout: true,
+                                padding: { top: 12 }, // Monaco’s built-in padding
+                            }}
+                            onMount={(editor) => editorRef && (editorRef.current = editor)}
+                            onChange={(value) => setFunctionCode && setFunctionCode(value)}
+                        />
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-4 mt-4 flex-1">
+                        <TextField
+                            {...GetCommonProps2({
+                                borderColor: "gray",
+                                hoverColor: "lightgray",
+                                textColor: "white",
+                            })}
+                            label="Title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            fullWidth
+                        />
+
+                        <TextField
+                            label={inputLabelText}
+                            variant="outlined"
+                            multiline
+                            rows={10}
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            fullWidth
+                            slotProps={{
+                                inputLabel: {
+                                    style: { color: "rgba(255, 255, 255, 0.75)" },
+                                },
+                                input: {
+                                    style: {
+                                        color: "white",
+                                        backgroundColor,
+                                        backdropFilter: "blur(8px)",
+                                        borderRadius: "8px",
+                                    },
+                                },
+                            }}
+                        />
+                    </div>
+                )}
             </div>
 
-            {/* Full width button */}
+            {/* Button */}
             <Button
                 variant="contained"
                 color={buttonColor}
-                onClick={onReject}
+                onClick={directApproval ? onApprove : onReject}
                 fullWidth
                 sx={{
                     py: 1.5,
@@ -219,8 +255,6 @@ export const ObservationField = ({
         </div>
     );
 };
-
-
 
 
 export const EventFetchingLoadingScreen = ({title = "Still Nothing Found...."}) => {

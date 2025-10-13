@@ -297,9 +297,9 @@ export const Question_Showing_Description = ({
     handleDeleteButton = (() => { console.log('Handle Delete Button') }),
     handleSolveButton = (() => { console.log('Handle Solve Button') }),
 
-                                                 require_Edit_Button = true,
-                                                 require_Delete_Button =true,
-                                                 require_Solve_Button =true
+     require_Edit_Button =false ,
+     require_Delete_Button = false,
+     require_Solve_Button = false
 }) => {
 
     // Map difficulty to color
@@ -396,10 +396,9 @@ export const Question_Showing_Description = ({
                 handleDelete={() => handleDeleteButton(question.id)}
                 handleSolve={() => handleSolveButton(question.id)}
 
-                require_Edit_Button = {require_Delete_Button}
-            require_Delete_Button ={require_Delete_Button}
-            require_Solve_Button ={require_Solve_Button}
-
+                require_Edit_Button={require_Edit_Button}
+                require_Delete_Button={require_Delete_Button}
+                require_Solve_Button={require_Solve_Button}
 
             />
 

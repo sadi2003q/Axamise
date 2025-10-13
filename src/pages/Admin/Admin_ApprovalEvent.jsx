@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 // React Libraries
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 // Custom Components
 import { Background_Particles } from '../../Components/__Admin_Login.jsx';
@@ -21,6 +21,8 @@ import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
 import { useGlobal } from "../../GlobalContext.jsx";
 import {ShowerHead} from "lucide-react";
+import {cardOverflowClasses} from "@mui/joy";
+import {Question_Showing_Description} from "../../Components/__Question_List.jsx";
 
 
 export default function Admin_ApprovalEvent() {
@@ -42,20 +44,20 @@ export default function Admin_ApprovalEvent() {
     const [eventID, setEventID] = useState("");
 
 
-    const [eventModel, setEventModel] = useState(new Events_Model(
-        "", "", "", "", { hours: 0, minutes: 0 }, "", "", Date.now()
+    const [eventModel, setEventModel] = useState(new Events_Model({
+            title: "Simple Title",
+            description: "Simple Description",
+            date: "2023-10-01",
+            startTime: "10:00",
+            duration: { hours: 2, minutes: 30 },
+            createdBy: "current name is undefined",
+            createdBy_uid:  'Not Found', // Issue with this
+            createdAt: Date.now(),
+            allQuestions: []
+    }
+
     ));
-    // Models
-    const events_model = new Events_Model(
-        "Sample Event Title",                 // title
-        "This is a sample event description.",// description
-        "2024-12-31",                         // date
-        "18:00",                              // startTime
-        { hours: 2, minutes: 30 },            // duration
-        "Admin",                              // createdBy
-        "admin123",                           // createdBy_uid
-        Date.now()                            // createdAt
-    );
+
 
 
     // Controller Instance
@@ -78,6 +80,9 @@ export default function Admin_ApprovalEvent() {
     // Precompute values
     const isRejected = displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED;
 
+
+
+
     const backgroundColor = isRejected
         ? "rgba(244, 67, 54, 0.65)"
         : "rgba(76, 175, 80, 0.5)";
@@ -96,6 +101,16 @@ export default function Admin_ApprovalEvent() {
         ? "Reason for Rejection"
         : "Things to be Modify...";
 
+    // editorRef,
+    //     setFunctionCode,
+    //     onApprove = () => console.log('Approved')
+
+    const [functionCode, setFunctionCode] = useState("");
+    const editorRef = useRef(null);
+    const onApprove = () => console.log(functionCode)
+
+
+
 
     const ShowHeader = () => {
         if (!isEmpty) {
@@ -110,18 +125,54 @@ export default function Admin_ApprovalEvent() {
     }
 
 
+
+    // Determine the panel’s configuration based on displayMode
+    const panelConfig = {
+        [ADMIN_APPROVAL_DISPLAY_MODE.APPROVED]: {
+            backgroundColor: "rgba(76, 175, 80, 0.5)",
+            buttonColor: "success",
+            buttonText: "Confirm Approval",
+            headingText: "Direct Approval",
+            inputLabelText: "Code for Approval",
+            directApproval: true,
+            onClick: onApprove,
+        },
+        [ADMIN_APPROVAL_DISPLAY_MODE.REJECTED]: {
+            backgroundColor: "rgba(244, 67, 54, 0.65)",
+            buttonColor: "error",
+            buttonText: "Confirm Rejection",
+            headingText: "Reject Event",
+            inputLabelText: "Reason for Rejection",
+            directApproval: false,
+            onClick: () =>
+                controller.handleSendNotification({ type: "Event Rejected" }),
+        },
+        [ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION]: {
+            backgroundColor: "rgba(255, 235, 59, 0.4)",
+            buttonColor: "warning",
+            buttonText: "Request Modification",
+            headingText: "Ask for Modification",
+            inputLabelText: "Things to be Modified...",
+            directApproval: false,
+            onClick: () =>
+                controller.handleSendNotification({ type: "Request Modification" }),
+        },
+    }[displayMode];
+
+
     // Initialization Functions
     useEffect(() => {
 
         controller.fetchAllPendingEvents()
-            .then(eventDetails => {
-                
-            })
-            .catch(error => {
-                
-            });
+            .then(eventDetails => {})
+            .catch(error => {});
+
+        console.log(eventModel)
 
     }, []);
+
+
+
 
 
 
@@ -131,6 +182,7 @@ export default function Admin_ApprovalEvent() {
 
 
             <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+                <Background_Particles />
 
                 <Background_Particles />
 
@@ -146,26 +198,33 @@ export default function Admin_ApprovalEvent() {
                     {/* Question Description */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
 
-                        { !isEmpty ?
-                            (
+                        { !isEmpty ? (
+                            <div>
                                 <Event_Showing_Description
                                     event={eventModel}
-
-
                                     handleDeleteButton={controller.handleRejectionPanel}
                                     handleNotifyButton={controller.handleNotificationPanel}
-                                    handleDirectApprove={controller.handleDirectApproval}
-
-
+                                    handleDirectApprove={controller.handleApprovalPanel}
                                     require_Delete_Button={true}
                                     require_Revert_Back_Button={true}
                                     require_direct_approve_Button={true}
                                 />
-                            ) : ( <EventFetchingLoadingScreen/> )
-                        }
 
 
+                                {eventModel?.allQuestions?.length > 0 && (
+                                    eventModel.allQuestions.map((question, index) => (
+                                        Question_Showing_Description({
+                                            question : question
+                                        })
+                                    ))
+                                )}
+
+                            </div>
+                        ) : (
+                            <EventFetchingLoadingScreen />
+                        )}
                     </div>
+
 
 
                 </motion.div>
@@ -183,21 +242,22 @@ export default function Admin_ApprovalEvent() {
                         <ObservationField
                             title={title}
                             setTitle={setTitle}
-                            backgroundColor={backgroundColor}
-                            buttonColor={buttonColor}
                             reason={reason}
                             setReason={setReason}
-                            onReject={() => {
-                                controller.handleSendNotification({
-                                    type: isRejected ? "Event Rejected" : "Request Modification",
-                                })
-                            }}
-                            buttonText={buttonText}
                             onClose={() => setApprovalOpen(false)}
-                            HeadingText={headingText}
-                            inputLabelText={inputLabelText}
-                        />
 
+                            backgroundColor={panelConfig.backgroundColor}
+                            buttonColor={panelConfig.buttonColor}
+                            buttonText={panelConfig.buttonText}
+                            HeadingText={panelConfig.headingText}
+                            inputLabelText={panelConfig.inputLabelText}
+
+                            directApproval={panelConfig.directApproval}
+                            editorRef={editorRef}
+                            setFunctionCode={setFunctionCode}
+                            onReject={panelConfig.onClick}
+                            onApprove={panelConfig.onClick}
+                        />
 
 
 
@@ -218,6 +278,8 @@ export default function Admin_ApprovalEvent() {
                     setEventModel(item);
                     setDrawerOpen(false);
                     setEventID(item.id);
+
+                    console.log(item)
                 }}
                 anchor="left"
                 showSearch={false}

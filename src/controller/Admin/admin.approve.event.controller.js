@@ -46,6 +46,11 @@ export class Admin_ApproveEventController {
         this.setApprovalOpen(true)
     }
 
+    handleApprovalPanel = () => {
+        this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.APPROVED)
+        this.setApprovalOpen(true)
+    }
+
 
     fetchAllPendingEvents = async () => {
         try {
@@ -115,6 +120,10 @@ export class Admin_ApproveEventController {
 
 
     }
+
+
+
+
 
 
     handleDirectApproval = async ({
