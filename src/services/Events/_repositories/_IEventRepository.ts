@@ -32,6 +32,7 @@ export class FirebaseEventRepository implements IEventRepository {
                 date: event.date,
                 createdBy: event.createdBy,
                 createdBy_uid: event.createdBy_uid,
+                allQuestions: event.allQuestions
             });
 
             return {
