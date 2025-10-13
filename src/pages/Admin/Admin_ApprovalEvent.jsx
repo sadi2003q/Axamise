@@ -21,6 +21,8 @@ import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
 import { useGlobal } from "../../GlobalContext.jsx";
 import {ShowerHead} from "lucide-react";
+import {cardOverflowClasses} from "@mui/joy";
+import {Question_Showing_Description} from "../../Components/__Question_List.jsx";
 
 
 export default function Admin_ApprovalEvent() {
@@ -42,20 +44,20 @@ export default function Admin_ApprovalEvent() {
     const [eventID, setEventID] = useState("");
 
 
-    const [eventModel, setEventModel] = useState(new Events_Model(
-        "", "", "", "", { hours: 0, minutes: 0 }, "", "", Date.now()
+    const [eventModel, setEventModel] = useState(new Events_Model({
+            title: "Simple Title",
+            description: "Simple Description",
+            date: "2023-10-01",
+            startTime: "10:00",
+            duration: { hours: 2, minutes: 30 },
+            createdBy: "current name is undefined",
+            createdBy_uid:  'Not Found', // Issue with this
+            createdAt: Date.now(),
+            allQuestions: []
+    }
+
     ));
-    // Models
-    const events_model = new Events_Model(
-        "Sample Event Title",                 // title
-        "This is a sample event description.",// description
-        "2024-12-31",                         // date
-        "18:00",                              // startTime
-        { hours: 2, minutes: 30 },            // duration
-        "Admin",                              // createdBy
-        "admin123",                           // createdBy_uid
-        Date.now()                            // createdAt
-    );
+
 
 
     // Controller Instance
@@ -78,6 +80,9 @@ export default function Admin_ApprovalEvent() {
     // Precompute values
     const isRejected = displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED;
 
+
+
+
     const backgroundColor = isRejected
         ? "rgba(244, 67, 54, 0.65)"
         : "rgba(76, 175, 80, 0.5)";
@@ -97,6 +102,12 @@ export default function Admin_ApprovalEvent() {
         : "Things to be Modify...";
 
 
+
+
+
+
+
+
     const ShowHeader = () => {
         if (!isEmpty) {
             return (
@@ -114,14 +125,15 @@ export default function Admin_ApprovalEvent() {
     useEffect(() => {
 
         controller.fetchAllPendingEvents()
-            .then(eventDetails => {
-                
-            })
-            .catch(error => {
-                
-            });
+            .then(eventDetails => {})
+            .catch(error => {});
+
+        console.log(eventModel)
 
     }, []);
+
+
+
 
 
 
@@ -144,26 +156,33 @@ export default function Admin_ApprovalEvent() {
                     {/* Question Description */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
 
-                        { !isEmpty ?
-                            (
+                        { !isEmpty ? (
+                            <div>
                                 <Event_Showing_Description
                                     event={eventModel}
-
-
                                     handleDeleteButton={controller.handleRejectionPanel}
                                     handleNotifyButton={controller.handleNotificationPanel}
-                                    handleDirectApprove={controller.handleDirectApproval}
-
-
+                                    handleDirectApprove={controller.handleApprovalPanel}
                                     require_Delete_Button={true}
                                     require_Revert_Back_Button={true}
                                     require_direct_approve_Button={true}
                                 />
-                            ) : ( <EventFetchingLoadingScreen/> )
-                        }
 
 
+                                {eventModel?.allQuestions?.length > 0 && (
+                                    eventModel.allQuestions.map((question, index) => (
+                                        Question_Showing_Description({
+                                            question : question
+                                        })
+                                    ))
+                                )}
+
+                            </div>
+                        ) : (
+                            <EventFetchingLoadingScreen />
+                        )}
                     </div>
+
 
 
                 </motion.div>
@@ -187,7 +206,7 @@ export default function Admin_ApprovalEvent() {
                             setReason={setReason}
                             onReject={() => {
                                 controller.handleSendNotification({
-                                    type: isRejected ? "Event Rejected" : "Request Modification",
+                                    type:  isRejected ? "Event Rejected" : "Request Modification",
                                 })
                             }}
                             buttonText={buttonText}
@@ -216,6 +235,8 @@ export default function Admin_ApprovalEvent() {
                     setEventModel(item);
                     setDrawerOpen(false);
                     setEventID(item.id);
+
+                    console.log(item)
                 }}
                 anchor="left"
                 showSearch={false}
