@@ -45,11 +45,11 @@ export default function Event_Create() {
     // State
     const [event, setEvent] = useState(
         new Events_Model({
-            title: "",
-            description: "",
+            title: "Simple Title",
+            description: "Simple Description",
             date: "2023-10-01",
             startTime: "10:00",
-            duration: { hours: 0, minutes: 0 },
+            duration: { hours: 2, minutes: 30 },
             createdBy: "current name is undefined",
             createdBy_uid: user_uid,
             createdAt: Date.now(),
@@ -116,6 +116,15 @@ export default function Event_Create() {
         navigate: navigate
     });
 
+    const AddQuestionHandler = () => {
+        const updatedEvent = {
+            ...event,
+            allQuestions: [...questions],
+        };
+
+        setEvent(updatedEvent);
+    }
+
     // Fetch if editing existing event
     useEffect(() => {
         console.log(`user id : ${user_uid}`)
@@ -127,6 +136,10 @@ export default function Event_Create() {
         }));
         
     }, []);
+
+    useEffect(() => {
+        AddQuestionHandler()
+    }, [questions])
 
     // Handlers
     const handleChange = (e) => {
@@ -164,19 +177,12 @@ export default function Event_Create() {
                 (event.duration.minutes >= 0 && event.duration.minutes <= 59));
     };
 
-    // Save handler
+    // Event Upload Handler
     const handleClick = async () => {
 
-        const updatedEvent = {
-            ...event,
-            allQuestions: [...questions],
-        };
-
-        setEvent(updatedEvent);
-
-        // if (itemID) await controller.handleUpdateEvent(itemID);
-        // else await controller.handleUploadEvent();
-
+        AddQuestionHandler()
+        if (itemID) await controller.handleUpdateEvent(itemID);
+        else await controller.handleUploadEvent();
         console.log(event)
 
     };
