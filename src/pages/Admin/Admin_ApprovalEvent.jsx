@@ -121,8 +121,10 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Code for Approval",
             directApproval: true,
 
-            // This is the Place where i am working now
-            onClick: onApprove,
+            onClick: () => {
+                onApprove();
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.APPROVED, mainFunctionCode: functionCode });
+            },
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.REJECTED]: {
             backgroundColor: "rgba(244, 67, 54, 0.65)",
@@ -132,8 +134,7 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Reason for Rejection",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification(
-                    { type: ADMIN_APPROVAL_DISPLAY_MODE.REJECTED }),
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.REJECTED }),
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION]: {
             backgroundColor: "rgba(255, 235, 59, 0.4)",
@@ -143,8 +144,7 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Things to be Modified...",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification(
-                    { type: ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION }),
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION }),
         },
     }[displayMode];
 
