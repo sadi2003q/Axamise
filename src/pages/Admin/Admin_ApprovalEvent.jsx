@@ -83,32 +83,17 @@ export default function Admin_ApprovalEvent() {
 
 
 
-    const backgroundColor = isRejected
-        ? "rgba(244, 67, 54, 0.65)"
-        : "rgba(76, 175, 80, 0.5)";
-
-    const buttonColor = isRejected ? "error" : "success";
-
-    const buttonText = isRejected
-        ? "Confirm Rejection"
-        : "Request for Modification";
-
-    const headingText = isRejected
-        ? "Reject Question"
-        : "Ask Modification";
-
-    const inputLabelText = isRejected
-        ? "Reason for Rejection"
-        : "Things to be Modify...";
-
-    // editorRef,
-    //     setFunctionCode,
-    //     onApprove = () => console.log('Approved')
 
     const [functionCode, setFunctionCode] = useState("");
     const editorRef = useRef(null);
-    const onApprove = () => console.log(functionCode)
+    const onApprove = () => {
+        setEventModel(prev => {
+            return { ...prev, mainFunctionCode: functionCode };
 
+        });
+
+
+    };
 
 
 
@@ -135,6 +120,8 @@ export default function Admin_ApprovalEvent() {
             headingText: "Direct Approval",
             inputLabelText: "Code for Approval",
             directApproval: true,
+
+            // This is the Place where i am working now
             onClick: onApprove,
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.REJECTED]: {
@@ -145,7 +132,8 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Reason for Rejection",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification({ type: "Event Rejected" }),
+                controller.handleSendNotification(
+                    { type: ADMIN_APPROVAL_DISPLAY_MODE.REJECTED }),
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION]: {
             backgroundColor: "rgba(255, 235, 59, 0.4)",
@@ -155,7 +143,8 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Things to be Modified...",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification({ type: "Request Modification" }),
+                controller.handleSendNotification(
+                    { type: ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION }),
         },
     }[displayMode];
 

@@ -187,7 +187,7 @@ export const ObservationField = ({
                             defaultValue={"// Write down the code here\n\n"}
                             theme="vs-dark"
                             options={{
-                                fontSize: 12,
+                                fontSize: 14,
                                 minimap: { enabled: false },
                                 scrollBeyondLastLine: false,
                                 automaticLayout: true,
