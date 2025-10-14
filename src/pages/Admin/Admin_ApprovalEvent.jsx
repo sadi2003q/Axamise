@@ -186,27 +186,49 @@ export default function Admin_ApprovalEvent() {
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
 
                         { !isEmpty ? (
-                            <div>
-                                <Event_Showing_Description
-                                    event={eventModel}
-                                    handleDeleteButton={controller.handleRejectionPanel}
-                                    handleNotifyButton={controller.handleNotificationPanel}
-                                    handleDirectApprove={controller.handleApprovalPanel}
-                                    require_Delete_Button={true}
-                                    require_Revert_Back_Button={true}
-                                    require_direct_approve_Button={true}
-                                />
+                            <div className="w-full text-white space-y-8">
 
+                                {/* === Event Description Section === */}
+                                <div>
+                                    <h2 className="text-3xl font-bold text-indigo-400 border-b border-indigo-700 pb-2 mb-3">
+                                        🎯 Event Description
+                                    </h2>
+                                    <p className="text-sm text-gray-400 mb-4">
+                                        Overview and administrative actions for the selected event.
+                                    </p>
 
-                                {eventModel?.allQuestions?.length > 0 && (
-                                    eventModel.allQuestions.map((question, index) => (
-                                        Question_Showing_Description({
-                                            question : question
-                                        })
-                                    ))
-                                )}
+                                    <Event_Showing_Description
+                                        event={eventModel}
+                                        handleDeleteButton={controller.handleRejectionPanel}
+                                        handleNotifyButton={controller.handleNotificationPanel}
+                                        handleDirectApprove={controller.handleApprovalPanel}
+                                        require_Delete_Button={true}
+                                        require_Revert_Back_Button={true}
+                                        require_direct_approve_Button={true}
+                                    />
+                                </div>
 
+                                {/* === Event Questions Section === */}
+                                <div>
+                                    <h2 className="text-3xl font-bold text-cyan-400 border-b border-cyan-700 pb-2 mb-3">
+                                        🧠 Event Questions
+                                    </h2>
+                                    <p className="text-sm text-gray-400 mb-4">
+                                        All questions associated with this event are listed below.
+                                    </p>
+
+                                    {eventModel?.allQuestions?.length > 0 ? (
+                                        eventModel.allQuestions.map((question, index) => (
+                                            <div key={index} className="my-4">
+                                                {Question_Showing_Description({ question })}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500 italic">No questions added yet.</p>
+                                    )}
+                                </div>
                             </div>
+
                         ) : (
                             <EventFetchingLoadingScreen />
                         )}
