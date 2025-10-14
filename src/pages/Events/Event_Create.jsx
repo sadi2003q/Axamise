@@ -31,7 +31,6 @@ import {EventCreateServiceController} from "../../controller/Events/event_create
 
 // Global Context
 import {useGlobal} from "../../GlobalContext.jsx";
-import {useEvent} from "../../EventContext.jsx";
 // Routing
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -39,7 +38,6 @@ export default function Event_Create() {
     // Context
     // const { id } = useContext(IdContext);
     const { user_uid } = useGlobal()
-    const { globEvent, setGlobEvent } = useEvent();
 
 
     // State
@@ -110,8 +108,6 @@ export default function Event_Create() {
     const controller = new EventCreateServiceController({
         event: event,
         setEvent: setEvent,
-        globEvent: globEvent,
-        setGlobEvent: setGlobEvent,
         setFieldError: setFieldError,
         navigate: navigate
     });
