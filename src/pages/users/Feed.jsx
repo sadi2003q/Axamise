@@ -8,6 +8,8 @@ import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import FlowingMenu from '../../Components/Custom/FlowingMenu.jsx'
 import { Events_Model } from "../../models/Event_Model.js";
 import { useState } from "react";
+import {Background_Particles} from "../../Components/__Admin_Login.jsx";
+import {Heading} from "../../Components/__Event_Question.jsx";
 
 
 
@@ -174,8 +176,8 @@ export default function Feed() {
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     return (
-        <>
-            <Profile_Background />
+        <div className={'w-screen h-screen'}>
+            <Background_Particles />
 
 
             {/* Hero Section */}
@@ -194,6 +196,12 @@ export default function Feed() {
 
 
 
+
+
+            <Heading
+                title="All Coding Challenges"
+                subtitle="Explore and Tackle Our Curated Collection of World-Class Coding Questions"
+            />
 
 
             {/* Questions */}
@@ -235,6 +243,12 @@ export default function Feed() {
 
 
 
+            <Heading
+                title="Event Listings"
+                subtitle="Filter and Find Top-Tier Events to Source Elite Global Talent"
+            />
+
+
             {/* Event Showing Screen */}
             <div className="w-screen h-screen flex items-center justify-center overflow-auto">
 
@@ -264,6 +278,6 @@ export default function Feed() {
 
 
 
-        </>
+        </div>
     );
 }

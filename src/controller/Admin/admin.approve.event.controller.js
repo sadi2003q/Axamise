@@ -72,7 +72,12 @@ export class Admin_ApproveEventController {
         }
     }
 
-    handleSendNotification = ({type, isRejected = false}) => {
+
+
+
+    // Deletion / Modification / Approval will go through this function
+    handleSendNotification = ({type, mainFunctionCode = ''}) => {
+
         const notification = new Notification({
             title: this.title,
             message: this.reason,
@@ -89,12 +94,17 @@ export class Admin_ApproveEventController {
          this.notificationService.createNotification({...notification}).then(() => console.log('Notification sent success'))
 
 
-        if( isRejected )  this.eventService.Delete_Event(this.eventID).then(() => console.log('Event removed'))
+        if( type === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED )  this.eventService.Delete_Event(this.eventID).then(() => console.log('Event removed'))
 
 
-        this.service.approve({ eventID: this.eventID, modify: true }).then(() => {
+        // Event Approval Function Calling
+        this.service.approve( this.eventID, type === ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION, mainFunctionCode ).then(() => {
             console.log('event approved')
         });
+
+
+
+
 
         // Use the functional callback to guarantee updated state
         this.setAllEvents((prevEvents) => {

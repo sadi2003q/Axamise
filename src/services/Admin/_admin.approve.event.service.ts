@@ -24,6 +24,8 @@ export class Admin_ApproveEventService  extends BaseApprovalService {
         super();
     }
 
+
+    // Retrieve all events from Firestore
     getAllPending = async () => {
         
 
@@ -54,20 +56,46 @@ export class Admin_ApproveEventService  extends BaseApprovalService {
         }
     }
 
-    approve = async (id: string, data?: any): Promise<Firebase_Response> => {
+    approve = async (id: string, isModificationRequired : Boolean = false, mainFunctionCode: string = ''): Promise<Firebase_Response> => {
         try {
-            const modify = data?.modify || false;
 
-            await updateDoc(doc(db, Database.event, id), {
-                status: modify ? EVENT_APPROVAL_STATUS.modify : EVENT_APPROVAL_STATUS.approved,
-            });
 
+            const updateData: Record<string, any> = {
+                status: isModificationRequired
+                    ? EVENT_APPROVAL_STATUS.modify
+                    : EVENT_APPROVAL_STATUS.approved,
+            };
+
+            // ✅ Only add mainFunctionCode if NOT modification
+            if (!isModificationRequired) {
+                updateData.mainFunctionCode = mainFunctionCode;
+            }
+
+            await updateDoc(doc(db, Database.event, id), updateData);
             return { success: true };
         } catch (error) {
             console.error("Error approving event:", error);
             return { success: false, error };
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }   
 

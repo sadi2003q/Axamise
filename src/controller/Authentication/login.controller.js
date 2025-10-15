@@ -38,7 +38,7 @@ export default class LoginController {
                 this.setCurrentName(`${info.data?.firstName} ${info.data?.lastName}`);
             }
 
-            this.navigate(routes.event_show);
+            this.navigate(routes.feed);
         } else {
             this.setFieldError({
                 field: "email",

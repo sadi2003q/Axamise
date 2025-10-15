@@ -24,6 +24,7 @@ import { QuestionListController } from "../../controller/Questions/question_list
 
 // Router
 import { useNavigate } from "react-router-dom";
+import {Background_Particles} from "../../Components/__Admin_Login.jsx";
 
 export default function Question_List() {
 
@@ -51,7 +52,7 @@ export default function Question_List() {
         <div className={Question_style.Outer_Container}>
 
             {/* Background Screen */}
-            <Profile_Background />
+            <Background_Particles />
 
             {/* Question List */}
             <Question_list>
@@ -68,6 +69,8 @@ export default function Question_List() {
                             handleEditButton={controller.handleEditButton}
                             handleDeleteButton={controller.handleDeleteQuestion}
                             handleSolveButton={controller.handleSolveButton}
+
+                            require_Solve_Button={true}
                         />
                     ) : (
                         /*

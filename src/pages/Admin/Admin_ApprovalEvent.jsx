@@ -83,32 +83,17 @@ export default function Admin_ApprovalEvent() {
 
 
 
-    const backgroundColor = isRejected
-        ? "rgba(244, 67, 54, 0.65)"
-        : "rgba(76, 175, 80, 0.5)";
-
-    const buttonColor = isRejected ? "error" : "success";
-
-    const buttonText = isRejected
-        ? "Confirm Rejection"
-        : "Request for Modification";
-
-    const headingText = isRejected
-        ? "Reject Question"
-        : "Ask Modification";
-
-    const inputLabelText = isRejected
-        ? "Reason for Rejection"
-        : "Things to be Modify...";
-
-    // editorRef,
-    //     setFunctionCode,
-    //     onApprove = () => console.log('Approved')
 
     const [functionCode, setFunctionCode] = useState("");
     const editorRef = useRef(null);
-    const onApprove = () => console.log(functionCode)
+    const onApprove = () => {
+        setEventModel(prev => {
+            return { ...prev, mainFunctionCode: functionCode };
 
+        });
+
+
+    };
 
 
 
@@ -135,7 +120,11 @@ export default function Admin_ApprovalEvent() {
             headingText: "Direct Approval",
             inputLabelText: "Code for Approval",
             directApproval: true,
-            onClick: onApprove,
+
+            onClick: () => {
+                onApprove();
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.APPROVED, mainFunctionCode: functionCode });
+            },
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.REJECTED]: {
             backgroundColor: "rgba(244, 67, 54, 0.65)",
@@ -145,7 +134,7 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Reason for Rejection",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification({ type: "Event Rejected" }),
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.REJECTED }),
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION]: {
             backgroundColor: "rgba(255, 235, 59, 0.4)",
@@ -155,7 +144,7 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Things to be Modified...",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification({ type: "Request Modification" }),
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION }),
         },
     }[displayMode];
 
@@ -199,27 +188,49 @@ export default function Admin_ApprovalEvent() {
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
 
                         { !isEmpty ? (
-                            <div>
-                                <Event_Showing_Description
-                                    event={eventModel}
-                                    handleDeleteButton={controller.handleRejectionPanel}
-                                    handleNotifyButton={controller.handleNotificationPanel}
-                                    handleDirectApprove={controller.handleApprovalPanel}
-                                    require_Delete_Button={true}
-                                    require_Revert_Back_Button={true}
-                                    require_direct_approve_Button={true}
-                                />
+                            <div className="w-full text-white space-y-8">
 
+                                {/* === Event Description Section === */}
+                                <div>
+                                    <h2 className="text-3xl font-bold text-indigo-400 border-b border-indigo-700 pb-2 mb-3">
+                                        🎯 Event Description
+                                    </h2>
+                                    <p className="text-sm text-gray-400 mb-4">
+                                        Overview and administrative actions for the selected event.
+                                    </p>
 
-                                {eventModel?.allQuestions?.length > 0 && (
-                                    eventModel.allQuestions.map((question, index) => (
-                                        Question_Showing_Description({
-                                            question : question
-                                        })
-                                    ))
-                                )}
+                                    <Event_Showing_Description
+                                        event={eventModel}
+                                        handleDeleteButton={controller.handleRejectionPanel}
+                                        handleNotifyButton={controller.handleNotificationPanel}
+                                        handleDirectApprove={controller.handleApprovalPanel}
+                                        require_Delete_Button={true}
+                                        require_Revert_Back_Button={true}
+                                        require_direct_approve_Button={true}
+                                    />
+                                </div>
 
+                                {/* === Event Questions Section === */}
+                                <div>
+                                    <h2 className="text-3xl font-bold text-cyan-400 border-b border-cyan-700 pb-2 mb-3">
+                                        🧠 Event Questions
+                                    </h2>
+                                    <p className="text-sm text-gray-400 mb-4">
+                                        All questions associated with this event are listed below.
+                                    </p>
+
+                                    {eventModel?.allQuestions?.length > 0 ? (
+                                        eventModel.allQuestions.map((question, index) => (
+                                            <div key={index} className="my-4">
+                                                {Question_Showing_Description({ question })}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500 italic">No questions added yet.</p>
+                                    )}
+                                </div>
                             </div>
+
                         ) : (
                             <EventFetchingLoadingScreen />
                         )}
