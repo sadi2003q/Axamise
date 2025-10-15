@@ -23,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 
 // Controller
 import { EventShowController } from "../../controller/Events/event_show.controller.js";
+import {Background_Particles} from "../../Components/__Admin_Login.jsx";
+import {Heading} from "../../Components/__Event_Question.jsx";
 
 
 // =======================
@@ -63,8 +65,12 @@ export default function Event_Show() {
 
   return (
     <div className={Event_Show_Style.outerBox}>
-      <Profile_Background />
-      <Event_Show_header Text="All Declared Events" />
+      <Background_Particles />
+
+        <Heading
+            title="Events Hub"
+            subtitle="Your Gateway to Exceptional Talent-Driven Gatherings"
+        />
 
       <EventList
         loading={loading}

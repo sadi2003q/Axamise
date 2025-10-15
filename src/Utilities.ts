@@ -55,20 +55,19 @@ export const Database = {
 }
 
 export const routes = {
-    feed: '/feed',
-    event_create: '/event_create',
-    login: '/login',
-    signup: '/sign_up',
-    profile: '/profile',
-    question_create: '/question_create',
-    solving_page: '/solve',
-    event_show: '/event_show',
-    question_list: '/question_list',
-    admin_login: '/admin_login',
-    admin_setUser: '/admin_setUser',
-    approval_question: '/admin_approvalQuestion',
-    approval_event: '/admin_approvalEvent',
-
+    feed: '/FEED',
+    event_create: '/EVENT_CREATE',
+    login: '/LOGIN',
+    signup: '/SIGN_UP',
+    profile: '/PROFILE',
+    question_create: '/QUESTION_CREATE',
+    solving_page: '/SOLVE',
+    event_show: '/EVENT_SHOW',
+    question_list: '/QUESTION_LIST',
+    admin_login: '/ADMIN_LOGIN',
+    admin_setUser: '/ADMIN_SETUSER',
+    approval_question: '/ADMIN_APPROVAL',
+    approval_event: '/ADMIN_APPROVALEVENT',
 }
 
 export const ADMIN_APPROVAL_DISPLAY_MODE = {

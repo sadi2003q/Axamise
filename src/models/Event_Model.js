@@ -16,7 +16,7 @@ export class Events_Model extends MakerModel {
                     createdAt = Date.now(),
                     allQuestions = [],
                     mainFunctionCode = ''
-                }) {
+                } = {}) {
         super(createdBy, createdBy_uid, createdAt);
         this.title = title;
         this.description = description;

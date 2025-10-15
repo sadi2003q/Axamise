@@ -1,106 +1,112 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Outlet, useLocation, Navigate } from "react-router-dom";
 
-
+// 🧠 Context Providers
 import { GlobalProvider } from "./GlobalContext";
-import { EventProvider} from "./EventContext.jsx";
+import { EventProvider } from "./EventContext.jsx";
 
-// import CreateStudent from "./pages/CreateStudent";
-
-
-// Import all pages Created within Pages folder
+// 📄 Pages
 import Login from "./pages/Authentication/Login.jsx";
 import Signup from "./pages/Authentication/Signup.jsx";
 import Profile from "./pages/users/Profile.jsx";
 import Event_Create from "./pages/Events/Event_Create.jsx";
 import Question_Create from "./pages/Questions/Question_Create.jsx";
 import Solving_Section from "./pages/Questions/Solving_Section.jsx";
-import Event_Show from "./pages/Events/Event_Show.jsx"
+import Event_Show from "./pages/Events/Event_Show.jsx";
 import Question_List from "./pages/Questions/Question_List.jsx";
 import Feed from "./pages/users/Feed.jsx";
 import Admin_login from "./pages/Authentication/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
-import Dashboard from "./pages/test.jsx";
-import {EventList} from "./Components/__Event_Show.jsx";
 
+// ============================================================
+// 🌐 Navigation Bar Component
+// ============================================================
+function Navbar() {
+  const location = useLocation();
 
-/*
-  import CreateStudent from "./pages/CreateStudent";
-  import ReadStudents from "./pages/ReadStudent";
-  import UpdateStudent from "./pages/UpdateStudent";
-  import DeleteStudent from "./pages/DeleteStudent";
-  import SingleStudent from "./pages/SingleStudent";
-*/
+  const links = [
+    { to: "/FEED", label: "Feed" },
+    { to: "/EVENT_SHOW", label: "Event" }, // Changed from EVENT_CREATE to EVENT_SHOW
+    { to: "/QUESTION_LIST", label: "Problem" },
+    { to: "/PROFILE", label: "Profile" },
+    { to: "/NOTIFICATION", label: "Notification" },
+    { to: "/LOGOUT", label: "Logout" },
+  ];
 
+  return (
+      <nav className="w-full bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#2a2a2a] shadow-md shadow-[#4A4A4A]/40 sticky top-0 z-5000">
+        <div className="flex justify-center space-x-8 py-4 px-6 text-white">
+          {links.map(({ to, label }) => (
+              <Link
+                  key={to}
+                  to={to}
+                  className={`text-sm font-['Roboto_Mono'] tracking-wide transition-all duration-200 ${
+                      location.pathname === to
+                          ? "text-[#F7E733] border-b-2 border-[#F7E733] pb-1"
+                          : "text-gray-300 hover:text-[#F7E733]"
+                  }`}
+              >
+                {label}
+              </Link>
+          ))}
+        </div>
+      </nav>
+  );
+}
 
+// ============================================================
+// 🧩 Layout Wrapper for Logged-in Pages
+// ============================================================
+function AppLayout() {
+  return (
+      <div className="min-h-screen bg-black text-white">
+        <Navbar />
+        <main className="p-6">
+          <Outlet />
+        </main>
+      </div>
+  );
+}
 
-// Define route Path
+// ============================================================
+// 🚀 Main App Entry with Routing
+// ============================================================
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <GlobalProvider>
-    <BrowserRouter>
-      <Routes>
-        
-        
-        
-        {/* Opening Path */}
-        {/* <Route path="/" element={<Signup />} /> */}
-        {/* <Route path="/" element={<Login />} /> */}
-        {/* <Route path="/" element={<Question_Create />} /> */}
-        {/* <Route path="/" element={<Login />} /> */}
-        {/* <Route path="/" element={<Solving_Section />} /> */}
-        {/* <Route path="/" element={<Profile />} /> */}
-        <Route path="/" element={ <Admin_ApprovalEvent />} />
-        {/*<Route path="/EVENT_QUESTION" element={<Event_Questions />} />*/}
-        {/*<Route path="/EVENT_CREATE" element={<Event_Create />} />*/}
+    <GlobalProvider>
+      <EventProvider>
+        <BrowserRouter>
+          <Routes>
 
-        <Route path="/EVENT_CREATE" element={ <Event_Create />} />
-        <Route path="/EVENT_SHOW" element={<Event_Show />} />
-        <Route path="/SOLVE" element={<Solving_Section />} />
-        <Route path="/QUESTION_CREATE" element={<Question_Create />} />
-        <Route path="/QUESTION_LIST" element={<Question_List />} />
-        {/*<Route path="/admin_approvalQuestion" element={<Admin_Approval />} />*/}
+            {/* 🔹 Default route: redirect to FEED for logged-in users */}
+            <Route path="/" element={<Navigate to="/FEED" replace />} />
 
-        
+            {/* 🔹 User + Auth Pages */}
+            <Route path="/LOGIN" element={<Login />} />
+            <Route path="/SIGNUP" element={<Signup />} />
 
+            {/* 🔹 Pages with Navbar (after login) */}
+            <Route element={<AppLayout />}>
+              <Route path="/FEED" element={<Feed />} />
+              <Route path="/EVENT_CREATE" element={<Event_Create />} />
+              <Route path="/EVENT_SHOW" element={<Event_Show />} />
+              <Route path="/SOLVE" element={<Solving_Section />} />
+              <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+              <Route path="/QUESTION_LIST" element={<Question_List />} />
+              <Route path="/PROFILE" element={<Profile />} />
+            </Route>
 
-        {/* 
-            <Route path="/" element={<Profile />} />
-            <Route path="/EVENT_CREATE" element={<Event_Create />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} /> 
-            <Route path="/QUESTION_CREATE" element={<Question_Create />} />
-            <Route path="/SOLVE" element={<Solving_Section />} />
-            <Route path="/EVENT_SHOW" element={<Event_Show />} />
-            <Route path="/QUESTION_LIST" element={<Question_List />} />
-            <Route path="/feed" element={<Feed />} />
-        */}
+            {/* 🔹 Admin Area (no navbar) */}
+            <Route path="/ADMIN_LOGIN" element={<Admin_login />} />
+            <Route path="/ADMIN_SETUSER" element={<Admin_SetUsr />} />
+            <Route path="/ADMIN_APPROVAL" element={<Admin_Approval />} />
+            <Route path="/ADMIN_APPROVALEVENT" element={<Admin_ApprovalEvent />} />
+            {/*<Route path="/DASHBOARD" element={<Dashboard />} />*/}
 
-
-
-
-
-
-
-
-        {/*    Example USEG
-          <Route path="/create" element={<CreateStudent />} />
-          <Route path="/single" element={<SingleStudent />} />
-          <Route path="/read" element={<ReadStudents />} />
-          <Route path="/update/:id" element={<UpdateStudent />} />
-          <Route path="/delete/:id" element={<DeleteStudent />} /> 
-          
-        */}
-        
-
-
-
-
-
-      </Routes>
-    </BrowserRouter>
-  </GlobalProvider>
-
+          </Routes>
+        </BrowserRouter>
+      </EventProvider>
+    </GlobalProvider>
 );

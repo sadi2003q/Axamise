@@ -30,6 +30,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Controller
 import { SolvingSectionController } from "../../controller/Questions/solving_section.controller.js";
+import {Background_Particles} from "../../Components/__Admin_Login.jsx";
 
 export default function Solving_Section() {
     // Variables
@@ -151,9 +152,10 @@ add required library as necessary
 
     // Immediate Load
     useEffect(() => {
-        if (questionID) controller.fetchQuestion(questionID);
-        else controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb')
+        if (questionID) controller.fetchQuestion(questionID).then(r => {});
+        else controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb').then(r => {})
         console.log(question)
+        console.log(questionID ?? 'qid not found')
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionID]);
 
@@ -206,7 +208,7 @@ add required library as necessary
     return (
         <div className={Solve_style.Outer_Container}>
             {/* Background */}
-            <Profile_Background />
+            <Background_Particles />
 
             {/* Centered Event Boxes */}
             <div

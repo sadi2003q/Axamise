@@ -120,6 +120,36 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    async _FetchAllEvent(): Promise<Firebase_Response> {
+        try {
+            // Reference to the "Events" collection
+            const eventsRef = collection(db, Database.event);
+
+            // Query only approved events
+            const q = query(eventsRef, where("status", "==", EVENT_APPROVAL_STATUS.approved));
+
+            // Execute query
+            const querySnapshot = await getDocs(q);
+
+            // Map each document to a structured object
+            const events = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            return {
+                success: true,
+                data: events,
+            };
+        } catch (error) {
+            console.error("❌ Error fetching approved events:", error);
+            return {
+                success: false,
+                error: error.message || error,
+            };
+        }
+    }
+
     async _Delete_Event(eventID: string): Promise<Firebase_Response> {
         try {
             if (!eventID) return { success: false, error: "No eventID provided" };
