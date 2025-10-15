@@ -20,6 +20,7 @@ import Admin_login from "./pages/Authentication/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
+import EventStart from "./pages/Events/Event_Start.jsx";
 
 // ============================================================
 // 🌐 Navigation Bar Component
@@ -81,7 +82,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Routes>
 
             {/* 🔹 Default route: redirect to FEED for logged-in users */}
-            <Route path="/" element={<Navigate to="/FEED" replace />} />
+            <Route path="/" element={<Navigate to="/EVENT_START" replace />} />
 
             {/* 🔹 User + Auth Pages */}
             <Route path="/LOGIN" element={<Login />} />
@@ -89,13 +90,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
             {/* 🔹 Pages with Navbar (after login) */}
             <Route element={<AppLayout />}>
-              <Route path="/FEED" element={<Feed />} />
-              <Route path="/EVENT_CREATE" element={<Event_Create />} />
-              <Route path="/EVENT_SHOW" element={<Event_Show />} />
-              <Route path="/SOLVE" element={<Solving_Section />} />
-              <Route path="/QUESTION_CREATE" element={<Question_Create />} />
-              <Route path="/QUESTION_LIST" element={<Question_List />} />
-              <Route path="/PROFILE" element={<Profile />} />
+                <Route path="/FEED" element={<Feed />} />
+                <Route path="/EVENT_CREATE" element={<Event_Create />} />
+                <Route path="/EVENT_SHOW" element={<Event_Show />} />
+                <Route path="/SOLVE" element={<Solving_Section />} />
+                <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+                <Route path="/QUESTION_LIST" element={<Question_List />} />
+                <Route path="/PROFILE" element={<Profile />} />
+                <Route path="/EVENT_START" element={<EventStart />} />
             </Route>
 
             {/* 🔹 Admin Area (no navbar) */}

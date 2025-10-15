@@ -26,6 +26,10 @@ export const Question_style = {
         // Full width on mobile, half width on desktop
         "m-2 w-full md:w-[50vw] bg-red-500 overflow-auto min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-6 rounded-lg",
 
+    event_description2:
+    // Full width on mobile, half width on desktop
+        "m-2 w-full md:w-[50vw] bg-red-500 overflow-auto min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-0 rounded-3xl",
+
     event_scheduling:
         // Full width on mobile, fixed width on desktop
         "m-2 w-full md:w-[35vw] md:h-[86vh] rounded-4xl bg-white/5 border-2 border-amber-200/5 shadow-[0_0_30px_rgba(255,165,0,0.3)] backdrop-blur-md flex flex-col items-center justify-around gap-8 p-6 self-center overflow-auto",
@@ -62,8 +66,17 @@ export const Question_list = ({ children }) => {
 };
 
 
+export const Question_list2 = ({ children,}) => {
+    return (
+        <div className={Question_style.event_description2}>
+            {children}
+        </div>
+    );
+};
+
+
 // Event Scheduling
-export const Question_Description = ({ children }) => {
+export const Question_Description = ({children}) => {
     return (
         <div className={Question_style.event_scheduling}>
             {children}
