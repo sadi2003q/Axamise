@@ -16,6 +16,7 @@ import HelpTwoToneIcon from "@mui/icons-material/HelpTwoTone";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Button } from "@mui/material";
+import {CodeIcon} from "lucide-react";
 
 
 
@@ -45,69 +46,161 @@ export const Event_Show_header = ({ Text }) => {
 };
 
 // Component for Edit/Delete/Add buttons in the Accordion
+// export const AccordionActionsButtons = ({
+//     EnterEvent = false,
+//     onAction,
+//     deleteAction,
+//     addAction,
+//     allQuestion = () => console.log("All Question Button"),
+// }) => {
+//     return (
+//         <AccordionActions sx={{ gap: 1, pr: 2, pb: 1 }}>
+//             {/* Edit Button */}
+//             <IconButton
+//                 onClick={onAction}
+//                 sx={{
+//                     backgroundColor: "rgba(59, 130, 246, 0.2)", // blue tint
+//                     color: "#3b82f6",
+//                     "&:hover": {
+//                         backgroundColor: "rgba(59, 130, 246, 0.4)",
+//                     },
+//                 }}
+//             >
+//                 <EditIcon />
+//             </IconButton>
+//
+//             {/* Delete Button */}
+//             <IconButton
+//                 onClick={deleteAction}
+//                 sx={{
+//                     backgroundColor: "rgba(239, 68, 68, 0.2)", // red tint
+//                     color: "#ef4444",
+//                     "&:hover": {
+//                         backgroundColor: "rgba(239, 68, 68, 0.4)",
+//                     },
+//                 }}
+//             >
+//                 <DeleteIcon />
+//             </IconButton>
+//
+//             {/* Add Button */}
+//             <IconButton
+//                 onClick={addAction}
+//                 sx={{
+//                     backgroundColor: "rgba(16, 185, 129, 0.2)", // green tint
+//                     color: "#10b981",
+//                     "&:hover": {
+//                         backgroundColor: "rgba(16, 185, 129, 0.4)",
+//                     },
+//                 }}
+//             >
+//                 <AddIcon />
+//             </IconButton>
+//
+//             {/* All Question Button */}
+//             <IconButton
+//                 onClick={allQuestion}
+//                 sx={{
+//                     backgroundColor: "rgba(59, 130, 246, 0.2)", // blue tint
+//                     color: "#3b82f6",
+//                     "&:hover": {
+//                         backgroundColor: "rgba(59, 130, 246, 0.4)",
+//                     },
+//                 }}
+//             >
+//                 <HelpTwoToneIcon />
+//             </IconButton>
+//         </AccordionActions>
+//     );
+// };
+
+
+
 export const AccordionActionsButtons = ({
+    EnterEvent = false,
     onAction,
     deleteAction,
     addAction,
     allQuestion = () => console.log("All Question Button"),
+    onCodeAction = () => console.log("Code Button Clicked"),
+
 }) => {
     return (
         <AccordionActions sx={{ gap: 1, pr: 2, pb: 1 }}>
-            {/* Edit Button */}
-            <IconButton
-                onClick={onAction}
-                sx={{
-                    backgroundColor: "rgba(59, 130, 246, 0.2)", // blue tint
-                    color: "#3b82f6",
-                    "&:hover": {
-                        backgroundColor: "rgba(59, 130, 246, 0.4)",
-                    },
-                }}
-            >
-                <EditIcon />
-            </IconButton>
+            {EnterEvent ? (
+                // ✅ Only show this when EnterEvent = true
+                <IconButton
+                    onClick={onCodeAction}
+                    sx={{
+                        backgroundColor: "rgba(234, 179, 8, 0.2)", // yellow tint
+                        color: "#eab308",
+                        "&:hover": {
+                            backgroundColor: "rgba(234, 179, 8, 0.4)",
+                        },
+                    }}
+                >
+                    <CodeIcon />
+                </IconButton>
+            ) : (
+                // ✅ Normal buttons (when EnterEvent = false)
+                <>
+                    {/* Edit Button */}
+                    <IconButton
+                        onClick={onAction}
+                        sx={{
+                            backgroundColor: "rgba(59, 130, 246, 0.2)",
+                            color: "#3b82f6",
+                            "&:hover": {
+                                backgroundColor: "rgba(59, 130, 246, 0.4)",
+                            },
+                        }}
+                    >
+                        <EditIcon />
+                    </IconButton>
 
-            {/* Delete Button */}
-            <IconButton
-                onClick={deleteAction}
-                sx={{
-                    backgroundColor: "rgba(239, 68, 68, 0.2)", // red tint
-                    color: "#ef4444",
-                    "&:hover": {
-                        backgroundColor: "rgba(239, 68, 68, 0.4)",
-                    },
-                }}
-            >
-                <DeleteIcon />
-            </IconButton>
+                    {/* Delete Button */}
+                    <IconButton
+                        onClick={deleteAction}
+                        sx={{
+                            backgroundColor: "rgba(239, 68, 68, 0.2)",
+                            color: "#ef4444",
+                            "&:hover": {
+                                backgroundColor: "rgba(239, 68, 68, 0.4)",
+                            },
+                        }}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
 
-            {/* Add Button */}
-            <IconButton
-                onClick={addAction}
-                sx={{
-                    backgroundColor: "rgba(16, 185, 129, 0.2)", // green tint
-                    color: "#10b981",
-                    "&:hover": {
-                        backgroundColor: "rgba(16, 185, 129, 0.4)",
-                    },
-                }}
-            >
-                <AddIcon />
-            </IconButton>
+                    {/* Add Button */}
+                    <IconButton
+                        onClick={addAction}
+                        sx={{
+                            backgroundColor: "rgba(16, 185, 129, 0.2)",
+                            color: "#10b981",
+                            "&:hover": {
+                                backgroundColor: "rgba(16, 185, 129, 0.4)",
+                            },
+                        }}
+                    >
+                        <AddIcon />
+                    </IconButton>
 
-            {/* All Question Button */}
-            <IconButton
-                onClick={allQuestion}
-                sx={{
-                    backgroundColor: "rgba(59, 130, 246, 0.2)", // blue tint
-                    color: "#3b82f6",
-                    "&:hover": {
-                        backgroundColor: "rgba(59, 130, 246, 0.4)",
-                    },
-                }}
-            >
-                <HelpTwoToneIcon />
-            </IconButton>
+                    {/* All Question Button */}
+                    <IconButton
+                        onClick={allQuestion}
+                        sx={{
+                            backgroundColor: "rgba(59, 130, 246, 0.2)",
+                            color: "#3b82f6",
+                            "&:hover": {
+                                backgroundColor: "rgba(59, 130, 246, 0.4)",
+                            },
+                        }}
+                    >
+                        <HelpTwoToneIcon />
+                    </IconButton>
+                </>
+            )}
         </AccordionActions>
     );
 };
@@ -154,6 +247,10 @@ export const EventAccordion = ({
     allQuestion = () => {
         console.log("All Question Button Clicked");
     },
+
+
+    EnterEvent = false,
+    EnterFunction = () => { console.log('This is a code') }
 }) => {
     return (
         <Accordion
@@ -226,6 +323,10 @@ export const EventAccordion = ({
                 deleteAction={deleteAction}
                 addAction={addAction}
                 allQuestion={allQuestion}
+
+
+                EnterEvent={EnterEvent}
+                onCodeAction={EnterFunction}
             />
         </Accordion>
     );
@@ -346,7 +447,16 @@ export function EventSearchBar({ searchQuery, setSearchQuery, onAddEvent }) {
 // =======================
 // Component: Event List
 // =======================
-export const EventList = ({ loading, error, events, controller, onAccordionClick }) => {
+export const EventList = ({
+      loading,
+      error,
+      events,
+      controller,
+      onAccordionClick,
+
+    EnterEvent = false,
+
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // 🟢 Loading/Error States
@@ -388,6 +498,12 @@ export const EventList = ({ loading, error, events, controller, onAccordionClick
             deleteAction={() => controller.handleDelete(item)}
             addAction={() => controller.handleAddQuestion(item)}
             allQuestion={() => controller.handleAllQuestions(item)}
+
+
+
+            EnterEvent={EnterEvent}
+            EnterFunction = { () => controller.handleNavigation_EventEnter(item)}
+
           />
         ))
       ) : (

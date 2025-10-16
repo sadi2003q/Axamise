@@ -2,9 +2,12 @@ import { Background_Particles } from "../../Components/__Admin_Login";
 import { Question_list2, Question_Description } from "../../Components/__Question_List.jsx";
 import { Button, Typography, Box } from "@mui/material";
 import { AccessTime, CalendarMonth, Schedule } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
+
 
 export default function EventStart() {
-    const event = {
+    const [event, setEvent] = useState({
         title: "AI Challenge 2025",
         description: "Compete to solve real-world AI problems using your coding skills!",
         createdBy: "Adnan Abdullah",
@@ -12,7 +15,22 @@ export default function EventStart() {
         date: "2025-11-10",
         startTime: "10:00 AM",
         duration: { hours: 2, minutes: 30 },
-    };
+    });
+
+
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.item) {
+            setEvent(location.state.item);
+
+        } else {
+            console.log("No eventID found in state");
+        }
+    }, [location.state]);
+
+
 
     return (
         <div className="w-screen h-screen bg-black relative overflow-hidden">
@@ -138,26 +156,26 @@ export default function EventStart() {
                                     </Box>
                                 </Box>
 
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ display: "flex", alignItems: "left", gap: 2 }}>
                                     <AccessTime sx={{ color: "#ff1744" }} />
                                     <Box>
                                         <Typography sx={{ fontSize: "0.9rem", opacity: 0.7 }}>
                                             Start Time
                                         </Typography>
                                         <Typography sx={{ fontWeight: "600" }}>
-                                            {event.startTime}
+                                            {event.startTime}Am
                                         </Typography>
                                     </Box>
                                 </Box>
 
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                                <Box sx={{ display: "flex", alignItems: "left", gap: 2 }}>
                                     <Schedule sx={{ color: "#ff1744" }} />
-                                    <Box>
+                                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
                                         <Typography sx={{ fontSize: "0.9rem", opacity: 0.7 }}>
                                             Duration
                                         </Typography>
                                         <Typography sx={{ fontWeight: "600" }}>
-                                            {event.duration.hours}h {event.duration.minutes}m
+                                            {event.hours}h {event.minutes}m
                                         </Typography>
                                     </Box>
                                 </Box>

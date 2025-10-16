@@ -27,6 +27,7 @@ export const SERVICE = {
 
     EVENT_CREATE: 'event_create',
     EVENT_SHOW: 'event_show',
+    EVENT_ENTER: 'event_enter',
 
 
     QUESTION_CREATE: 'question_create',
@@ -63,6 +64,7 @@ export const routes = {
     question_create: '/QUESTION_CREATE',
     solving_page: '/SOLVE',
     event_show: '/EVENT_SHOW',
+    event_enter: '/EVENT_START',
     question_list: '/QUESTION_LIST',
     admin_login: '/ADMIN_LOGIN',
     admin_setUser: '/ADMIN_SETUSER',

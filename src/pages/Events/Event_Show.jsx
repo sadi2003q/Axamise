@@ -78,6 +78,10 @@ export default function Event_Show() {
         events={events}
         controller={controller}
         onAccordionClick={handleAccordionClick}
+
+
+        EnterEvent={true}
+
       />
     </div>
   );

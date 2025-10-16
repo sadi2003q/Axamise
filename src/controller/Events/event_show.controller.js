@@ -21,6 +21,11 @@ export class EventShowController {
         this.setError = setError;
     }
 
+
+    handleNavigation_EventEnter = (item) => {
+        this.navigate(routes.event_enter, { state: {item: item} });
+    }
+
     handleAddQuestion = (item) => {
         this.navigate(routes.question_create, { state: { itemID: item.id } });
     };
