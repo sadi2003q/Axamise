@@ -10,6 +10,7 @@ import {
     Solve_Description,
     Code_Editor,
     Question_Showing_Description,
+    Event_Question
 } from "../../Components/__Solving_Section.jsx";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -36,6 +37,7 @@ export default function Solving_Section() {
     // Variables
     const location = useLocation();
     const { questionID } = location.state || {};
+    const [enteredEvent, setEnteredEvent] = useState(null);
 
     // const { id } = useContext(IdContext);
     const { user_uid } = useGlobal()
@@ -148,37 +150,61 @@ add required library as necessary
 
 
 
+    function splitCppCode2(code) {
+        // Part 1: Everything from start until function declarations
+        const part1End = code.indexOf('// ======= Function Declarations (User will define these) =======');
+        const part1 = code.substring(0, part1End);
 
+        // Part 2: Function declarations section
+        const part2Start = part1End;
+        const part2End = code.indexOf('// ======= Generic Test Helpers =======');
+        const part2 = code.substring(part2Start, part2End);
+
+        // Part 3: Everything else (test helpers and main)
+        const part3 = code.substring(part2End);
+
+        return { part1, part2, part3 };
+    }
+
+
+
+    useEffect(() => {
+        if (location.state?.event) {
+            setEnteredEvent(location.state.event);
+            console.log(location.state.event.mainFunctionCode);
+        }
+    }, [])
 
     // Immediate Load
     useEffect(() => {
+        if(enteredEvent != null) return;
         if (questionID) controller.fetchQuestion(questionID).then(r => {});
         else controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb').then(r => {})
-        console.log(question)
-        console.log(questionID ?? 'qid not found')
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionID]);
 
     useEffect(() => {
-        if (editorRef.current && question.mainFunctionCode) {
+        if (!editorRef.current) return; // Add this check
 
-            // / Split using 'int main()' as the divider
-            // const [part1, part2WithMain] = question.mainFunctionCode.split(/(?=int main\s*\()/);
-            const { part1, part2, part3 } = splitCppCode(question.mainFunctionCode);
-
-
+        if (enteredEvent === null) {
+            if (question.mainFunctionCode) {
+                const { part1, part2, part3 } = splitCppCode(question.mainFunctionCode);
+                setLibraryPart(part1)
+                setEditablePart(part2)
+                setMainPart(part3)
+                editorRef.current.setValue(overView + part2);
+                setCode(question.mainFunctionCode);
+            }
+        } else {
+            const { part1, part2, part3 } = splitCppCode2(enteredEvent.mainFunctionCode);
             setLibraryPart(part1)
             setEditablePart(part2)
             setMainPart(part3)
-
-            // editorRef.current.setValue(question.mainFunctionCode);
             editorRef.current.setValue(overView + part2);
-
-
-            setCode(question.mainFunctionCode);
+            setCode(enteredEvent.mainFunctionCode);
         }
-    }, [question.mainFunctionCode]);
-
+    }, [question.mainFunctionCode, enteredEvent?.mainFunctionCode]);
 
 
 
@@ -219,7 +245,7 @@ add required library as necessary
                 {/* Problem Description */}
                 <div style={{ flex: 1 - editorWidth, minWidth: "200px" }}>
                     <Solve_Description>
-                        <div className="flex flex-col space-y-3 mx-1.5">
+                        <div className="flex flex-col space-y-3 mx-1.">
                             <Button
                                 onClick={controller.handleRunCode}
                                 variant="contained"
@@ -274,7 +300,22 @@ add required library as necessary
 
                         </div>
 
-                        <Question_Showing_Description question={question} />
+
+
+                        { enteredEvent === null ? (
+                            // this will be shown for a single question
+                            <Question_Showing_Description question={question} />
+                        ) : (
+                            // this will work when multiple question
+                            // enteredEvent.allQuestions.forEach((q, index) => {
+                            //     console.log(`Question ${index + 1}: ${q.title}`);
+                            // })
+
+                            <Event_Question questions={enteredEvent?.allQuestions || []} />
+                        )}
+
+
+
                     </Solve_Description>
                 </div>
 
@@ -294,7 +335,16 @@ add required library as necessary
                         <Editor
                             height="100%"
                             defaultLanguage="cpp"
-                            defaultValue={currentCode.length === 0 ? defaultCode : question.mainFunctionCode}
+                            defaultValue={
+                            enteredEvent == null ? (
+                                currentCode.length === 0
+                                        ? defaultCode
+                                        : question.mainFunctionCode
+                            ) : (
+                                enteredEvent.mainFunctionCode
+                            )
+                                    // or whatever value you want for events
+                            }
                             theme="vs-dark"
                             options={{
                                 fontSize: 16,

@@ -4,6 +4,8 @@ import { Button, Typography, Box } from "@mui/material";
 import { AccessTime, CalendarMonth, Schedule } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { EventEnterController } from '../../controller/Events/event_enter.controller.js'
 
 
 export default function EventStart() {
@@ -16,10 +18,13 @@ export default function EventStart() {
         startTime: "10:00 AM",
         duration: { hours: 2, minutes: 30 },
     });
-
+    const navigate = useNavigate();
 
 
     const location = useLocation();
+
+
+    const controller = new  EventEnterController(navigate)
 
     useEffect(() => {
         if (location.state?.item) {
@@ -185,6 +190,7 @@ export default function EventStart() {
                         {/* Start Button (unchanged) */}
                         <Box sx={{ zIndex: 1 }}>
                             <Button
+                                onClick={() => controller._handleNavigation_EventSolve(event)}
                                 variant="contained"
                                 color="error"
                                 size="large"
