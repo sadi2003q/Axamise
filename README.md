@@ -726,6 +726,6 @@ This project is licensed under the **MIT License**.
 
 ## Contact
 
-Project maintained by **AXAMISS** - [AXAMISS.com](https://AXAMISS.com/)
+Project maintained by **Sadi** - [AXAMISS.com](https://AXAMISS.com/)
 
 For any inquiries or feedback, please open an issue or contact the project maintainer.
