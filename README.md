@@ -466,7 +466,7 @@ export class AuthenticationService {
     }
   }
 }
-
+```
 ### Event Management Module (`pages/Events`)
 
 -   **Description**: Allows users to create events and admins to manage them. An "event" acts as a container for a set of questions in an assessment.
@@ -726,6 +726,6 @@ This project is licensed under the **MIT License**.
 
 ## Contact
 
-Project maintained by **Sadi** - [adnansadi.com](https://adnansadi.com/)
+Project maintained by **AXAMISS** - [AXAMISS.com](https://AXAMISS.com/)
 
 For any inquiries or feedback, please open an issue or contact the project maintainer.
