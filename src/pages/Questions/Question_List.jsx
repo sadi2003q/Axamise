@@ -6,7 +6,7 @@
 
 // React Hooks
 import { useEffect, useState } from "react";
-
+import { useGlobal } from "../../GlobalContext.jsx";
 // Components
 import Profile_Background from "../../Components/__Profile.jsx";
 import {
@@ -33,6 +33,8 @@ export default function Question_List() {
     const [selectedQuestion, setSelectedQuestion] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [solvedProblem, setSolvedProblem] = useState([]);
+    const {user_uid}  = useGlobal();
 
     // Controller instance
     const controller = new QuestionListController(
@@ -40,12 +42,14 @@ export default function Question_List() {
         setAllQuestion,
         setSelectedQuestion,
         setError,
-        navigate
+        navigate,
+        setSolvedProblem
     );
 
     // Fetch all questions on mount
     useEffect(() => {
         controller.handleFetchAll();
+        if(user_uid) controller.handleSolvedProblemList(user_uid)
     }, []);
 
     return (
@@ -57,7 +61,9 @@ export default function Question_List() {
             {/* Question List */}
             <Question_list>
                 <QuestionHeader text="Question List" />
-                <NestedList items={allQuestion} onSelect={setSelectedQuestion} />
+                <NestedList items={allQuestion}
+                            onSelect={setSelectedQuestion}
+                            solvedProblem={solvedProblem} />
             </Question_list>
 
             {/* Question Description with Button */}

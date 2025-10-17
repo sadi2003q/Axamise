@@ -10,7 +10,7 @@ import { SERVICE} from "../../Utilities.ts";
 
 export class QuestionListController {
 
-    constructor(questions, setAllQuestion, setSelectedQuestion, setError, navigate) {
+    constructor(questions, setAllQuestion, setSelectedQuestion, setError, navigate, setSolvedProblem) {
         // this.service = new QuestionListService();
         this.service = QuestionService.createService(SERVICE.QUESTION_LIST)
 
@@ -19,6 +19,7 @@ export class QuestionListController {
         this.setSelectedQuestion = setSelectedQuestion
         this.setError = setError;
         this.navigate = navigate;
+        this.setSolvedProblem = setSolvedProblem
     }
 
     /*
@@ -56,6 +57,15 @@ export class QuestionListController {
             this.setSelectedQuestion((prev) => (prev?.id === uid ? "" : prev));
         }
     };
+
+
+    handleSolvedProblemList = async (uid) => {
+
+        console.log('uid : ',uid);
+        const result = await this.service._FetchSolvedProblemList({id : uid})
+        if (result.success) this.setSolvedProblem(result.data);
+
+    }
 
 
 

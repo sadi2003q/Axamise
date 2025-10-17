@@ -473,13 +473,10 @@ add required library as necessary
                 {
                     enteredEvent != null ? (
                         <div className="w-full flex flex-col items-center justify-center gap-2 text-yellow-400">
-
                             <Heading
                                 title={enteredEvent.title}
                                 subtitle={'Time Remaining'}
                             />
-
-
                             <div className="flex gap-4 text-6xl font-mono font-bold tracking-widest">
                                 <div className="bg-gray-800 px-6 py-4 rounded-2xl shadow-[0_0_15px_#4A4A4A]">
                                     {hour.toString().padStart(2, '0')}
@@ -493,8 +490,6 @@ add required library as necessary
                                     {second.toString().padStart(2, '0')}
                                 </div>
                             </div>
-
-
                         </div>
                     ) : (
                         <div className={'w-full flex flex-col items-center justify-center gap-2 text-yellow-400'}>

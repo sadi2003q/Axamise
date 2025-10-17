@@ -76,7 +76,7 @@ ${this.mainPart}`
 
                         this.setSolver(updatedSolver);
                         if(id.length===0) {
-                            await this.service.upload_solver(updatedSolver);
+                            console.log('ID is not sent, Solution cannot be uploaded')
                         } else {
                             await this.service.solve_approve(id, updatedSolver);
                         }

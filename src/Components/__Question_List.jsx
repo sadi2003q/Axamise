@@ -210,7 +210,7 @@ export const Edit_Delete_Button = ({
 
 
 
-export const NestedList = ({ items, onSelect }) => {
+export const NestedList = ({ items, onSelect, solvedProblem=[] }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     // Filter items based on search query
@@ -246,8 +246,6 @@ export const NestedList = ({ items, onSelect }) => {
             >
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item, index) => (
-
-
 
                         <ListItemButton
                             key={index}

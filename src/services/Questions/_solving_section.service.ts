@@ -30,8 +30,6 @@ export class SolveService {
         }
     }
 
-
-
     // File: RunCodeAPI.js
     runCode = async (sourceCode: string): Promise<Firebase_Response> => {
         try {
@@ -66,18 +64,6 @@ export class SolveService {
         }
     };
 
-
-    upload_solver = async(solver: Solve_Model) : Promise<Firebase_Response> => {
-        try {
-            console.log(solver)
-            await addDoc(collection(db, Database.solves), { ...solver });
-            return { success: true, message: 'Solve Accepted' }
-
-        } catch(error) {
-            console.log('Error Found while uploading Solver : \n', error);
-        }
-    }
-
     /**
      * Approve a solved problem and store it in the user's subcollection
      * @param id - User ID
@@ -88,11 +74,14 @@ export class SolveService {
         try {
             console.log('Function Called');
 
-            // Reference to user's solvedProblems subcollection
-            const userSolvedRef = collection(db, Database.student, id, "solvedProblems");
+            // Reference to specific user's solvedProblems subcollection
+            const userSolvedRef = doc(
+                collection(db, Database.student, id, "solvedProblems"),
+                solver.question_id // set document ID = question_id
+            );
 
-            // Add a new document (auto-generated ID)
-            await addDoc(userSolvedRef, {
+            // Set document data (creates or updates)
+            await setDoc(userSolvedRef, {
                 solver_id: solver.solver_id,
                 question_id: solver.question_id,
                 date: solver.date,

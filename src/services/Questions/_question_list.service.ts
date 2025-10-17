@@ -47,4 +47,47 @@ export class QuestionListService {
             return { success: false, error: error }
         }
     }
+
+    /**
+     * Fetch all solved problems for a given user.
+     * Checks if the sub collection 'solvedProblems' exists or not.
+     */
+    _FetchSolvedProblemList = async ({ id }): Promise<Firebase_Response> => {
+        try {
+            // Reference to user's solvedProblems subcollection
+            const solvedProblemsRef = collection(db, Database.student, id, "solvedProblems");
+
+            // Fetch all documents
+            const querySnapshot = await getDocs(solvedProblemsRef);
+
+            // If empty, means subcollection doesn't exist or has no entries
+            if (querySnapshot.empty) {
+                console.log("No solvedProblems subcollection found or it’s empty.");
+                return {
+                    success: false,
+                    message: "No solved problems found for this user.",
+                    data: [],
+                };
+            }
+
+            // Extract only the question_id field from each document
+            const questionIds = querySnapshot.docs.map((doc) => doc.data().question_id);
+            console.log('Found ==>')
+            console.log(questionIds);
+            return {
+                success: true,
+                data: questionIds,
+            };
+        } catch (error) {
+            // console.error("Error fetching solved problem IDs:\n", error);
+            return {
+                success: false,
+                message: "Error fetching solved problem IDs.",
+                error,
+            };
+        }
+    };
+
+
+
 }
