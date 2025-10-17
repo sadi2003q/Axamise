@@ -2,7 +2,7 @@
 // services/_solving_section.service.js
 
 import { db } from "../../firebase.js";
-import {doc, getDoc, addDoc, collection} from 'firebase/firestore'
+import {doc, getDoc, setDoc, addDoc, collection} from 'firebase/firestore'
 import { Database, Firebase_Response } from "../../Utilities";
 import Question from '../../models/Question_Model'
 import { Solve_Model} from "../../models/Solve_Model";
@@ -77,6 +77,43 @@ export class SolveService {
             console.log('Error Found while uploading Solver : \n', error);
         }
     }
+
+    /**
+     * Approve a solved problem and store it in the user's subcollection
+     * @param id - User ID
+     * @param solver - Solve_Model instance
+     * @returns Firebase_Response
+     */
+    solve_approve = async (id: string, solver: Solve_Model): Promise<Firebase_Response> => {
+        try {
+            console.log('Function Called');
+
+            // Reference to user's solvedProblems subcollection
+            const userSolvedRef = collection(db, Database.student, id, "solvedProblems");
+
+            // Add a new document (auto-generated ID)
+            await addDoc(userSolvedRef, {
+                solver_id: solver.solver_id,
+                question_id: solver.question_id,
+                date: solver.date,
+                solve_code: solver.solve_code,
+                event_id: solver.event_id || "not assigned",
+            });
+
+            console.log("Solve Accepted");
+
+            return {
+                success: true,
+                message: `Problem ${solver.question_id} successfully stored for user ${id}`,
+            };
+        } catch (error) {
+            console.error("Error Found while uploading Solver:\n", error);
+            return {
+                success: false,
+                message: "Error uploading solve data.",
+            };
+        }
+    };
 
 }
 

@@ -82,7 +82,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Routes>
 
             {/* 🔹 Default route: redirect to FEED for logged-in users */}
-            <Route path="/" element={<Navigate to="/EVENT_SHOW" replace />} />
+            <Route path="/" element={<Navigate to="/LOGIN" replace />} />
 
             {/* 🔹 User + Auth Pages */}
             <Route path="/LOGIN" element={<Login />} />

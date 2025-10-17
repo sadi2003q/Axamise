@@ -32,6 +32,8 @@ import {
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
+
+
 // View Model
 import { useGlobal } from "../../GlobalContext.jsx";
 
@@ -329,6 +331,7 @@ add required library as necessary
      * Handles both single questions and event-based questions
      */
     useEffect(() => {
+        console.log('id found : ',user_uid ?? 'Not Found')
         if (!editorRef.current) return;
 
         const processCode = () => {
@@ -494,7 +497,12 @@ add required library as necessary
 
                         </div>
                     ) : (
-                        <div></div>
+                        <div className={'w-full flex flex-col items-center justify-center gap-2 text-yellow-400'}>
+                            <Heading
+                                title={question.title}
+                                subtitle={''}
+                            />
+                        </div>
                     )
                 }
 
@@ -508,7 +516,7 @@ add required library as necessary
                             {/* Code Execution Controls */}
                             <div className="flex flex-col space-y-3 mx-1.">
                                 <Button
-                                    onClick={controller.handleRunCode}
+                                    onClick={() => controller.handleRunCode({id: user_uid})}
                                     variant="contained"
                                     disabled={!code.trim() || isRunning}
                                     sx={{

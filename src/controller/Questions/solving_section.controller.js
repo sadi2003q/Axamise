@@ -1,7 +1,6 @@
 // path: src/controller/solving_section.controller.js
 
 import { SolveService } from "../../services/Questions/_solving_section.service.ts";
-import { routes } from "../../Utilities.ts";
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
 import { SERVICE} from "../../Utilities.ts";
 import { Solve_Model} from "../../models/Solve_Model.js";
@@ -44,7 +43,7 @@ export class SolvingSectionController {
     };
 
     // ✅ Run the code from editor
-    handleRunCode = async () => {
+    handleRunCode = async ( { id = ''}) => {
         if (this.editorRef.current) {
                 const code = this.editorRef.current.getValue();
 
@@ -68,6 +67,7 @@ ${this.mainPart}`
                     } else {
                         // Successful execution
                         this.setRunResult(result.output || "");
+                        console.log('Approved')
                         this.setIsSuccess(true);
                         const updatedSolver = new Solve_Model({
                             ...this.solver,
@@ -75,7 +75,15 @@ ${this.mainPart}`
                         });
 
                         this.setSolver(updatedSolver);
-                        await this.service.upload_solver(updatedSolver);
+                        if(id.length===0) {
+                            await this.service.upload_solver(updatedSolver);
+                        } else {
+                            await this.service.solve_approve(id, updatedSolver);
+                        }
+
+
+
+
                     }
                 } catch (error) {
                     this.setRunResult(`Runtime error: ${error.message}`);
@@ -89,45 +97,5 @@ ${this.mainPart}`
     };
 
 
-    handleEventCodeRun = (code) => {
-        console.log(code)
-    }
 
-
-    // ✅ Optional: navigation to another route
-    goBackToEvents = () => {
-        this.navigate(routes.event_show);
-    };
-
-
-
-    splitCppCode = (code) => {
-        // Pattern to find the function declarations section
-        const functionDeclarationsPattern = /\/\/ ======= Function Declarations \(User will define these\) =======[\s\S]*?\/\/ ======= Generic Test Helpers =======/;
-
-        const part1End = code.indexOf('// ======= Function Declarations (User will define these) =======');
-        let part1, part2, part3;
-
-        if (part1End !== -1) {
-            part1 = code.substring(0, part1End);
-
-            const match = code.match(functionDeclarationsPattern);
-            if (match) {
-                part2 = match[0];
-                part3 = code.substring(part1End + part2.length);
-            } else {
-                // Fallback if pattern doesn't match
-                const part2End = code.indexOf('// ======= Generic Test Helpers =======');
-                part2 = code.substring(part1End, part2End);
-                part3 = code.substring(part2End);
-            }
-        } else {
-            // Fallback: split by approximate markers
-            part1 = code;
-            part2 = '';
-            part3 = '';
-        }
-
-        return { part1, part2, part3 };
-    }
 }
