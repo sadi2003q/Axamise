@@ -1,8 +1,31 @@
-// Question_Create.jsx
-import { useContext, useEffect, useState } from "react";
+// File: src/pages/Question_Create.jsx
+
+/**
+ * Question Creation/Editing Page
+ *
+ * This component provides an interface for creating new questions or editing existing ones.
+ * It handles both standalone question creation and question creation within specific events.
+ *
+ * Features:
+ * - Create new coding questions with title, description, and specifications
+ * - Edit existing questions (when questionID is provided)
+ * - Assign questions to specific events
+ * - Set question difficulty, type, and marks
+ * - Form validation and error handling
+ *
+ * @component
+ * @example
+ * // For creating a new question
+ * return <Question_Create />
+ *
+ * @example
+ * // For editing an existing question
+ * return <Question_Create /> // with questionID passed via route state
+ */
+
+import { useEffect, useState } from "react";
 import { Stack, Box } from "@mui/material";
 import { useLocation } from "react-router-dom";
-
 
 // Components
 import Profile_Background from "../../Components/__Profile.jsx"; // Common Background
@@ -19,41 +42,57 @@ import {
     DescriptionField,
 } from "../../Components/__Question_Create.jsx";
 
-
 // Model & Controller
 import Question from "../../models/Question_Model.js";
 import QuestionController from "../../controller/Questions/question_create.controller.js";
 
-
 // Global Context
 import { useGlobal } from "../../GlobalContext.jsx";
-
 
 // Routes
 import { useNavigate } from "react-router-dom";
 
+// =========================================================================
+// MAIN COMPONENT
+// =========================================================================
 
-
-//  -------------------- Main Function -------------------- //
 export default function Question_Create() {
+    // =========================================================================
+    // ROUTER & GLOBAL STATE
+    // =========================================================================
 
+    /**
+     * Router location hook to access passed state parameters
+     */
+    const location = useLocation();
 
+    /**
+     * Event ID and Question ID passed via navigation state
+     * - itemID: The event ID when creating question within an event context
+     * - questionID: The question ID when editing an existing question
+     * @type {Object}
+     */
+    const { itemID, questionID } = location.state || {};
 
-    // -------------------------Variables------------------------- //
-    const location = useLocation(); // Router
+    /**
+     * Global user context for current user ID
+     */
+    const { user_uid } = useGlobal();
 
-    /*
-    LEFT : 
-       - change the name of the global variable file 'itemID' to eventId
-    */
-    const { itemID, questionID } = location.state || {}; // Get eventID & questionID from Router state
+    /**
+     * Router navigation hook for programmatic navigation
+     */
+    const navigate = useNavigate();
 
-    const { user_uid } = useGlobal()
+    // =========================================================================
+    // STATE MANAGEMENT
+    // =========================================================================
 
-
-    const navigate = useNavigate(); // Router Navigate
-
-    // Question State
+    /**
+     * Main question state holding all question properties
+     * Initialized with default values for new question creation
+     * @type {[Question, Function]}
+     */
     const [question, setQuestion] = useState(
         new Question({
             title: "demo title",
@@ -61,20 +100,40 @@ export default function Question_Create() {
             mark: 0,
             difficulty: "",
             type: "Linked List",
-            event_uid: itemID || "No even id FOund",
+            event_uid: itemID || "No event id Found",
             createdBy: "Adnan",
             createdBy_uid: user_uid,
         })
     );
 
-
-    // Other States
+    /**
+     * List of available events for question assignment
+     * @type {[Array, Function]}
+     */
     const [event, setEvent] = useState([]);
+
+    /**
+     * Controls the visibility of the events selection drawer
+     * @type {[boolean, Function]}
+     */
     const [drawerOpen, setDrawerOpen] = useState(false);
+
+    /**
+     * Error message state for form validation and API errors
+     * @type {[string|null, Function]}
+     */
     const [error, setError] = useState(null);
 
-    const isValid =
+    // =========================================================================
+    // FORM VALIDATION
+    // =========================================================================
 
+    /**
+     * Validation flag checking if all required fields are properly filled
+     * Required fields: title, description, mark > 0, difficulty, type, event_uid, createdBy, createdBy_uid
+     * @type {boolean}
+     */
+    const isValid =
         question.title &&
         question.description &&
         question.mark > 0 &&
@@ -82,75 +141,119 @@ export default function Question_Create() {
         question.type &&
         question.event_uid &&
         question.createdBy &&
-        question.createdBy_uid
+        question.createdBy_uid;
 
+    // =========================================================================
+    // CONTROLLER INITIALIZATION
+    // =========================================================================
 
-
-    // Controller
+    /**
+     * Controller instance handling business logic for:
+     * - Question creation and updates
+     * - Data fetching
+     * - Error handling
+     * - Navigation
+     */
     const controller = new QuestionController(question, setQuestion, setError, navigate);
 
+    // =========================================================================
+    // EVENT HANDLERS
+    // =========================================================================
 
-
-    // Handlers
+    /**
+     * Handles changes to text input fields (title, description, type)
+     * Updates the question state with new values while preserving other properties
+     *
+     * @param {React.ChangeEvent} e - Change event from input field
+     */
     const handleChange = (e) => {
-        const updated = new Question({ ...question, [e.target.name]: e.target.value });
+        const updated = new Question({
+            ...question,
+            [e.target.name]: e.target.value
+        });
         setQuestion(updated);
     };
 
+    /**
+     * Handles changes to the mark slider value
+     * Updates the question's mark property with the new slider value
+     *
+     * @param {Event} event - The change event (unused)
+     * @param {number} newValue - The new mark value from the slider
+     */
     const handleMarkChange = (event, newValue) => {
-        const updated = new Question({ ...question, mark: newValue });
+        const updated = new Question({
+            ...question,
+            mark: newValue
+        });
         setQuestion(updated);
     };
 
+    /**
+     * Handles saving the question (both create and update scenarios)
+     * - If questionID exists: updates existing question
+     * - If no questionID: creates new question
+     */
     const handleSave = async () => {
-
-        if (questionID) await controller.handleUpdate(questionID);
-        else await controller.handleUpload();
+        if (questionID) {
+            await controller.handleUpdate(questionID);
+        } else {
+            await controller.handleUpload();
+        }
     };
 
-    // Load data (question + events)
+    // =========================================================================
+    // LIFECYCLE & SIDE EFFECTS
+    // =========================================================================
+
+    /**
+     * Effect to load initial data on component mount:
+     * - Fetches available events for the current user
+     * - If editing (questionID provided), fetches the existing question data
+     */
     useEffect(() => {
-
-        /*
-        LEFT : 
-            - put fetchEvent in the controller class of this question create unite
-        */
-
+        /**
+         * Fetches all events available to the current user
+         * Populates the events drawer with user's events
+         */
         const fetchEvents = async () => {
             const result = await controller.GetAllEvents(user_uid);
-            if (result.success) setEvent(result.data);
-            else console.error("Error fetching events:", result.error);
+            if (result.success) {
+                setEvent(result.data);
+            } else {
+                console.error("Error fetching events:", result.error);
+            }
         };
-        
+
         fetchEvents();
-        
-        if (questionID) controller.handleFetch(questionID);
+
+        // If editing existing question, fetch its data
+        if (questionID) {
+            controller.handleFetch(questionID);
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // =========================================================================
+    // RENDER COMPONENT
+    // =========================================================================
 
-
-
-    // -------------------- Render -------------------- //
     return (
-
-        // ------------Outer Container------------ //
+        // Main container with background
         <div className={Question_style.Outer_Container}>
+            {/* Background component for consistent styling */}
             <Profile_Background />
 
-
-
-            {/* Main Content */}
+            {/* Main content area */}
             <div className={Question_style.Inner_container}>
 
-
-
-
-                {/* Left side: Title && Description */}
+                {/* =================================================================
+                    LEFT PANEL - QUESTION CONTENT
+                    ================================================================= */}
                 <Question_Description>
 
-
-                    {/* Title */}
+                    {/* Question Title Input */}
                     <InputField
                         label="Title"
                         name="title"
@@ -158,8 +261,7 @@ export default function Question_Create() {
                         handleChange={handleChange}
                     />
 
-
-                    {/* Description */}
+                    {/* Question Description Textarea */}
                     <DescriptionField
                         id="description"
                         name="description"
@@ -168,22 +270,23 @@ export default function Question_Create() {
                         label="Description"
                     />
 
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
-
+                    {/* Error Display */}
+                    {error && (
+                        <p className="text-red-500 text-sm">
+                            {error}
+                        </p>
+                    )}
 
                 </Question_Description>
 
-
-
-
-                {/* Right side: Specs */}
+                {/* =================================================================
+                    RIGHT PANEL - QUESTION SPECIFICATIONS
+                    ================================================================= */}
                 <Question_Specification>
-
 
                     <Stack spacing={6} className="w-full">
 
-
-                        {/* Type */}
+                        {/* Question Type Input */}
                         <InputField
                             label="Type"
                             name="type"
@@ -191,17 +294,13 @@ export default function Question_Create() {
                             handleChange={handleChange}
                         />
 
-
-
-                        {/* Difficulty */}
+                        {/* Difficulty Level Selector */}
                         <Select_Difficulty
                             value={question.difficulty}
                             onChange={handleChange}
                         />
 
-
-
-                        {/* Event Drawer Selector */}
+                        {/* Event Selection Area */}
                         <div
                             style={{
                                 display: "flex",
@@ -210,8 +309,7 @@ export default function Question_Create() {
                                 marginTop: "1rem",
                             }}
                         >
-
-
+                            {/* Event Display Field (read-only) */}
                             <InputField
                                 label="Event"
                                 name="event_title"
@@ -220,36 +318,39 @@ export default function Question_Create() {
                                         ? event.find((e) => e.user_uid === question.event_uid)?.title || ""
                                         : ""
                                 }
-                                handleChange={() => { }}
+                                handleChange={() => { }} // Read-only field
                                 font_size="1rem"
                             />
-                            <Drower_Open_Button handleClick={() => setDrawerOpen(true)} />
+
+                            {/* Button to Open Events Drawer */}
+                            <Drower_Open_Button
+                                handleClick={() => setDrawerOpen(true)}
+                            />
                         </div>
 
-
-
-                        {/* Slider + Final Button */}
+                        {/* Marks and Action Section */}
                         <Box>
-
+                            {/* Marks Slider */}
                             <Mark_Slider
                                 value={question.mark}
                                 handleChange={handleMarkChange}
                             />
 
-                            {/* Upload Button */}
+                            {/* Save/Update Button (conditionally rendered) */}
                             {isValid && (
                                 <FinalButton
                                     passQuestion={question}
                                     handleChange={handleSave}
                                 />
                             )}
-
                         </Box>
                     </Stack>
                 </Question_Specification>
             </div>
 
-            {/* Drawer */}
+            {/* =================================================================
+                EVENTS SELECTION DRAWER
+                ================================================================= */}
             <Drawer_Input
                 drawerOpen={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -257,7 +358,11 @@ export default function Question_Create() {
                 iconColor="cyan"
                 onItemClick={(item) => {
                     console.log("Clicked item:", item);
-                    const updated = new Question({ ...question, event_uid: item.id });
+                    // Update question with selected event
+                    const updated = new Question({
+                        ...question,
+                        event_uid: item.id
+                    });
                     setQuestion(updated);
                     setDrawerOpen(false);
                 }}
