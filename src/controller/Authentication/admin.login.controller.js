@@ -2,7 +2,7 @@
 
 
 import { Admin_LoginService } from "../../services/Authentication/_admin.login.service.ts";
-
+import { routes} from "../../Utilities.ts";
 import { SERVICE } from "../../Utilities.ts";
 import { AuthenticationService } from "../../services/Authentication/_factory.Authentication.service.ts";
 
@@ -37,7 +37,7 @@ export class Admin_LoginController {
             // You can navigate here if you want:
 
 
-            // this.navigate("/admin/dashboard");
+            this.navigate(routes.approval_question);
 
 
 

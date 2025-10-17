@@ -111,12 +111,14 @@ export default function Admin_Approval() {
 #include <iostream>
 #include <string>
 #include <cstdlib>  
+
+//---PART01---
 using namespace std;
 
 ${rType} ${fName}() {
     // Your logic here
 }
-
+//---PART02---
 int main() {
     
     ${rType} n =  ;

@@ -38,7 +38,7 @@ export class Admin_ApproveController {
 
     fetchAllRequestedQuestions = async () => {
         try {
-            const result = await this.service._Fetch_All_Question();
+            const result = await this.service._Fetch_All_Question('admin');
             this.setAllPendingQuestions(result.data);
             if(result.data.length > 0) {
                 this.setQuestion(result.data[0]);

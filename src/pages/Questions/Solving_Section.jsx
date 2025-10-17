@@ -123,6 +123,34 @@ add required library as necessary
 
 
 
+    const splitCode = (code) => {
+        const part1Marker = "//---PART01---";
+        const part2Marker = "//---PART02---";
+
+        const part1Start = code.indexOf(part1Marker);
+        const part2Start = code.indexOf(part2Marker);
+
+        if (part1Start === -1 || part2Start === -1) {
+            throw new Error("Markers not found in code!");
+        }
+
+        // Calculate the end of each section
+        const part01End = part1Start;
+        const part02End = part2Start;
+
+        const part01 = code.substring(0, part01End).trim();
+        const part02 = code.substring(part1Start + part1Marker.length, part02End).trim();
+        const part03 = code.substring(part2Start + part2Marker.length).trim();
+
+        console.log("Part01:", part01);
+        console.log("Part02:", part02);
+        console.log("Part03:", part03);
+
+        return { part01, part02, part03 };
+    }
+
+
+
     // console.log(solver.solve_code);
 
     const splitCppCode = (codeString) => {
@@ -184,28 +212,70 @@ add required library as necessary
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [questionID]);
 
+    // useEffect(() => {
+    //     if (!editorRef.current) return; // Add this check
+    //
+    //     if (enteredEvent === null) {
+    //         if (question.mainFunctionCode) {
+    //
+    //
+    //             // worning
+    //             const { part1, part2, part3 } = splitCppCode(question.mainFunctionCode);
+    //             setLibraryPart(part1)
+    //             setEditablePart(part2)
+    //             setMainPart(part3)
+    //             editorRef.current.setValue(overView + part2);
+    //             setCode(question.mainFunctionCode);
+    //         }
+    //     } else {
+    //         const { part1, part2, part3 } = splitCppCode2(enteredEvent.mainFunctionCode);
+    //         setLibraryPart(part1)
+    //         setEditablePart(part2)
+    //         setMainPart(part3)
+    //         editorRef.current.setValue(overView + part2);
+    //         setCode(enteredEvent.mainFunctionCode);
+    //     }
+    // }, [question.mainFunctionCode, enteredEvent?.mainFunctionCode]);
+
+
     useEffect(() => {
-        if (!editorRef.current) return; // Add this check
+        if (!editorRef.current) return;
 
-        if (enteredEvent === null) {
-            if (question.mainFunctionCode) {
-                const { part1, part2, part3 } = splitCppCode(question.mainFunctionCode);
-                setLibraryPart(part1)
-                setEditablePart(part2)
-                setMainPart(part3)
-                editorRef.current.setValue(overView + part2);
-                setCode(question.mainFunctionCode);
+        const processCode = () => {
+            let codeToProcess;
+
+            if (enteredEvent === null) {
+                codeToProcess = question.mainFunctionCode;
+            } else {
+                codeToProcess = enteredEvent.mainFunctionCode;
             }
-        } else {
-            const { part1, part2, part3 } = splitCppCode2(enteredEvent.mainFunctionCode);
-            setLibraryPart(part1)
-            setEditablePart(part2)
-            setMainPart(part3)
-            editorRef.current.setValue(overView + part2);
-            setCode(enteredEvent.mainFunctionCode);
-        }
-    }, [question.mainFunctionCode, enteredEvent?.mainFunctionCode]);
 
+            if (!codeToProcess) return;
+
+            try {
+                // Use splitCode since your code has PART01/PART02 markers
+                const { part01, part02, part03 } = splitCode(codeToProcess);
+
+                setLibraryPart(part01);
+                setEditablePart(part02);
+                setMainPart(part03);
+
+                // Set editor value with the editable part
+                const editorValue = overView + part02;
+                editorRef.current.setValue(editorValue);
+                setCode(codeToProcess);
+
+            } catch (error) {
+                console.error("Error splitting code:", error);
+                // Fallback: use the entire code as editable part
+                const editorValue = overView + codeToProcess;
+                editorRef.current.setValue(editorValue);
+                setCode(codeToProcess);
+            }
+        };
+
+        processCode();
+    }, [question.mainFunctionCode, enteredEvent?.mainFunctionCode]);
 
 
 
@@ -354,7 +424,6 @@ add required library as necessary
                             }}
                             onMount={(editor, monaco) => {
                                 editorRef.current = editor;
-                                console.log("✅ Editor is ready");
                                 setCode(editor.getValue());
                             }}
                             onChange={(value) => setCode(value)}

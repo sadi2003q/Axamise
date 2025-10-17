@@ -14,9 +14,9 @@ import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
 export class QuestionListService {
 
     
-    _Fetch_All_Question = async (): Promise<Firebase_Response> => {
+    _Fetch_All_Question = async (database = 'user'): Promise<Firebase_Response> => {
         try {
-            const querySnapshot = await getDocs(collection(db, Database.approvedQuestions));
+            const querySnapshot = await getDocs(collection(db, database == 'admin' ? Database.question : Database.approvedQuestions));
 
             // Map all documents into an array
             const questions = querySnapshot.docs.map((doc) => ({
