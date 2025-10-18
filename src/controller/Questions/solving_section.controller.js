@@ -43,7 +43,7 @@ export class SolvingSectionController {
     };
 
     // ✅ Run the code from editor
-    handleRunCode = async ( { id = ''}) => {
+    handleRunCode = async ( { id = '', dryRun = false}) => {
         if (this.editorRef.current) {
                 const code = this.editorRef.current.getValue();
 
@@ -78,7 +78,7 @@ ${this.mainPart}`
                         if(id.length===0) {
                             console.log('ID is not sent, Solution cannot be uploaded')
                         } else {
-                            await this.service.solve_approve(id, updatedSolver);
+                            if( !dryRun )  await this.service.solve_approve(id, updatedSolver);
                         }
 
 

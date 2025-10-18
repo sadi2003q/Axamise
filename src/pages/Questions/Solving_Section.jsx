@@ -66,6 +66,7 @@ export default function Solving_Section() {
      * @type {string}
      */
     const { questionID } = location.state || {};
+    const [dryRun, setDryRun] = useState(true);
 
     /**
      * Event data when navigating from event context
@@ -318,6 +319,7 @@ add required library as necessary
         if (enteredEvent != null) return;
 
         if (questionID) {
+            setDryRun(true);
             controller.fetchQuestion(questionID).then(r => {});
         } else {
             controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb').then(r => {});
@@ -511,7 +513,7 @@ add required library as necessary
                             {/* Code Execution Controls */}
                             <div className="flex flex-col space-y-3 mx-1.">
                                 <Button
-                                    onClick={() => controller.handleRunCode({id: user_uid})}
+                                    onClick={() => controller.handleRunCode({id: user_uid, dryRun: dryRun})}
                                     variant="contained"
                                     disabled={!code.trim() || isRunning}
                                     sx={{

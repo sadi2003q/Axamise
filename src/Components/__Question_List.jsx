@@ -10,6 +10,7 @@ import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { FaUser, FaQuestionCircle, FaClock, FaLayerGroup, FaStar } from "react-icons/fa";
@@ -210,18 +211,16 @@ export const Edit_Delete_Button = ({
 
 
 
-export const NestedList = ({ items, onSelect, solvedProblem=[] }) => {
+
+export const NestedList = ({ items, onSelect, solvedProblem = [] }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
-    // Filter items based on search query
     const filteredItems = items.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
         <div className="w-full">
-
-
             {/* Search Bar */}
             <div className="relative w-full mb-2">
                 <div className="absolute left-0 top-0 h-full flex items-center pl-2 pointer-events-none text-white">
@@ -246,7 +245,6 @@ export const NestedList = ({ items, onSelect, solvedProblem=[] }) => {
             >
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item, index) => (
-
                         <ListItemButton
                             key={index}
                             onClick={() => onSelect(item)}
@@ -257,14 +255,9 @@ export const NestedList = ({ items, onSelect, solvedProblem=[] }) => {
                                 borderBottom: "1px solid rgba(255,255,255,0.2)",
                             }}
                         >
-
-
-
                             <ListItemIcon sx={{ color: "#fff", minWidth: "30px" }}>
                                 <InfoIcon />
                             </ListItemIcon>
-
-
 
                             <ListItemText
                                 primary={item.title}
@@ -276,9 +269,16 @@ export const NestedList = ({ items, onSelect, solvedProblem=[] }) => {
                                 }}
                             />
 
-
-
-
+                            {/* ✅ Green Circle Icon if solved */}
+                            {solvedProblem.includes(item.id) && (
+                                <CheckCircleOutlineIcon
+                                    sx={{
+                                        color: "limegreen",
+                                        fontSize: 22,
+                                        ml: 1,
+                                    }}
+                                />
+                            )}
                         </ListItemButton>
                     ))
                 ) : (
@@ -293,7 +293,6 @@ export const NestedList = ({ items, onSelect, solvedProblem=[] }) => {
         </div>
     );
 };
-
 
 
 
