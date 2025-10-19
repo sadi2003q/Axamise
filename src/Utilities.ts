@@ -52,7 +52,9 @@ export const Database = {
     admins: 'Admins',
     approvedQuestions: 'ApprovedQuestions',
     notifications: 'Notifications',
-    solves: 'Solves'
+    solves: 'Solves',
+    event_participants: 'Participants',
+    solvedProblems: 'solvedProblems'
 }
 
 export const routes = {

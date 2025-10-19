@@ -413,12 +413,15 @@ add required library as necessary
      * Handle Whether the question is dry-running or solved for the first time
      */
     useEffect(() => {
-        controller.handleIfSolvedPreviously({
-            userID: user_uid,
-            questionID: questionID,
-        }).then((response) => {
-            setDryRun(response.data)
-        })
+        if(!location.state?.event) {
+            controller.handleIfSolvedPreviously({
+                userID: user_uid,
+                questionID: questionID,
+            }).then((response) => {
+                setDryRun(response.data)
+            })
+        }
+
     }, [])
 
 

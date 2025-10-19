@@ -22,11 +22,6 @@ export class EventShowService {
 
     };
 
-
-    fetchAllEvents = async () => {
-
-    }
-
     Delete_Event = async (eventID: string) => {
         return this.repository._Delete_Event(eventID)
     };

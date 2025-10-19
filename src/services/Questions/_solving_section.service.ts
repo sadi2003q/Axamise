@@ -77,11 +77,10 @@ export class SolveService {
      */
     solve_approve = async (id: string, solver: Solve_Model): Promise<Firebase_Response> => {
         try {
-            console.log('Function Called');
 
             // Reference to specific user's solvedProblems subcollection
             const userSolvedRef = doc(
-                collection(db, Database.student, id, "solvedProblems"),
+                collection(db, Database.student, id, Database.solvedProblems),
                 solver.question_id // set document ID = question_id
             );
 
@@ -125,7 +124,7 @@ export class SolveService {
         question_id: string;
     }): Promise<Firebase_Response> => {
         try {
-            const docRef = doc(db, Database.student, user_id, "solvedProblems", question_id);
+            const docRef = doc(db, Database.student, user_id, Database.solvedProblems, question_id);
             const docSnap = await getDoc(docRef);
             return {
                 success: true,
@@ -133,6 +132,31 @@ export class SolveService {
             }
         } catch (error) {
 
+        }
+    }
+
+
+    _EventApprovement = async ({userID, eventID}: {
+        userID: string;
+        eventID: string;
+    }) : Promise<Firebase_Response> => {
+        try {
+
+            const userSolvedRef = doc(
+                collection(db, Database.event, eventID, Database.event_participants),
+                userID // set document ID = question_id
+            );
+
+
+            return {
+                success: true,
+                data: 'new Id is created',
+            }
+
+
+
+        } catch (error) {
+            console.error("Error while attempting to approve problem:\n", error);
         }
     }
 

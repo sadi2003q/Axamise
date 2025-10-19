@@ -5,6 +5,7 @@ import { db } from "../../../firebase";
 import { collection, doc, setDoc, addDoc, getDoc, query, where, getDocs, deleteDoc} from "firebase/firestore";
 import { Database } from '../../../Utilities'
 import { EVENT_APPROVAL_STATUS } from '../../../Utilities'
+import { Participant } from '../../../models/Participants_Model'
 
 
 
@@ -164,6 +165,59 @@ export class FirebaseEventRepository implements IEventRepository {
         } catch (error) {
             console.error(`Error deleting the event: ${error}`);
             return { success: false, error: error.message || error };
+        }
+    }
+
+
+    /**
+     * Make New Participant Into the Event
+     * @param eventID
+     * @param model - Data Collection, which will be set for the participator
+     * @return Boolean
+     */
+    async _MakeNewEntryForEvent(eventID: string, model: Participant) : Promise<Firebase_Response> {
+        try {
+
+            const userSolvedRef = doc(
+                collection(db, Database.event, eventID, Database.event_participants),
+                model.uid // set document ID = question_id
+            );
+
+            await setDoc(userSolvedRef, {
+                participator_name: model.name,
+                date_of_participate: model.date,
+                submitCount: 0,
+                points: 0
+            })
+
+            return {
+                success: true,
+                data: 'Data is Created'
+            }
+
+        } catch (error) {
+            console.error('Error starting event data listening : ' + error.message || error);
+        }
+    }
+
+    /**
+     * Check if the User has already entered the Event or not
+     * @param eventID
+     * @param userID
+     * @return Boolean
+     */
+    async _CheckEntryForEvent(eventID: string, userID: string) : Promise<Firebase_Response> {
+        try {
+            const docRef = doc(db, Database.student, eventID, Database.solvedProblems, userID);
+            const docSnap = await getDoc(docRef);
+            console.log(docSnap.exists());
+            return {
+                success: true,
+                data: docSnap.exists()
+            }
+
+        } catch (error) {
+            // console.error(error)
         }
     }
 

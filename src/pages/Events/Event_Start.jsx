@@ -6,9 +6,13 @@ import { useLocation } from "react-router-dom";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { EventEnterController } from '../../controller/Events/event_enter.controller.js'
+import { useGlobal } from "../../GlobalContext.jsx";
 
 
 export default function EventStart() {
+
+    const { currentName, user_uid } = useGlobal();
+
 
     /**
      *  Event Variable --> this will hold the variable which will be passed to the event page
@@ -32,6 +36,15 @@ export default function EventStart() {
     // Controller
     const controller = new  EventEnterController(navigate)
 
+
+    const handleUserManagement = () => {
+        controller._handleUserInformationForEvent({
+            eventID: location.state.eventID,
+            userID: user_uid,
+            name: currentName
+        })
+    }
+
     /**
      * if event ID is found in the id of the event from URL, then fetch from firestore
      */
@@ -39,6 +52,7 @@ export default function EventStart() {
         if (location.state?.item) setEvent(location.state.item);
         else console.log("No eventID found in state");
     }, [location.state]);
+
 
 
 
@@ -197,7 +211,10 @@ export default function EventStart() {
                         {/* Start Button (unchanged) */}
                         <Box sx={{ zIndex: 1 }}>
                             <Button
-                                onClick={() => controller._handleNavigation_EventSolve(event)}
+                                onClick={() => {
+                                    handleUserManagement()
+                                    controller._handleNavigation_EventSolve(event)
+                                }}
                                 variant="contained"
                                 color="error"
                                 size="large"
