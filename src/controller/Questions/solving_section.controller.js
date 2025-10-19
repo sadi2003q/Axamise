@@ -47,6 +47,7 @@ export class SolvingSectionController {
         if (this.editorRef.current) {
                 const code = this.editorRef.current.getValue();
 
+                // From Start to main function
                 const fullCode = `
 ${this.libraryPart}
 ${code}
@@ -59,6 +60,8 @@ ${this.mainPart}`
 
                 try {
                     const result = await this.service.runCode(fullCode);
+
+
 
                     if (result.error && result.error.trim() !== "") {
                         // Syntax/Compilation error
@@ -78,6 +81,11 @@ ${this.mainPart}`
                         if(id.length===0) {
                             console.log('ID is not sent, Solution cannot be uploaded')
                         } else {
+
+                            /**
+                             * if the problem has already been solved then it will just run the code and return the result
+                             * it won't update the database
+                             */
                             if( !dryRun )  await this.service.solve_approve(id, updatedSolver);
                         }
 
@@ -96,6 +104,15 @@ ${this.mainPart}`
             }
     };
 
+
+    /**
+     * Check if the **Problem** has already been solved or not
+     */
+    handleIfSolvedPreviously = async ({userID, questionID}) => {
+
+        return this.service._CheckIfSolved({user_id: userID, question_id: questionID}).then();
+
+    }
 
 
 }

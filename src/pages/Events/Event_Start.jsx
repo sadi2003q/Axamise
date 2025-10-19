@@ -9,6 +9,10 @@ import { EventEnterController } from '../../controller/Events/event_enter.contro
 
 
 export default function EventStart() {
+
+    /**
+     *  Event Variable --> this will hold the variable which will be passed to the event page
+     */
     const [event, setEvent] = useState({
         title: "AI Challenge 2025",
         description: "Compete to solve real-world AI problems using your coding skills!",
@@ -18,21 +22,22 @@ export default function EventStart() {
         startTime: "10:00 AM",
         duration: { hours: 2, minutes: 30 },
     });
+
+    // Navigation For Routes
     const navigate = useNavigate();
 
-
+    // For Holding variable passed from the parameter
     const location = useLocation();
 
-
+    // Controller
     const controller = new  EventEnterController(navigate)
 
+    /**
+     * if event ID is found in the id of the event from URL, then fetch from firestore
+     */
     useEffect(() => {
-        if (location.state?.item) {
-            setEvent(location.state.item);
-
-        } else {
-            console.log("No eventID found in state");
-        }
+        if (location.state?.item) setEvent(location.state.item);
+        else console.log("No eventID found in state");
     }, [location.state]);
 
 
@@ -42,6 +47,8 @@ export default function EventStart() {
             <Background_Particles />
 
             <div className="w-full h-full flex items-center justify-center gap-4 px-6">
+
+
                 {/* -------- Event Description Section -------- */}
                 <Question_list2>
                     <Box

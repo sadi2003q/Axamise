@@ -10,27 +10,32 @@ import { Solve_Model} from "../../models/Solve_Model";
 
 export class SolveService {
 
-
-    _Fetch_Question = async (id: string): Promise<Firebase_Response> => {
+    /**
+     * Fetch the Problem from database
+     * @param question_id - ID of the specific question
+     * @returns Firebase_Response
+     *  returns the question
+     */
+    _Fetch_Question = async (question_id: string): Promise<Firebase_Response> => {
 
         try {
-
-            const docRef = doc(db, Database.approvedQuestions, id)
+            const docRef = doc(db, Database.approvedQuestions, question_id)
             const docSnap = await getDoc(docRef)
-
             if (docSnap.exists()) return { success: true, data: { id: docSnap.id, ...docSnap.data() } };
             else return { success: false, error: "No such document found" };
-
-
-
-
         } catch (error) {
             console.log(`Error FOund while Fetching from database ${error}`)
             return { success: false, error: error }
         }
     }
 
-    // File: RunCodeAPI.js
+    /**
+     * Run the code
+     * @param sourceCode - Code that user write
+     * @return Firebase_Response
+     *   - Returns no error if all test cases are Correct
+     *   - Returns error if any syntax or any kind of error or tase case didn't match
+     */
     runCode = async (sourceCode: string): Promise<Firebase_Response> => {
         try {
             const response = await fetch("https://emkc.org/api/v2/piston/execute", {
@@ -103,6 +108,40 @@ export class SolveService {
             };
         }
     };
+
+
+    /**
+     * Check if the **Problem** has already been solved or not
+     * @param user_id - The collection where the subcollection exist
+     * @param question_id - the QuestionID I am looking at
+     * @returns Firebase_Response
+     *  return true if the collection is found within the database
+     */
+    _CheckIfSolved = async ({
+         user_id,
+         question_id,
+     }: {
+        user_id: string;
+        question_id: string;
+    }): Promise<Firebase_Response> => {
+        try {
+            const docRef = doc(db, Database.student, user_id, "solvedProblems", question_id);
+            const docSnap = await getDoc(docRef);
+            return {
+                success: true,
+                data: docSnap.exists()
+            }
+        } catch (error) {
+
+        }
+    }
+
+
+
+
+
+
+
 
 }
 

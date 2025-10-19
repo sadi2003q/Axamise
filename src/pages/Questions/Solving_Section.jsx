@@ -274,25 +274,14 @@ add required library as necessary
         return { part01, part02, part03 };
     };
 
-    const countDownTimer = () => {
-        setMinute((prevMinute) => {
-            if (prevMinute > 0) {
-                return prevMinute - 1;
-            } else {
-                // If minute hits 0 but we still have hours left
-                setHour((prevHour) => {
-                    if (prevHour > 0) {
-                        setMinute(59);
-                        return prevHour - 1;
-                    } else {
-                        // When both hour and minute reach 0, stop countdown
-                        return 0;
-                    }
-                });
-                return 0;
-            }
-        });
-    };
+
+
+
+
+
+
+
+
 
     // =========================================================================
     // LIFECYCLE & SIDE EFFECTS
@@ -320,6 +309,7 @@ add required library as necessary
 
         if (questionID) {
             setDryRun(true);
+
             controller.fetchQuestion(questionID).then(r => {});
         } else {
             controller.fetchQuestion('0eY0SFWEwdFssbpzWQxb').then(r => {});
@@ -333,7 +323,6 @@ add required library as necessary
      * Handles both single questions and event-based questions
      */
     useEffect(() => {
-        console.log('id found : ',user_uid ?? 'Not Found')
         if (!editorRef.current) return;
 
         const processCode = () => {
@@ -372,7 +361,9 @@ add required library as necessary
         processCode();
     }, [question.mainFunctionCode, enteredEvent?.mainFunctionCode]);
 
-    // Countdown timer effect
+    /**
+     * Countdown timer effect
+     */
     useEffect(() => {
         if (!enteredEvent) return;
 
@@ -417,6 +408,32 @@ add required library as necessary
         // Cleanup function
         return () => clearInterval(timer);
     }, [enteredEvent]);
+
+    /**
+     * Handle Whether the question is dry-running or solved for the first time
+     */
+    useEffect(() => {
+        controller.handleIfSolvedPreviously({
+            userID: user_uid,
+            questionID: questionID,
+        }).then((response) => {
+            setDryRun(response.data)
+        })
+    }, [])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // =========================================================================
     // DRAG RESIZE HANDLERS
@@ -504,7 +521,7 @@ add required library as necessary
                 }
 
 
-                <div style={{display: "flex", width: "100%"}}>
+                <div className={'w-full flex flex-col lg:flex-row'}>
                     {/* =================================================================
                         LEFT PANEL - PROBLEM DESCRIPTION & CONTROLS
                         ================================================================= */}
