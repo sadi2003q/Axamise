@@ -18,18 +18,25 @@ export class EventEnterController  {
 
     _handleUserInformationForEvent({eventID, userID, name}) {
 
-        const participant = new Participant({
-            id: userID,
-            name: name,
-            date: Date.now(),
-            points: 0
-        })
+        console.log('\n\nParameter check from controller class')
+        console.log('userID: ' + userID);
+        console.log('eventID: ' + eventID)
 
-        this.service.UserInfoManagement({eventID: `${eventID}`, participator: participant}).then(() => {
+        /**
+         * eventID: string,
+         *         participatorName: string,
+         *         participatorID: string
+         */
 
-        }).catch((err) => {
-            console.log(err)
-        })
+
+        this.service.UserInfoManagement({
+            eventID: eventID,
+            participatorName: name,
+            participatorID: userID, // ✅ match the service parameter
+        }).then((response) => {
+            console.log('response : ', response)
+        });
+
     }
 
 }

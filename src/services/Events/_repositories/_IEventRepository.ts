@@ -189,7 +189,7 @@ export class FirebaseEventRepository implements IEventRepository {
                 submitCount: 0,
                 points: 0
             })
-
+            console.log('User data is recorded')
             return {
                 success: true,
                 data: 'Data is Created'
@@ -208,9 +208,21 @@ export class FirebaseEventRepository implements IEventRepository {
      */
     async _CheckEntryForEvent(eventID: string, userID: string) : Promise<Firebase_Response> {
         try {
-            const docRef = doc(db, Database.student, eventID, Database.solvedProblems, userID);
+            console.log('\n\nParameter check from repository class(_CheckEntryForEvent)')
+            console.log('userID: ' + userID);
+            console.log('eventID: ' + eventID)
+
+            const docRef = doc(db, Database.event, eventID, Database.event_participants, userID);
             const docSnap = await getDoc(docRef);
-            console.log(docSnap.exists());
+
+
+
+
+            console.log('Response within repository class\n\n')
+            if(docSnap.exists()) console.log('User Already exists for this event')
+            else console.log('User is going for the First time')
+
+
             return {
                 success: true,
                 data: docSnap.exists()

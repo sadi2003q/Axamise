@@ -39,10 +39,13 @@ export default function EventStart() {
 
     const handleUserManagement = () => {
         controller._handleUserInformationForEvent({
-            eventID: location.state.eventID,
+            eventID: location.state?.item.id,
             userID: user_uid,
             name: currentName
         })
+        console.log('\n\nFrom UI class')
+        console.log('Event : ', location.state?.item.id ?? 'its not a part of Event')
+        console.log('User ID: ', user_uid)
     }
 
     /**
