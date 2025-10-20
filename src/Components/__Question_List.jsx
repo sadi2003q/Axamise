@@ -29,11 +29,15 @@ export const Question_style = {
 
     event_description2:
     // Full width on mobile, half width on desktop
-        "m-2 w-full md:w-[50vw] bg-red-500 overflow-auto min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-0 rounded-3xl",
+        "m-2 w-full md:w-[70vw] bg-red-500 overflow-auto min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-0 m-4 rounded-3xl items-start justify-center",
 
     event_scheduling:
         // Full width on mobile, fixed width on desktop
-        "m-2 w-full md:w-[35vw] md:h-[86vh] rounded-4xl bg-white/5 border-2 border-amber-200/5 shadow-[0_0_30px_rgba(255,165,0,0.3)] backdrop-blur-md flex flex-col items-center justify-around gap-8 p-6 self-center overflow-auto",
+        "m-2 w-full md:w-[75vw] lg:w-[35vw] md:h-[76vh] rounded-4xl bg-white/5 border-2 border-amber-200/5 shadow-[0_0_30px_rgba(255,165,0,0.3)] backdrop-blur-md flex flex-col items-center justify-around gap-8 p-6 self-center overflow-auto",
+
+    event_scheduling2:
+        "m-2 w-full md:w-[75vw] lg:w-[35vw] md:h-[76vh] rounded-4xl bg-transparent border-2 border-amber-200/5 shadow-[0_0_30px_rgba(255,165,0,0.3)] backdrop-blur-md flex flex-col items-center justify-around gap-8 p-6 self-center overflow-auto",
+
 
     Outer_Container:
         // Column on mobile, row on desktop
@@ -80,6 +84,15 @@ export const Question_list2 = ({ children,}) => {
 export const Question_Description = ({children}) => {
     return (
         <div className={Question_style.event_scheduling}>
+            {children}
+        </div>
+    );
+};
+
+// Event Scheduling
+export const Question_Description2 = ({children}) => {
+    return (
+        <div className={Question_style.event_scheduling2}>
             {children}
         </div>
     );
