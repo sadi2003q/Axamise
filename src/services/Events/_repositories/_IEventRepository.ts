@@ -21,6 +21,10 @@ interface IEventRepository {
 
 export class FirebaseEventRepository implements IEventRepository {
 
+    /**
+     * Create New Event
+     * @param event
+     */
     async _Create_Event(event: Events_Model) : Promise<Firebase_Response> {
         try {
             const docRef = await addDoc(collection(db, Database.event), {
@@ -47,6 +51,11 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Update Event with Parameter
+     * @param id
+     * @param event
+     */
     async _UpdateEvent(id: string, event: Events_Model): Promise<Firebase_Response> {
         try {
             const docRef = doc(db, "Events", id);
@@ -76,6 +85,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Fetch any specific Event from Database
+     * @param eventID
+     */
     async _Fetch_Event(eventID: string) : Promise<Firebase_Response> {
         try {
             const eventRef = doc(db, "Events", eventID); // Reference to the specific document
@@ -92,6 +105,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Get all the events of a specific user
+     * @param id
+     */
     async _GetAllEventById(id: string) : Promise<Firebase_Response> {
         try {
             console.log(`id : ${id}`)
@@ -121,6 +138,9 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Fetch All event from Database
+     */
     async _FetchAllEvent(): Promise<Firebase_Response> {
         try {
             // Reference to the "Events" collection
@@ -151,6 +171,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * For Deleting an Event
+     * @param eventID
+     */
     async _Delete_Event(eventID: string): Promise<Firebase_Response> {
         try {
             if (!eventID) return { success: false, error: "No eventID provided" };
@@ -167,7 +191,6 @@ export class FirebaseEventRepository implements IEventRepository {
             return { success: false, error: error.message || error };
         }
     }
-
 
     /**
      * Make New Participant Into the Event

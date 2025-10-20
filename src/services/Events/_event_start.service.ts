@@ -12,20 +12,21 @@ export class EventStartService {
     }
 
 
-    // Enter Data into the Database for Participator
+    /**
+     * Check for Previous User or new User for the event
+     * (Can be used to prevent multiple entry)
+     * @param eventID
+     * @param participatorName
+     * @param participatorID
+     * @constructor
+     */
     UserInfoManagement = async ({eventID, participatorName, participatorID}: {
         eventID: string,
         participatorName: string,
         participatorID: string
     }) => {
 
-        console.log('\n\nParameter check from Server class')
-        console.log('userID: ' + participatorID);
-        console.log('eventID: ' + eventID)
-
-
         this.repository._CheckEntryForEvent(eventID, participatorID).then((response) => {
-            console.log('response from server class : ', response.data);
 
             if(!response.data) {
                 const model = new Participant({
@@ -38,12 +39,9 @@ export class EventStartService {
 
                 })
 
-                this.repository._MakeNewEntryForEvent(eventID, model).then(() => {
-                    console.log(response.data)
+                this.repository._MakeNewEntryForEvent(eventID, model).then(() => {}).catch((error) => {
+                    console.error(error)
                 })
-
-
-
             }
 
 
@@ -52,8 +50,6 @@ export class EventStartService {
             console.error(error);
         })
     }
-
-
 
 }
 

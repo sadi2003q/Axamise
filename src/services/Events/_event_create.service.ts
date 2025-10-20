@@ -19,7 +19,7 @@ export class EventCreateService {
 
 
     /**
-     * 🔹 Create a new event
+     * Upload an event to the Database
      */
     _Upload_Event = async () => {
         console.log('_Upload Event()  ---  event_create_service')
