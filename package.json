@@ -20,6 +20,7 @@
     "@mui/material": "^7.3.2",
     "@mui/x-date-pickers": "^8.11.2",
     "@mui/x-tree-view": "^8.11.3",
+    "@splinetool/viewer": "^1.10.81",
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.11.0",
     "date-fns": "^2.30.0",

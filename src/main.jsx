@@ -20,7 +20,13 @@ import Admin_login from "./pages/Authentication/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
+<<<<<<< Updated upstream
 import EventStart from "./pages/Events/Event_Start.jsx";
+=======
+import Landing from "./Landing.jsx";
+import { EventList } from "./Components/__Event_Show.jsx";
+
+>>>>>>> Stashed changes
 
 // ============================================================
 // 🌐 Navigation Bar Component
@@ -72,6 +78,7 @@ function AppLayout() {
   );
 }
 
+<<<<<<< Updated upstream
 // ============================================================
 // 🚀 Main App Entry with Routing
 // ============================================================
@@ -112,3 +119,50 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </EventProvider>
     </GlobalProvider>
 );
+=======
+// Define route Path
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <GlobalProvider>
+    <BrowserRouter>
+      <Routes>
+        {/* <Route path="/" element={<LanguageShowcase />} /> */}
+        <Route path="/" element={<Landing />} />
+        {/* Opening Path */}
+        {/* <Route path="/" element={<Signup />} /> */}
+        {/* <Route path="/" element={<Login />} /> */}
+        {/* <Route path="/" element={<Question_Create />} /> */}
+        {/* <Route path="/" element={<Login />} /> */}
+        {/* <Route path="/" element={<Solving_Section />} /> */}
+        {/* <Route path="/" element={<Profile />} /> */}
+        {/* <Route path="/" element={ <Admin_ApprovalEvent />} /> */}
+        {/*<Route path="/EVENT_QUESTION" element={<Event_Questions />} />*/}
+        {/*<Route path="/EVENT_CREATE" element={<Event_Create />} />*/}
+        {/* <Route path="/EVENT_CREATE" element={ <Event_Create />} />
+        <Route path="/EVENT_SHOW" element={<Event_Show />} />
+        <Route path="/SOLVE" element={<Solving_Section />} />
+        <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+        <Route path="/QUESTION_LIST" element={<Question_List />} /> */}
+        {/* <Route path="/admin_approvalQuestion" element={<Admin_Approval />} /> */}
+        <Route path="/" element={<Profile />} />
+        <Route path="/EVENT_CREATE" element={<Event_Create />} />
+        // <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+        <Route path="/SOLVE" element={<Solving_Section />} />
+        <Route path="/EVENT_SHOW" element={<Event_Show />} />
+        <Route path="/QUESTION_LIST" element={<Question_List />} />
+        <Route path="/feed" element={<Feed />} />
+        {/* <Route path="/" element={<Dashboard />} /> */}
+        {/*    Example USEG
+          <Route path="/create" element={<CreateStudent />} />
+          <Route path="/single" element={<SingleStudent />} />
+          <Route path="/read" element={<ReadStudents />} />
+          <Route path="/update/:id" element={<UpdateStudent />} />
+          <Route path="/delete/:id" element={<DeleteStudent />} /> 
+          
+        */}
+      </Routes>
+    </BrowserRouter>
+  </GlobalProvider>
+);
+>>>>>>> Stashed changes
