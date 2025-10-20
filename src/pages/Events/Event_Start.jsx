@@ -104,7 +104,8 @@ export default function EventStart() {
                             width: "100%",
                             height: "100%",
                             flex: 1,
-                            background: "linear-gradient(325deg, #b71c1c 0%, #000 80%)",
+                            background: "transparent",
+
 
                             // background: 'white',
                             color: "white",
@@ -170,6 +171,14 @@ export default function EventStart() {
                                 Event Schedule
                             </Typography>
 
+
+
+
+
+
+
+
+
                             <Box
                                 sx={{
                                     background: "rgba(255, 255, 255, 0.05)",
@@ -195,7 +204,7 @@ export default function EventStart() {
 
                                 <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
                                     <AccessTime sx={{ color: "#ff1744" }} />
-                                    <Box>
+                                    <Box sx={{ textAlign: "left" }}>
                                         <Typography sx={{ fontSize: "0.9rem", opacity: 0.7 }}>
                                             Start Time
                                         </Typography>
@@ -217,6 +226,20 @@ export default function EventStart() {
                                     </Box>
                                 </Box>
                             </Box>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         </Box>
 
                         {/* Start Button */}
