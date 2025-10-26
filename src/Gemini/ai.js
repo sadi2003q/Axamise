@@ -46,7 +46,6 @@ ${answer}
 
     const result = await model.generateContent(prompt);
     const data = JSON.parse(result.response.text());
-    console.log(data);
     return data;
 }
 
