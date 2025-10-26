@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@google/generative-ai": "^0.24.1",
     "@monaco-editor/react": "^4.7.0",
     "@mui/icons-material": "^7.3.2",
     "@mui/joy": "^5.0.0-beta.52",
@@ -24,6 +25,7 @@
     "axios": "^1.11.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.18",
+    "dotenv": "^17.2.3",
     "firebase": "^12.2.1",
     "framer-motion": "^12.23.22",
     "gsap": "^3.13.0",
@@ -40,6 +42,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@types/dotenv": "^6.1.1",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",

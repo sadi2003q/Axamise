@@ -4,7 +4,7 @@ import { FaQuestionCircle, FaClock, FaLayerGroup, FaStar } from "react-icons/fa"
 export const Solve_style = {
     event_description:
         // smaller section (takes 1 part)
-        "flex-1 m-2 min-h-[500px] md:h-[86vh] flex flex-col gap-6 p-2 overflow-auto",
+        "flex-1 m-2 h-auto max-h-[500px] md:h-[86vh] flex flex-col gap-6 p-2 overflow-auto",
 
     event_scheduling:
         // bigger section (takes 2 parts)
@@ -224,11 +224,15 @@ export const Event_Question = ({
                                             {part.content}
                                         </p>
                                     ) : (
-                                        <p key={i}>{part.content}</p>
+                                        // 👇 ADD this style or class here
+                                        <p key={i} className="whitespace-pre-wrap">
+                                            {part.content}
+                                        </p>
                                     )
                                 );
                             })()}
                         </div>
+
 
                         {/* Difficulty, Mark, Type */}
                         <div className="flex flex-wrap items-center space-x-4">

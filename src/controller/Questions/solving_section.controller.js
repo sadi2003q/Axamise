@@ -43,32 +43,46 @@ export class SolvingSectionController {
     };
 
     // ✅ Run the code from editor
-    handleRunCode = async ( { id = '', dryRun = false}) => {
+    handleRunCode = async ( { id = '',
+                                dryRun = false,
+                                forEvent = false,
+                                eventID = ''
+    }) => {
         if (this.editorRef.current) {
                 const code = this.editorRef.current.getValue();
 
-                // From Start to main function
+
                 const fullCode = `
 ${this.libraryPart}
 ${code}
             
-${this.mainPart}`
-
-                // console.log(fullCode)
-
-                this.setIsRunning(true);
+${this.mainPart}` // From Start to main function
+                this.setIsRunning(true); // Show Loading Screen
 
                 try {
+
+                    /**
+                     * Run the Code on Server
+                     * @type {Firebase_Response}
+                     */
                     const result = await this.service.runCode(fullCode);
 
-
-
                     if (result.error && result.error.trim() !== "") {
-                        // Syntax/Compilation error
+
+                        /**
+                         * IF any Syntax Error Found
+                         */
                         this.setRunResult(result.error);
                         this.setIsSuccess(false);
                     } else {
-                        // Successful execution
+
+
+
+
+
+                        /**
+                         * Successful execution
+                         */
                         this.setRunResult(result.output || "");
                         console.log('Approved')
                         this.setIsSuccess(true);
@@ -83,7 +97,16 @@ ${this.mainPart}`
                         } else {
 
                             /**
-                             * if the problem has already been solved then it will just run the code and return the result
+                             * For Competition
+                             */
+                            if(forEvent) {
+                                console.log('For Event: ', forEvent);
+                            }
+
+
+
+                            /**
+                             * If the Problem is not solved Earlier
                              * it won't update the database
                              */
                             if( !dryRun )  await this.service.solve_approve(id, updatedSolver);

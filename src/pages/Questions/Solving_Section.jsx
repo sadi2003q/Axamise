@@ -486,6 +486,7 @@ add required library as necessary
             <Background_Particles />
 
             {/* Main content container with resizable panels */}
+
             <div
                 ref={containerRef}
                 className={Solve_style.Inner_container}
@@ -640,6 +641,7 @@ add required library as necessary
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }
