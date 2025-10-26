@@ -4,11 +4,12 @@ import { SolveService } from "../../services/Questions/_solving_section.service.
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
 import { SERVICE} from "../../Utilities.ts";
 import { Solve_Model} from "../../models/Solve_Model.js";
+import { evaluateQuestion } from "../../Gemini/ai.js";
 
 export class SolvingSectionController {
     constructor(setQuestion, setRunResult, setIsSuccess, editorRef,
                 setIsRunning, setCurrentCode, libraryPart, mainPart,
-                solver, setSolver, navigate) {
+                solver, setSolver, navigate, submitCount) {
         // this.service = new SolveService();
         this.service = QuestionService.createService(SERVICE.SOLVE);
 
@@ -24,6 +25,7 @@ export class SolvingSectionController {
         this.editorRef = editorRef;
         this.solver = solver;
         this.setSolver = setSolver;
+        this.submitCount = submitCount;
     }
 
     // ✅ Fetch a question by ID
@@ -42,11 +44,13 @@ export class SolvingSectionController {
         }
     };
 
-    // ✅ Run the code from editor
+    // ✅ Run the code from Editor
     handleRunCode = async ( { id = '',
                                 dryRun = false,
                                 forEvent = false,
-                                eventID = ''
+                                eventID = '',
+        allQuestions = [],
+        name = 'Not Defined'
     }) => {
         if (this.editorRef.current) {
                 const code = this.editorRef.current.getValue();
@@ -101,9 +105,39 @@ ${this.mainPart}` // From Start to main function
                              */
                             if(forEvent) {
                                 console.log('For Event: ', forEvent);
+                                const data = await evaluateQuestion({
+                                    questions: allQuestions,
+                                    answers: `${code}`,
+                                    submissionTime: this.submitCount,
+                                    timeSpent: `332s`,
+                                    questionWright: 30
+                                })
+
+                                console.log('From controller')
+                                console.log(data.state)
+                                console.log(data.score)
+
+
+                                console.log(id ?? 'not defined')
+                                console.log(name ?? 'not defined');
+                                console.log(eventID ?? 'not defined\n\n\n');
+
+
+                                // This will store the event score on the server
+                                await this.service._SetEventScore({
+                                    userID: id,
+                                    name: name,
+                                    eventID: eventID,
+                                    score: data.score,
+                                    state: data.state,
+                                    timeComplexity: data.overallTimeComplexity,
+                                }).then(() => {
+                                    console.log('Successfully Approved on the scorecard')
+                                }).catch((err) => {
+                                    console.log('something is wrong : ', err)
+                                })
+
                             }
-
-
 
                             /**
                              * If the Problem is not solved Earlier
@@ -111,9 +145,6 @@ ${this.mainPart}` // From Start to main function
                              */
                             if( !dryRun )  await this.service.solve_approve(id, updatedSolver);
                         }
-
-
-
 
                     }
                 } catch (error) {

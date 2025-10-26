@@ -1,24 +1,42 @@
-import "dotenv/config";
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// eslint-disable-next-line no-undef
-if (!process.env.GEMINI_API_KEY) {
-    throw new Error("Please set GEMINI_API_KEY in your .env");
-}
 
-// eslint-disable-next-line no-undef
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = 'AIzaSyBeDmMWTeFWNIUYnt4eqUqkDONGeD7FDg0'
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
     model: "gemini-2.5-pro", // Updated model name
     systemInstruction: `
-You are a strict code evaluator for the competition.
-You receive a coding question and a student's answer.
-You must evaluate and return a JSON with success, message, and score.
-Then Provide a score based on the number of submit time, time and space complexity, 
-time spent to solve the problem, number of test and edge case to solve the problem, 
-also describe the overall coding standard then give a score
+You are a strict code evaluator for coding competitions. 
+
+You receive an event containing multiple coding questions and the participant's answers. 
+Some answers may be missing or incomplete. For each question, you must evaluate the following:
+
+1. Whether the answer is correct or partially correct.
+2. The efficiency of the solution (time and space complexity).
+3. The number of test cases and edge cases covered.
+4. Overall coding standards and readability.
+5. Number of Submission time
+
+Return a JSON array with an entry for each question. Each entry should include:
+- success: true if the answer is fully correct, partially true if partially correct, false otherwise.
+- message: a detailed evaluation of the answer, including what is missing or could be improved.
+- score: a numeric score based on correctness, efficiency, completeness, and coding style (floating point number is allowed).
+- OverallTimeComplexity: This will provide the overall Time complexity of the program
+- state: this is an enum of whether the program is either [Best, Good, Average, Bad, worse] 
+
+the weight of the question is provided with the question as point, if any question is exception then may consider the weight as 7
+
+
+Example structure:
+{
+    'success' : true,
+    'message' : ...,
+    'score' : ...,
+    'OverallTimeComplexity' : ...
+    'state' : ...
+}
 `,
     generationConfig: {
         responseMimeType: "application/json",
@@ -27,65 +45,28 @@ also describe the overall coding standard then give a score
             properties: {
                 success: { type: "boolean" },
                 message: { type: "string" },
-                score: { type: "number" }
+                score: { type: "number" },
+                overallTimeComplexity: { type: "string" },
+                state: { type: "string" },
+
             },
-            required: ["success", "message", "score"]
+            required: ["success", "message", "score", 'overallTimeComplexity', 'state']
         }
     }
 });
 
-export async function evaluateQuestion(question, answer, submissionTime, timeSpent, questionWright = 7) {
+export async function evaluateQuestion({questions, answers, submissionTime, timeSpent, questionWright = 7}) {
     const prompt = `
-Question: ${question}
+Question: ${questions}
 SubmissionTime: ${submissionTime}
 questionWeight: ${questionWright}
 timeRequired: ${timeSpent}
 Answer:
-${answer}
+${answers}
 `;
 
     const result = await model.generateContent(prompt);
-    const data = JSON.parse(result.response.text());
-    return data;
+    return JSON.parse(result.response.text());
+
 }
 
-
-
-
-async function main() {
-    const question = `
-Write a function in C++ that takes an array of integers and a target number.
-Return true if any three numbers in the array sum up to the target, otherwise return false.
-`;
-
-    const answer = `
-#include <vector>
-using namespace std;
-
-bool findTripletSum(vector<int> nums, int target) {
-    int n = nums.size();
-    for(int i = 0; i < n - 2; i++) {
-        for(int j = i + 1; j < n - 1; j++) {
-            for(int k = j + 1; k < n; k++) {
-                if(nums[i] + nums[j] + nums[k] == target) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-`;
-
-
-    const submissionTime = new Date().toISOString(); // current time in ISO format
-    const timeSpent = "5 minutes"; // example string or number of seconds
-
-    const result = await evaluateQuestion(question, answer, submissionTime, timeSpent);
-
-    console.log("Evaluation Result:", result);
-}
-
-
-
-main()

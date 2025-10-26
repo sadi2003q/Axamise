@@ -132,7 +132,7 @@ export const Question_Showing_Description = ({ question }) => {
 
             <div className="flex items-center space-x-2">
                 <FaStar className="text-yellow-400" />
-                <span>Mark: {question.mark}</span>
+                <span> Mark: {question.points}</span>
             </div>
 
             {/* Type */}
@@ -242,7 +242,7 @@ export const Event_Question = ({
                             </div>
                             <div className="flex items-center space-x-2">
                                 <FaStar className="text-yellow-400" />
-                                <span>Mark: {question.mark}</span>
+                                <span>Mark: {question.point}</span>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <FaLayerGroup className="text-teal-400" />
