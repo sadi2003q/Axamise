@@ -86,6 +86,24 @@ export class EventStartService {
     };
 
 
+    FetchScoreCard= async ({eventId}: {eventId: string}): Promise<Firebase_Response> => {
+        try {
+
+            const response = await this.repository._FetchScoreCard(eventId)
+
+            return {
+                success: true,
+                data: response.data
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+
+
+
 }
 
 

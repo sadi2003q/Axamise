@@ -250,6 +250,34 @@ export class FirebaseEventRepository implements IEventRepository {
     }
 
 
+    async _FetchScoreCard(eventID: string) : Promise<Firebase_Response> {
+        try {
+
+            if (!eventID) {
+                return { success: false, error: "No eventID provided" };
+            }
+
+            // Reference to Events/{eventID}/ScoreCard
+            const scoreRef = collection(db, Database.event, eventID, Database.eventScoreCard);
+            const snapshot = await getDocs(scoreRef);
+
+            // Map each document into an object containing ID and data
+            const scoreData = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            console.log(scoreData)
+
+            return {
+                success: true,
+                data: scoreData
+            }
+
+        } catch (error) {
+            console.error(`Error deleting the event: ${error}`);
+        }
+
+    }
 
 
 

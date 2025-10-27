@@ -6,9 +6,11 @@ import { Participant } from "../../models/Participants_Model.js";
 
 export class EventEnterController  {
 
-    constructor(navigate){
+    constructor(navigate, setCurrentScoreState){
         this.service = EventService.createService(SERVICE.EVENT_ENTER)
         this.navigate = navigate;
+        this.setCurrentScoreState = setCurrentScoreState
+
     }
 
 
@@ -50,6 +52,17 @@ export class EventEnterController  {
                 success: true,
                 data : response.data
             }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async _handleFetchScoreCard({eventID}) {
+        try {
+            const response = await this.service.FetchScoreCard({eventId: eventID})
+            console.log('response : ', response.data)
+            this.setCurrentScoreState(response.data);
 
         } catch (error) {
             console.error(error);
