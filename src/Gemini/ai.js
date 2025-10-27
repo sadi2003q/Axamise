@@ -55,11 +55,10 @@ Example structure:
     }
 });
 
-export async function evaluateQuestion({questions, answers, submissionTime, timeSpent, questionWright = 7}) {
+export async function evaluateQuestion({questions, answers, submissionTime, timeSpent}) {
     const prompt = `
 Question: ${questions}
 SubmissionTime: ${submissionTime}
-questionWeight: ${questionWright}
 timeRequired: ${timeSpent}
 Answer:
 ${answers}

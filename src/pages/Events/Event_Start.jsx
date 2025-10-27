@@ -18,6 +18,7 @@ export default function EventStart() {
         startTime: "10:00 AM",
         duration: { hours: 2, minutes: 30 },
     });
+    const [entryRestricted, setEntryRestricted] = useState(false)
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,10 +35,23 @@ export default function EventStart() {
         console.log("User ID: ", user_uid);
     };
 
+
     useEffect(() => {
         if (location.state?.item) setEvent(location.state.item);
         else console.log("No eventID found in state");
     }, [location.state]);
+
+
+    // Check if the user is allowed to enter or not
+    useEffect(() => {
+        if(location.state?.item){
+            const eventUID = location.state?.item?.id;
+            controller._handleEventEntry({eventID: eventUID, userID: user_uid}).then((response) => {
+                setEntryRestricted(response.data)
+            });
+        }
+    }, [])
+
 
     return (
         <div className="w-screen min-h-screen bg-black relative overflow-hidden flex flex-col">
@@ -244,13 +258,16 @@ export default function EventStart() {
 
                         {/* Start Button */}
                         <Box sx={{ zIndex: 1, mt: { xs: 3, md: 0 } }}>
+
+                            {/*This button will take the User to enter into the Event*/}
                             <Button
                                 onClick={() => {
                                     handleUserManagement();
                                     controller._handleNavigation_EventSolve(event);
                                 }}
+                                disabled={entryRestricted}
                                 variant="contained"
-                                color="error"
+                                color={entryRestricted ? "secondary" : "error"} // Change color when disabled
                                 size="large"
                                 startIcon={<AccessTime />}
                                 sx={{
@@ -259,15 +276,16 @@ export default function EventStart() {
                                     textTransform: "none",
                                     px: { xs: 3, md: 4 },
                                     py: { xs: 1, md: 1.2 },
-                                    boxShadow: "0 0 15px rgba(255, 0, 0, 0.4)",
+                                    boxShadow: entryRestricted
+                                        ? "0 0 15px rgba(255,255,255,0.4)"
+                                        : "0 0 15px rgba(255, 0, 0, 0.4)",
+                                    backgroundColor: entryRestricted ? "gray !important" : undefined,
+                                    color: entryRestricted ? "white !important" : "inherit",
+                                    opacity: 1, // ✅ override MUI's disabled opacity
                                     transition: "0.3s",
-                                    "&:hover": {
-                                        boxShadow: "0 0 30px rgba(255, 0, 0, 0.6)",
-                                        transform: "scale(1.05)",
-                                    },
                                 }}
                             >
-                                Start Event
+                                {entryRestricted ? "Can't Enter More" : "Start Event"}
                             </Button>
                         </Box>
                     </Box>

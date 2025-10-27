@@ -1,6 +1,7 @@
 
 import { FirebaseEventRepository } from './_repositories/_IEventRepository'
 import { Participant } from '../../models/Participants_Model'
+import {Firebase_Response} from "../../Utilities";
 
 
 export class EventStartService {
@@ -50,6 +51,40 @@ export class EventStartService {
             console.error(error);
         })
     }
+
+
+    /**
+     * This function will check if the user as already entered for this event or not
+     * @param eventID
+     * @param userID
+     * @constructor
+     */
+    EntryRegulator = async ({
+        eventID,
+        userID,
+    }: {
+        eventID: string;
+        userID: string;
+    }): Promise<Firebase_Response> => {
+        try {
+            const response = await this.repository._CheckEntryForEvent(eventID, userID);
+
+            console.log('response from service file: ', response.data)
+
+            return {
+                success: true,
+                data : response.data
+            }
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                data: null,
+                message: error instanceof Error ? error.message : 'Unknown error occurred',
+            };
+        }
+    };
+
 
 }
 

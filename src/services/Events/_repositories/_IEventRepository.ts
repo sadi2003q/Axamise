@@ -231,18 +231,11 @@ export class FirebaseEventRepository implements IEventRepository {
      */
     async _CheckEntryForEvent(eventID: string, userID: string) : Promise<Firebase_Response> {
         try {
-            console.log('\n\nParameter check from repository class(_CheckEntryForEvent)')
-            console.log('userID: ' + userID);
-            console.log('eventID: ' + eventID)
 
             const docRef = doc(db, Database.event, eventID, Database.event_participants, userID);
             const docSnap = await getDoc(docRef);
 
-
-
-
-            console.log('Response within repository class\n\n')
-            if(docSnap.exists()) console.log('User Already exists for this event')
+            if(docSnap.exists()) console.log('User Already exists for this event, cannot Enter more')
             else console.log('User is going for the First time')
 
 
@@ -255,6 +248,9 @@ export class FirebaseEventRepository implements IEventRepository {
             // console.error(error)
         }
     }
+
+
+
 
 
 

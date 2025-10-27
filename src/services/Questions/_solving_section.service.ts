@@ -169,51 +169,40 @@ export class SolveService {
         state,
         timeComplexity,
     }: {
-userID: string,
-name: string,
-eventID: string,
-score: string,
-state: string,
-timeComplexity: string,
-}): Promise<Firebase_Response> => {
-try {
-// Reference the ScoreCard subcollection
-const scoreCardRef = collection(db, Database.event, eventID, Database.eventScoreCard);
+        userID: string,
+        name: string,
+        eventID: string,
+        score: string,
+        state: string,
+        timeComplexity: string,
+    }): Promise<Firebase_Response> => {
+        try {
+            // Reference the ScoreCard subcollection
+            const scoreCardRef = collection(db, Database.event, eventID, Database.eventScoreCard);
 
-// Create a new document with auto-generated ID
-const newScoreRef = doc(scoreCardRef);
+            // Create a new document with auto-generated ID
+            const newScoreRef = doc(scoreCardRef, userID);
+            await setDoc(newScoreRef, {
+                userID,
+                name,
+                score,
+                state,
+                timeComplexity,
+                createdAt: new Date().toISOString(),
+            });
 
-console.log(userID ?? 'not Defined')
-console.log(name ?? 'not Defined');
-console.log(score ?? 'not Defined');
-console.log(state ?? 'not Defined');
-console.log(timeComplexity ?? 'not Defined');
-
-
-await setDoc(newScoreRef, {
-userID,
-name,
-score,
-state,
-timeComplexity,
-createdAt: new Date().toISOString(),
-});
-
-return {
-success: true,
-message: "Score added successfully!",
-};
-} catch (error) {
-console.error("Error while setting event score:\n", error);
-return {
-success: false,
-message: `Error setting event score: ${(error as Error).message}`,
-};
-}
-};
-
-
-
+            return {
+                success: true,
+                message: "Score added successfully!",
+            };
+        } catch (error) {
+            console.error("Error while setting event score:\n", error);
+            return {
+                success: false,
+                message: `Error setting event score: ${(error as Error).message}`,
+            };
+        }
+    };
 
 }
 

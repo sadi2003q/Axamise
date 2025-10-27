@@ -39,5 +39,23 @@ export class EventEnterController  {
 
     }
 
+    async _handleEventEntry({eventID, userID}) {
+        try {
+
+            const response = await this.service.EntryRegulator({eventID: eventID, userID: userID});
+
+            console.log('response from controller file : ', response.data);
+
+            return {
+                success: true,
+                data : response.data
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
 }
 

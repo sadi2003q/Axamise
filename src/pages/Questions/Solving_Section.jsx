@@ -287,6 +287,28 @@ add required library as necessary
 
 
 
+    const totalSecondsRef = useRef(0);
+
+    useEffect(() => {
+        if (!enteredEvent) return;
+
+        const h = enteredEvent.hours || 0;
+        const m = enteredEvent.minutes || 0;
+
+        setHour(h);
+        setMinute(m);
+        setSecond(0);
+
+        totalSecondsRef.current = h * 3600 + m * 60; // total countdown seconds
+    }, [enteredEvent]);
+
+
+
+
+
+
+
+
 
 
 
@@ -545,6 +567,11 @@ add required library as necessary
                             <div className="flex flex-col space-y-3 mx-1.">
                                 <Button
                                     onClick={() => {
+
+                                        // Calculating how many seconds hae passed
+                                        const currentRemaining = hour * 3600 + minute * 60 + second;
+                                        const elapsedSeconds = totalSecondsRef.current - currentRemaining;
+
                                         controller.handleRunCode({
                                             id: user_uid,
                                             dryRun: dryRun,
@@ -552,6 +579,7 @@ add required library as necessary
                                             eventID: enteredEvent.id ?? '',
                                             allQuestions: enteredEvent.questions ?? [],
                                             name: currentName,
+                                            timeSpent: `${elapsedSeconds}s`
                                         });
                                         setSubmitCount(prev => prev + 1);
                                     }}

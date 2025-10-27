@@ -50,7 +50,8 @@ export class SolvingSectionController {
                                 forEvent = false,
                                 eventID = '',
         allQuestions = [],
-        name = 'Not Defined'
+        name = 'Not Defined',
+        timeSpent = '32s',
     }) => {
         if (this.editorRef.current) {
                 const code = this.editorRef.current.getValue();
@@ -109,18 +110,11 @@ ${this.mainPart}` // From Start to main function
                                     questions: allQuestions,
                                     answers: `${code}`,
                                     submissionTime: this.submitCount,
-                                    timeSpent: `332s`,
-                                    questionWright: 30
+                                    timeSpent: timeSpent
                                 })
 
-                                console.log('From controller')
-                                console.log(data.state)
-                                console.log(data.score)
-
-
-                                console.log(id ?? 'not defined')
-                                console.log(name ?? 'not defined');
-                                console.log(eventID ?? 'not defined\n\n\n');
+                                console.log('submit count ', this.submitCount)
+                                console.log('time spent ',timeSpent)
 
 
                                 // This will store the event score on the server
@@ -167,6 +161,5 @@ ${this.mainPart}` // From Start to main function
         return this.service._CheckIfSolved({user_id: userID, question_id: questionID}).then();
 
     }
-
 
 }
