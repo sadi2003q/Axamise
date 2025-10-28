@@ -54,7 +54,8 @@ export const Database = {
     notifications: 'Notifications',
     solves: 'Solves',
     event_participants: 'Participants',
-    solvedProblems: 'solvedProblems'
+    solvedProblems: 'solvedProblems',
+    eventScoreCard: 'ScoreCard',
 }
 
 export const routes = {

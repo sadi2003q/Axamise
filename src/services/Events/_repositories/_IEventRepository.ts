@@ -21,6 +21,10 @@ interface IEventRepository {
 
 export class FirebaseEventRepository implements IEventRepository {
 
+    /**
+     * Create New Event
+     * @param event
+     */
     async _Create_Event(event: Events_Model) : Promise<Firebase_Response> {
         try {
             const docRef = await addDoc(collection(db, Database.event), {
@@ -47,6 +51,11 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Update Event with Parameter
+     * @param id
+     * @param event
+     */
     async _UpdateEvent(id: string, event: Events_Model): Promise<Firebase_Response> {
         try {
             const docRef = doc(db, "Events", id);
@@ -76,6 +85,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Fetch any specific Event from Database
+     * @param eventID
+     */
     async _Fetch_Event(eventID: string) : Promise<Firebase_Response> {
         try {
             const eventRef = doc(db, "Events", eventID); // Reference to the specific document
@@ -92,6 +105,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Get all the events of a specific user
+     * @param id
+     */
     async _GetAllEventById(id: string) : Promise<Firebase_Response> {
         try {
             console.log(`id : ${id}`)
@@ -121,6 +138,9 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * Fetch All event from Database
+     */
     async _FetchAllEvent(): Promise<Firebase_Response> {
         try {
             // Reference to the "Events" collection
@@ -151,6 +171,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+    /**
+     * For Deleting an Event
+     * @param eventID
+     */
     async _Delete_Event(eventID: string): Promise<Firebase_Response> {
         try {
             if (!eventID) return { success: false, error: "No eventID provided" };
@@ -167,7 +191,6 @@ export class FirebaseEventRepository implements IEventRepository {
             return { success: false, error: error.message || error };
         }
     }
-
 
     /**
      * Make New Participant Into the Event
@@ -189,7 +212,7 @@ export class FirebaseEventRepository implements IEventRepository {
                 submitCount: 0,
                 points: 0
             })
-
+            console.log('User data is recorded')
             return {
                 success: true,
                 data: 'Data is Created'
@@ -208,9 +231,14 @@ export class FirebaseEventRepository implements IEventRepository {
      */
     async _CheckEntryForEvent(eventID: string, userID: string) : Promise<Firebase_Response> {
         try {
-            const docRef = doc(db, Database.student, eventID, Database.solvedProblems, userID);
+
+            const docRef = doc(db, Database.event, eventID, Database.event_participants, userID);
             const docSnap = await getDoc(docRef);
-            console.log(docSnap.exists());
+
+            if(docSnap.exists()) console.log('User Already exists for this event, cannot Enter more')
+            else console.log('User is going for the First time')
+
+
             return {
                 success: true,
                 data: docSnap.exists()
@@ -220,6 +248,37 @@ export class FirebaseEventRepository implements IEventRepository {
             // console.error(error)
         }
     }
+
+
+    async _FetchScoreCard(eventID: string) : Promise<Firebase_Response> {
+        try {
+
+            if (!eventID) {
+                return { success: false, error: "No eventID provided" };
+            }
+
+            // Reference to Events/{eventID}/ScoreCard
+            const scoreRef = collection(db, Database.event, eventID, Database.eventScoreCard);
+            const snapshot = await getDocs(scoreRef);
+
+            // Map each document into an object containing ID and data
+            const scoreData = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            console.log(scoreData)
+
+            return {
+                success: true,
+                data: scoreData
+            }
+
+        } catch (error) {
+            console.error(`Error deleting the event: ${error}`);
+        }
+
+    }
+
 
 
 

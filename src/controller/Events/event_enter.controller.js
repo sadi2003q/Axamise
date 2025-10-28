@@ -6,9 +6,11 @@ import { Participant } from "../../models/Participants_Model.js";
 
 export class EventEnterController  {
 
-    constructor(navigate){
+    constructor(navigate, setCurrentScoreState){
         this.service = EventService.createService(SERVICE.EVENT_ENTER)
         this.navigate = navigate;
+        this.setCurrentScoreState = setCurrentScoreState
+
     }
 
 
@@ -18,19 +20,55 @@ export class EventEnterController  {
 
     _handleUserInformationForEvent({eventID, userID, name}) {
 
-        const participant = new Participant({
-            id: userID,
-            name: name,
-            date: Date.now(),
-            points: 0
-        })
+        console.log('\n\nParameter check from controller class')
+        console.log('userID: ' + userID);
+        console.log('eventID: ' + eventID)
 
-        this.service.UserInfoManagement({eventID: `${eventID}`, participator: participant}).then(() => {
+        /**
+         * eventID: string,
+         *         participatorName: string,
+         *         participatorID: string
+         */
 
-        }).catch((err) => {
-            console.log(err)
-        })
+
+        this.service.UserInfoManagement({
+            eventID: eventID,
+            participatorName: name,
+            participatorID: userID, // ✅ match the service parameter
+        }).then((response) => {
+            console.log('response : ', response)
+        });
+
     }
+
+    async _handleEventEntry({eventID, userID}) {
+        try {
+
+            const response = await this.service.EntryRegulator({eventID: eventID, userID: userID});
+
+            console.log('response from controller file : ', response.data);
+
+            return {
+                success: true,
+                data : response.data
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async _handleFetchScoreCard({eventID}) {
+        try {
+            const response = await this.service.FetchScoreCard({eventId: eventID})
+            console.log('response : ', response.data)
+            this.setCurrentScoreState(response.data);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
 }
 

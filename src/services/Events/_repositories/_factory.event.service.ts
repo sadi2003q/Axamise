@@ -9,6 +9,14 @@ import {Events_Model} from "../../../models/Event_Model.js";
 import { SERVICE } from "../../../Utilities";
 
 export class EventService {
+
+    /**
+     * Factory Class
+     *
+     * @param type
+     * @param event
+     * @returns Respected Factory Class
+     */
     static createService(type: string = SERVICE.EVENT_SHOW, event: Events_Model = new Events_Model()) : any {
         switch (type) {
             case SERVICE.EVENT_CREATE:
@@ -18,7 +26,7 @@ export class EventService {
             case SERVICE.EVENT_ENTER:
                 return new EventStartService()
             default:
-                throw new Error('type didnt match to any service class')
+                throw new Error("type didn't match to any service class")
         }
     }
 }

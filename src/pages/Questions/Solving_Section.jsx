@@ -77,7 +77,7 @@ export default function Solving_Section() {
     /**
      * Global user context for current user ID
      */
-    const { user_uid } = useGlobal();
+    const { user_uid, currentName } = useGlobal();
 
     /**
      * Router navigation hook for programmatic navigation
@@ -123,6 +123,7 @@ export default function Solving_Section() {
      * @type {[string, Function]}
      */
     const [currentCode, setCurrentCode] = useState("");
+    const [submitCount, setSubmitCount] = useState(0);
 
     // =========================================================================
     // CODE SEGMENTATION STATE
@@ -214,6 +215,11 @@ add required library as necessary
      */
     const containerRef = useRef(null);
 
+    /**
+     * does The code run for Event
+     */
+    const [forEvent, setForEvent] = useState(false);
+
     // =========================================================================
     // CONTROLLER INITIALIZATION
     // =========================================================================
@@ -236,7 +242,8 @@ add required library as necessary
         mainPart,
         solver,
         setSolver,
-        navigate
+        navigate,
+        submitCount
     );
 
     // =========================================================================
@@ -280,6 +287,28 @@ add required library as necessary
 
 
 
+    const totalSecondsRef = useRef(0);
+
+    useEffect(() => {
+        if (!enteredEvent) return;
+
+        const h = enteredEvent.hours || 0;
+        const m = enteredEvent.minutes || 0;
+
+        setHour(h);
+        setMinute(m);
+        setSecond(0);
+
+        totalSecondsRef.current = h * 3600 + m * 60; // total countdown seconds
+    }, [enteredEvent]);
+
+
+
+
+
+
+
+
 
 
 
@@ -293,9 +322,12 @@ add required library as necessary
      */
     useEffect(() => {
         if (location.state?.event) {
+            console.log(location.state.event);
             setEnteredEvent(location.state.event);
             setHour(location.state.event.hours)
             setMinute(location.state.event.minutes)
+            setForEvent(true)
+
         }
     }, []);
 
@@ -486,6 +518,7 @@ add required library as necessary
             <Background_Particles />
 
             {/* Main content container with resizable panels */}
+
             <div
                 ref={containerRef}
                 className={Solve_style.Inner_container}
@@ -533,7 +566,24 @@ add required library as necessary
                             {/* Code Execution Controls */}
                             <div className="flex flex-col space-y-3 mx-1.">
                                 <Button
-                                    onClick={() => controller.handleRunCode({id: user_uid, dryRun: dryRun})}
+                                    onClick={() => {
+
+                                        // Calculating how many seconds hae passed
+                                        const currentRemaining = hour * 3600 + minute * 60 + second;
+                                        const elapsedSeconds = totalSecondsRef.current - currentRemaining;
+
+                                        controller.handleRunCode({
+                                            id: user_uid,
+                                            dryRun: dryRun,
+                                            forEvent: forEvent,
+                                            eventID: enteredEvent.id ?? '',
+                                            allQuestions: enteredEvent.questions ?? [],
+                                            name: currentName,
+                                            timeSpent: `${elapsedSeconds}s`
+                                        });
+                                        setSubmitCount(prev => prev + 1);
+                                    }}
+
                                     variant="contained"
                                     disabled={!code.trim() || isRunning}
                                     sx={{
@@ -640,6 +690,7 @@ add required library as necessary
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }

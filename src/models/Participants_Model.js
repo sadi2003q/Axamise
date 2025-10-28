@@ -4,7 +4,7 @@ export class Participant {
     constructor({
         uid = '',
         name = '',
-        date = Date.now(),
+        date = '',
         submitCount = 0,
         points = 0,
 

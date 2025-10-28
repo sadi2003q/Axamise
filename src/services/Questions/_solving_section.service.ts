@@ -24,7 +24,7 @@ export class SolveService {
             if (docSnap.exists()) return { success: true, data: { id: docSnap.id, ...docSnap.data() } };
             else return { success: false, error: "No such document found" };
         } catch (error) {
-            console.log(`Error FOund while Fetching from database ${error}`)
+            console.log(`Error Found while Fetching from database ${error}`)
             return { success: false, error: error }
         }
     }
@@ -161,11 +161,48 @@ export class SolveService {
     }
 
 
+    _SetEventScore = async ({
+        userID,
+        name,
+        eventID,
+        score,
+        state,
+        timeComplexity,
+    }: {
+        userID: string,
+        name: string,
+        eventID: string,
+        score: string,
+        state: string,
+        timeComplexity: string,
+    }): Promise<Firebase_Response> => {
+        try {
+            // Reference the ScoreCard subcollection
+            const scoreCardRef = collection(db, Database.event, eventID, Database.eventScoreCard);
 
+            // Create a new document with auto-generated ID
+            const newScoreRef = doc(scoreCardRef, userID);
+            await setDoc(newScoreRef, {
+                userID,
+                name,
+                score,
+                state,
+                timeComplexity,
+                createdAt: new Date().toISOString(),
+            });
 
-
-
-
+            return {
+                success: true,
+                message: "Score added successfully!",
+            };
+        } catch (error) {
+            console.error("Error while setting event score:\n", error);
+            return {
+                success: false,
+                message: `Error setting event score: ${(error as Error).message}`,
+            };
+        }
+    };
 
 }
 
