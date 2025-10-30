@@ -21,6 +21,7 @@ import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
 import EventStart from "./pages/Events/Event_Start.jsx";
+import Notifications from "./pages/users/Notifications.jsx";
 
 // ============================================================
 // 🌐 Navigation Bar Component
@@ -98,6 +99,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Route path="/QUESTION_LIST" element={<Question_List />} />
                 <Route path="/PROFILE" element={<Profile />} />
                 <Route path="/EVENT_START" element={<EventStart />} />
+                <Route path="/NOTIFICATION" element={<Notifications />} />
             </Route>
 
             {/* 🔹 Admin Area (no navbar) */}
