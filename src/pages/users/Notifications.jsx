@@ -78,6 +78,7 @@ export default function Notifications() {
 
             {/* Overlay content */}
             <div className="absolute inset-0 flex flex-col items-center pt-10 px-4 md:px-8">
+
                 {/* 🌟 Beautiful Header */}
                 <NotificationHeader headingText='Notification Center' />
 

@@ -3,7 +3,7 @@ import { Admin_ApproveEventService } from "../../services/Admin/_admin.approve.e
 import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
 import { Notification } from '../../models/Notification_Model.js'
-import { NotificationService } from "../../services/Others/_Notification.service.js";
+import { NotificationService } from "../../services/users/_Notification.service.js";
 import { EventShowService } from "../../services/Events/_event_show.service.ts";
 import { ApprovalService } from '../../services/Admin/_base/_factory.approval.service.ts'
 import { SERVICE} from "../../Utilities.ts";
