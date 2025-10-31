@@ -1,7 +1,7 @@
 
 
 import {Database, Firebase_Response} from "../../Utilities";
-import {collection,updateDoc, addDoc, query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot} from "firebase/firestore";
+import {collection,writeBatch, addDoc, query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot} from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { Notification } from '../../models/Notification_Model'
 
@@ -147,43 +147,44 @@ export class UsersRepository implements IUsersRepository{
      */
     async _ReadNotifications(id: string): Promise<Firebase_Response> {
         try {
-
             const q = query(
                 collection(db, Database.notification),
-                where('recipientId', '==', id) // Replace 'recipientId' with your actual field name if different
+                where('recipientID', '==', id)
             );
 
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
                 return {
-                    success: true,
-                    message: 'No notifications found to mark as read.'
+                    success: false,
+                    message: `No notifications found for recipientId: ${id}`
                 };
             }
 
-            // Update each document individually
-            let updatedCount = 0;
-            for (const docSnapshot of querySnapshot.docs) {
-                const notificationData = docSnapshot.data()
-                if(!notificationData.isRead){
-                    await updateDoc(doc(db, Database.notification, docSnapshot.id), {
-                        isRead: true // Assuming a boolean 'read' field; adjust to { state: 'read' } if it's a string field
-                    });
-                    updatedCount++;
-                }
+            const batch = writeBatch(db);
 
-            }
+            querySnapshot.forEach((docSnap) => {
+                const notifRef = doc(db, Database.notification, docSnap.id);
+                batch.update(notifRef, { isRead: true });
+            });
+
+            await batch.commit();
+
+            console.log('All Function calling is done')
 
             return {
                 success: true,
-                message: `Marked ${updatedCount} notification(s) as read.`
+                message: 'All notifications marked as read successfully.'
             };
-
         } catch (error) {
-            console.error(error);
+            console.error('Error marking notifications as read:', error);
+            return {
+                success: false,
+                message: 'Failed to mark notifications as read.'
+            };
         }
     }
+
 
 
 

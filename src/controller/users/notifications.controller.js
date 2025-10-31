@@ -5,7 +5,6 @@ import { NotificationsService } from '../../services/users/_Notifications.servic
 export class NotificationsController {
     constructor({setNotifications}) {
         this.service = new NotificationsService();
-
         this.setNotification = setNotifications;
     }
 
@@ -36,15 +35,7 @@ export class NotificationsController {
 
 
     _mark_as_read = async ({id}) => {
-        this.service._Mark_As_Read(id).then(result => {
-            console.log(result.message);
-
-            this.setNotification((prev) => {
-                prev.filter((notif) =>  {
-                    if (notif.isRead) notif.isRead = false;
-                });
-            });
-        })
+        this.service._Mark_As_Read(id).then(() => {})
     }
 
 

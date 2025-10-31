@@ -88,11 +88,14 @@ export const NotificationList = ({ notifications, handleClick, getTypeColor }) =
                             </span>
                             </div>
                         </div>
+
+
                     </motion.div>
                 ))
             ) : (
                 <div className="text-gray-400 text-center mt-8">No notifications found</div>
             )}
+            <div className={'h-[55px]'}></div>
         </AnimatePresence>
     );
 

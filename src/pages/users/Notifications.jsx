@@ -58,11 +58,13 @@ export default function Notifications() {
 
     const getTypeColor = (type) => {
         switch (type) {
-            case "success":
+            case "Event Approved":
                 return "from-green-400/60 to-green-800/10";
             case "warning":
                 return "from-yellow-400/60 to-yellow-800/10";
-            case "error":
+            case "Event Rejected":
+                return "from-red-400/60 to-red-800/10";
+            case "Question Rejected":
                 return "from-red-400/60 to-red-800/10";
             default:
                 return "from-blue-400/60 to-blue-800/10";
@@ -80,9 +82,8 @@ export default function Notifications() {
 
     // mark all notification as read
     useEffect(() => {
-        // setTimeout(() => {
-        //     controller._mark_as_read({id: user_uid}).then(() => {})
-        // }, 3000)
+        controller._mark_as_read({id: user_uid}).then(() => {})
+
     }, []);
 
 
@@ -93,7 +94,7 @@ export default function Notifications() {
             <Background_Particles />
 
             {/* Overlay content */}
-            <div className="absolute inset-0 flex flex-col items-center pt-10 px-4 md:px-8">
+            <div className="absolute inset-0 flex flex-col items-center pt-10 px-4 md:px-8 overflow-y-auto">
 
                 {/* 🌟 Beautiful Header */}
                 <NotificationHeader headingText='Notification Center' />
