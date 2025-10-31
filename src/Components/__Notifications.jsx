@@ -3,6 +3,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Delete } from "@mui/icons-material";
 
 export const NotificationHeader = ({headingText = 'Notification Center'}) => {
     return (
@@ -26,10 +27,15 @@ export const NotificationHeader = ({headingText = 'Notification Center'}) => {
 }
 
 
-export const NotificationList = ({ notifications, handleClick, getTypeColor }) => {
+export const NotificationList = ({ notifications, handleClick, getTypeColor, onDelete }) => {
+    // fallback handler if no custom function is passed
+    const handleDelete = (id) => {
+        onDelete(id);
+    };
+
     return (
         <AnimatePresence>
-            {(notifications && notifications.length > 0) ? (
+            {notifications && notifications.length > 0 ? (
                 notifications.map((notif, index) => (
                     <motion.div
                         key={notif.id || index}
@@ -49,6 +55,7 @@ export const NotificationList = ({ notifications, handleClick, getTypeColor }) =
                             }`}
                             style={{ minHeight: "80px" }}
                         >
+                            {/* Notification Content */}
                             <div className="flex-1">
                                 <h2 className="text-base md:text-lg font-semibold leading-tight">
                                     {notif.title}
@@ -65,18 +72,32 @@ export const NotificationList = ({ notifications, handleClick, getTypeColor }) =
                                 >
                                     {notif.message}
                                 </p>
+
+                                {/* 🗑️ Delete Button */}
+                                <div className="mt-2">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDelete(notif.id || index);
+                                        }}
+                                        className="text-gray-400 hover:text-red-400 transition-colors duration-200 p-1 rounded-full hover:bg-white/10 flex items-center gap-1 text-sm"
+                                    >
+                                        <Delete fontSize="small" />
+                                        <span className="hidden sm:inline">Delete</span>
+                                    </button>
+                                </div>
                             </div>
 
+                            {/* Timestamp & Status */}
                             <div className="flex flex-col md:items-end gap-1 shrink-0 text-xs text-gray-400 mt-1 md:mt-0">
-                            <span>
-                                {notif.timestamp
-                                    ? new Date(notif.timestamp).toLocaleTimeString([], {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    })
-                                    : "—"}
-                            </span>
-
+                                <span>
+                                    {notif.timestamp
+                                        ? new Date(notif.timestamp).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })
+                                        : "—"}
+                                </span>
                                 <span
                                     className={`px-2 py-1 rounded-full text-[10px] font-semibold tracking-wide ${
                                         notif.isRead
@@ -84,19 +105,17 @@ export const NotificationList = ({ notifications, handleClick, getTypeColor }) =
                                             : "bg-blue-500/30 text-blue-200"
                                     }`}
                                 >
-                                {notif.isRead ? "Read" : "New"}
-                            </span>
+                                    {notif.isRead ? "Read" : "New"}
+                                </span>
                             </div>
                         </div>
-
-
                     </motion.div>
                 ))
             ) : (
                 <div className="text-gray-400 text-center mt-8">No notifications found</div>
             )}
-            <div className={'h-[55px]'}></div>
+
+            <div className="h-[55px]" />
         </AnimatePresence>
     );
-
 };

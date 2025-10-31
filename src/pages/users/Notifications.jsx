@@ -73,6 +73,15 @@ export default function Notifications() {
 
     const controller = new NotificationsController({setNotifications: setNotifications});
 
+    /**
+     * delete Notification
+     * @param id of the Notification
+     */
+    const handleDeleteNotification = (id) => {
+        // You can do anything here
+        console.log(id);
+    };
+
 
     // Fetch all Notification from the database
     useEffect(() => {
@@ -104,6 +113,7 @@ export default function Notifications() {
                     notifications={notifications}
                     handleClick={handleClick}
                     getTypeColor={getTypeColor}
+                    onDelete={handleDeleteNotification}
                 />
 
 
