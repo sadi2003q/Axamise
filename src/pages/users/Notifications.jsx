@@ -2,11 +2,14 @@
 
 
 import { Background_Particles } from "../../Components/__Admin_Login.jsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { NotificationHeader, NotificationList } from '../../Components/__Notifications.jsx'
+import { NotificationsController } from '../../controller/users/notifications.controller.js'
+import {useGlobal} from "../../GlobalContext.jsx";
 
 export default function Notifications() {
 
+    const { user_uid } = useGlobal()
 
     const [notifications, setNotifications] = useState([
         {
@@ -66,8 +69,21 @@ export default function Notifications() {
         }
     };
 
+    const controller = new NotificationsController({setNotifications: setNotifications});
 
 
+    // Fetch all Notification from the database
+    useEffect(() => {
+        controller._get_notifications({userID: user_uid}).then(() => {})
+    }, [])
+
+
+    // mark all notification as read
+    useEffect(() => {
+        // setTimeout(() => {
+        //     controller._mark_as_read({id: user_uid}).then(() => {})
+        // }, 3000)
+    }, []);
 
 
 

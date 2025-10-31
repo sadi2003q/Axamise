@@ -29,7 +29,7 @@ export class UsersRepository implements IUsersRepository{
         try {
             const docRef = await addDoc(collection(db, Database.notifications), notificationData);
             console.log("Notification created with ID:", docRef.id);
-            return { success: true, id: docRef.id };
+            return { success: true, id: docRef.id, message: 'Notification is being sent' };
         } catch (error) {
             console.error("Error creating notification:", error);
             return { success: false, error: error.message };
@@ -184,9 +184,6 @@ export class UsersRepository implements IUsersRepository{
             console.error(error);
         }
     }
-
-
-
 
 
 
