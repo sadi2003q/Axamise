@@ -7,6 +7,7 @@
 import { Admin_ApproveService } from "../../services/Admin/_admin.approver.service.ts";
 import { ADMIN_APPROVAL_DISPLAY_MODE } from '../../Utilities.ts';
 import { Notification } from "../../models/Notification_Model.js";
+import { NOTIFICATION_TYPES } from "../../Utilities.ts";
 import { NotificationService } from "../../services/users/_Notification.service.js";
 import { ApprovalService } from '../../services/Admin/_base/_factory.approval.service.ts'
 import { SERVICE} from "../../Utilities.ts";
@@ -96,11 +97,13 @@ export class Admin_ApproveController {
         const notification = new Notification({
             title: `${this.title}`,
             message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
-            type: "rejection",
+
+            // working here
+            type: NOTIFICATION_TYPES.reject_question,
             recipientID: recipientID,
             objectID: ""
         })
-        notification.printNotification();
+        // notification.printNotification();
 
         this.notificationService.createNotification({...notification})
         this.service._Delete_Specific_Function(objectID);
@@ -113,11 +116,11 @@ export class Admin_ApproveController {
     }
 
 
-    revertBack = async ({objectID="Object ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+    revertBack = async ({objectID="Object ID Not Assigned", recipientID = "Recipient ID Not Assigned", type = "rejected"}) => {
         const notification = new Notification({
             title: `${this.title}`,
             message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
-            type: "rejection",
+            type: type,
             recipientID: recipientID,
             objectID: objectID
         })

@@ -6,6 +6,7 @@ import {useEffect, useRef, useState} from 'react';
 
 // Custom Components
 import { Background_Particles } from '../../Components/__Admin_Login.jsx';
+import { NOTIFICATION_TYPES } from "../../Utilities.ts";
 import { motion } from 'framer-motion';
 import { Event_Showing_Description } from '../../Components/__Admin_Approval_Events.jsx';
 import {AdminPageHeader, ObservationField, EventFetchingLoadingScreen} from '../../Components/__Admin_Approval.jsx';
@@ -123,7 +124,7 @@ export default function Admin_ApprovalEvent() {
 
             onClick: () => {
                 onApprove();
-                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.APPROVED, mainFunctionCode: functionCode });
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.APPROVED, notification_type: NOTIFICATION_TYPES.approve_event, mainFunctionCode: functionCode });
             },
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.REJECTED]: {
@@ -134,7 +135,7 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Reason for Rejection",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.REJECTED }),
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.REJECTED, notification_type: NOTIFICATION_TYPES.reject_event }),
         },
         [ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION]: {
             backgroundColor: "rgba(255, 235, 59, 0.4)",
@@ -144,7 +145,7 @@ export default function Admin_ApprovalEvent() {
             inputLabelText: "Things to be Modified...",
             directApproval: false,
             onClick: () =>
-                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION }),
+                controller.handleSendNotification({ type: ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION, notification_type: NOTIFICATION_TYPES.modification_event }),
         },
     }[displayMode];
 

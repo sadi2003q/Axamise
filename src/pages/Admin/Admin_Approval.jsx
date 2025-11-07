@@ -43,7 +43,7 @@ import { AdminApproval_Question } from '../../models/AdminApproval_Model.js';
 import { Admin_ApproveController } from '../../controller/Admin/admin.approve.controller.js';
 
 // Utilities
-import { ADMIN_APPROVAL_DISPLAY_MODE } from '../../Utilities.ts';
+import {ADMIN_APPROVAL_DISPLAY_MODE, NOTIFICATION_TYPES} from '../../Utilities.ts';
 
 export default function Admin_Approval() {
     // =========================================================================
@@ -306,7 +306,9 @@ int main() {
                                 question={question}
                                 handleDeleteButton={controller.handleReject}
                                 handleEditButton={controller.moveToApprovalPage}
-                                handleSolveButton={controller.revertBack}
+                                handleSolveButton={() => {
+                                    controller.revertBack({type: NOTIFICATION_TYPES.modification_event})
+                                }}
                                 require_Edit_Button={true}
                                 require_Delete_Button={true}
                                 require_Solve_Button={true}

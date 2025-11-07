@@ -34,8 +34,20 @@ export const SERVICE = {
     QUESTION_LIST: 'question_list',
     SOLVE: 'solve',
 }
+export const NOTIFICATION_TYPES = {
+    approve_question: 'approve_question',
+    approve_event: 'approve_event',
 
+    reject_question: 'reject_question',
+    reject_event: 'reject_event',
 
+    modification_question: 'modification_question',
+    modification_event: 'modification_event',
+
+    event_score: 'event_score',
+    event_result: 'event_result',
+
+}
 
 
 export const EVENT_APPROVAL_STATUS = {

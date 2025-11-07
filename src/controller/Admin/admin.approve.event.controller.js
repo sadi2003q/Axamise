@@ -76,12 +76,12 @@ export class Admin_ApproveEventController {
 
 
     // Deletion / Modification / Approval will go through this function
-    handleSendNotification = ({type, mainFunctionCode = ''}) => {
+    handleSendNotification = ({type, notification_type= 'notification', mainFunctionCode = ''}) => {
 
         const notification = new Notification({
             title: this.title,
             message: this.reason,
-            type: type,
+            type: notification_type,
             objectID: this.eventID,
             recipientID: this.eventModel.createdBy_uid,
             isRead: false,

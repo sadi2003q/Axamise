@@ -58,17 +58,30 @@ export default function Notifications() {
 
     const getTypeColor = (type) => {
         switch (type) {
-            case "Event Approved":
-                return "from-green-400/60 to-green-800/10";
-            case "warning":
-                return "from-yellow-400/60 to-yellow-800/10";
-            case "Event Rejected":
-                return "from-red-400/60 to-red-800/10";
-            case "Question Rejected":
-                return "from-red-400/60 to-red-800/10";
+            case "approve_question":
+                return "from-emerald-400/60 to-emerald-800/10"; // ✅ calm green for approval
+            case "approve_event":
+                return "from-teal-400/60 to-teal-800/10"; // ✅ fresh teal for event approval
+
+            case "reject_question":
+                return "from-rose-400/60 to-rose-800/10"; // ❌ red-pink tone for rejection
+            case "reject_event":
+                return "from-red-400/60 to-red-800/10"; // ❌ stronger red for event rejection
+
+            case "modification_question":
+                return "from-amber-400/60 to-amber-800/10"; // ✏️ yellow-orange for edits
+            case "modification_event":
+                return "from-orange-400/60 to-orange-800/10"; // ✏️ orange tone for event changes
+
+            case "event_score":
+                return "from-sky-400/60 to-sky-800/10"; // 🧮 light blue for scoring updates
+            case "event_result":
+                return "from-indigo-400/60 to-indigo-800/10"; // 🏆 deep blue for final results
+
             default:
-                return "from-blue-400/60 to-blue-800/10";
+                return "from-slate-400/60 to-slate-800/10"; // 🪶 neutral fallback
         }
+
     };
 
     const controller = new NotificationsController({setNotifications: setNotifications});
