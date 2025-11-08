@@ -20,6 +20,16 @@ import InfoIcon from "@mui/icons-material/Info";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { FaCalendarAlt, FaClock, FaUser, FaRegClock } from 'react-icons/fa';
+import { RotatingText } from './__Animation.jsx'
+
+import IconButton from '@mui/material/IconButton';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+
+import {Events_Model} from "../models/Event_Model.js";
+import {Background_Particles} from "./__Admin_Login.jsx";
+import {Feed_Header} from "../Utilities.js";
+import {Heading} from "./__Event_Question.jsx";
+import {RichTreeView} from "@mui/x-tree-view/RichTreeView";
 
 
 const difficultyColor = {
@@ -206,15 +216,6 @@ export const ExpandableList = ({
 };
 
 
-
-
-
-
-
-
-
-
-
 export const EventCard = ({ event }) => {
     return (
         <div className="bg-black text-white rounded-2xl shadow-lg w-[80%] p-5 relative mx-2">
@@ -256,10 +257,6 @@ export const EventCard = ({ event }) => {
         </div>
     );
 }
-
-
-
-
 
 export const Event_Showing_Description = ({ event }) => {
     if (!event) return null;
@@ -311,4 +308,99 @@ export const Event_Showing_Description = ({ event }) => {
         </div>
     );
 };
+
+
+
+
+
+
+
+
+export const HeroSection = ({ children }) => {
+    return (
+        <div className="flex w-[100vw] h-[100vh] items-center justify-center overflow-auto">
+            {children}
+        </div>
+    );
+}
+
+export const HeroContentSection = ({ children }) => {
+    return (
+        <div className="h-[70vh] w-[50vw] m-2 rounded-xl bg-white/20 backdrop-blur-lg border border-white/30">
+            {children}
+        </div>
+    );
+}
+
+export const HeaderSection = ({ Title }) => {
+    return (
+        <div className="w-full h-full p-2 flex items-center justify-center">
+
+            <RotatingText
+                const texts={Title}
+                mainClassName="px-4 sm:px-6 md:px-8 text-white font-extrabold text-3xl sm:text-4xl md:text-5xl overflow-hidden justify-center rounded-lg"
+                staggerFrom={"last"}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.0155}
+                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                rotationInterval={5000} // The amount of time the Heading will be in display
+            />
+        </div>
+    );
+}
+
+export const QuestionSection = ({ children }) => {
+    return (
+        <div className="flex w-screen h-[86vh] m-4 items-center justify-center">
+            {children}
+        </div>
+    );
+}
+
+export const PageTimeline = ({ children }) => {
+    return (
+        <div className="h-[86vh] w-[18vw] m-2 flex items-center justify-center overflow-auto">
+            {children}
+        </div>
+    );
+}
+
+export const sampleItems = [
+    { name: "Event One", description: "This is the description of Event One." },
+    { name: "Event Two", description: "Details about Event Two go here." },
+    { name: "Event Three", description: "Extra info for Event Three." },
+];
+
+
+export const Button_AddEvent = ({
+    handleClick = () => { console.log("AddEvent"); },
+}) => {
+    return (
+        <IconButton
+            aria-label="play"
+            onClick={handleClick}
+            sx={{
+                backgroundColor: "#e53935", // red
+                color: "white",             // white icon color
+                "&:hover": {
+                    backgroundColor: "#b71c1c", // dark red on hover
+                },
+            }}
+        >
+            <PlayCircleIcon />
+        </IconButton>
+    );
+}
+
+
+
+
+
+
+
+
+
 

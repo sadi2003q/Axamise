@@ -2,71 +2,22 @@
 /* eslint-disable no-unused-vars */
 import Profile_Background from "../../Components/__Profile.jsx";
 import { ContentTimeline, ExpandableList, EventCard, Event_Showing_Description } from "../../Components/__Feed.jsx";
-import { RotatingText } from '../../Components/__Animation.jsx'
 import { Feed_Header } from "../../Utilities.ts";
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import FlowingMenu from '../../Components/Custom/FlowingMenu.jsx'
 import { Events_Model } from "../../models/Event_Model.js";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {Background_Particles} from "../../Components/__Admin_Login.jsx";
 import {Heading} from "../../Components/__Event_Question.jsx";
+import { HeroSection, HeroContentSection, HeaderSection, QuestionSection, PageTimeline, sampleItems } from '../../Components/__Feed.jsx'
+import { FeedController } from "../../controller/users/feed.controller.js";
+import IconButton from '@mui/material/IconButton';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import { Button_AddEvent } from '../../Components/__Feed.jsx'
 
 
 
 
-
-
-const HeroSection = ({ children }) => {
-    return (
-        <div className="flex w-[100vw] h-[100vh] items-center justify-center overflow-auto">
-            {children}
-        </div>
-    );
-}
-
-const HeroContentSection = ({ children }) => {
-    return (
-        <div className="h-[70vh] w-[50vw] m-2 rounded-xl bg-white/20 backdrop-blur-lg border border-white/30">
-            {children}
-        </div>
-    );
-}
-
-const HeaderSection = ({ Title }) => {
-    return (
-        <div className="w-full h-full p-2 flex items-center justify-center">
-
-            <RotatingText
-                const texts={Title}
-                mainClassName="px-4 sm:px-6 md:px-8 text-white font-extrabold text-3xl sm:text-4xl md:text-5xl overflow-hidden justify-center rounded-lg"
-                staggerFrom={"last"}
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "-120%" }}
-                staggerDuration={0.0155}
-                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-                transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                rotationInterval={5000} // The amount of time the Heading will be in display
-            />
-        </div>
-    );
-}
-
-const QuestionSection = ({ children }) => {
-    return (
-        <div className="flex w-screen h-[86vh] m-4 items-center justify-center">
-            {children}
-        </div>
-    );
-}
-
-const PageTimeline = ({ children }) => {
-    return (
-        <div className="h-[86vh] w-[18vw] m-2 flex items-center justify-center overflow-auto">
-            {children}
-        </div>
-    );
-}
 
 const MUI_X_PRODUCTS = [
     {
@@ -103,14 +54,6 @@ const MUI_X_PRODUCTS = [
         ],
     },
 ];
-
-
-const sampleItems = [
-    { name: "Event One", description: "This is the description of Event One." },
-    { name: "Event Two", description: "Details about Event Two go here." },
-    { name: "Event Three", description: "Extra info for Event Three." },
-];
-
 
 export const demoEvents = [
     {
@@ -174,6 +117,22 @@ export const demoEvents = [
 
 export default function Feed() {
     const [selectedEvent, setSelectedEvent] = useState(null);
+
+    // Fetch Random question from the database to show
+    const [randomEvent, setRandomEvent] = useState([]);
+
+
+    // Fetch Random Event on the Event Page to show
+    const [randomQuestion, setRandomQuestion] = useState([]);
+
+    const controller = new FeedController(setRandomEvent, setRandomQuestion);
+
+    useEffect(() => {
+        controller.fetchEventHandler().then(() => {})
+        controller.fetchQuestionHandler().then(() => {})
+    }, [])
+
+
 
     return (
         <div className={'w-screen h-screen'}>
@@ -255,9 +214,9 @@ export default function Feed() {
                 {/* Flowing Menu */}
                 <div className="w-[35vw] h-[86vh] overflow-auto mx-2">
                     <FlowingMenu
-                        items={demoEvents.map(e => ({ text: e.title, link: '#' }))}
+                        items={randomEvent.map(e => ({ text: e.title, link: '#' }))}
                         onItemClick={(title) => {
-                            const event = demoEvents.find(e => e.title === title);
+                            const event = randomEvent.find(e => e.title === title);
                             setSelectedEvent(event);
                         }}
                     />
@@ -266,10 +225,17 @@ export default function Feed() {
                 {/* Right Panel: Display selected event */}
                 <div className="w-[45vw] h-[86vh] overflow-auto mx-2 bg-gray-800 flex flex-col items-center justify-start text-white p-4">
                     {selectedEvent ? (
-                        <Event_Showing_Description event={selectedEvent} />
+                        <div>
+
+                            <Event_Showing_Description event={selectedEvent} />
+                            <Button_AddEvent handleClick={() => console.log("Add Event")}/>
+
+                        </div>
+
                     ) : (
                         <p className="text-gray-400 text-xl mt-20">Select an event from the menu</p>
                     )}
+
                 </div>
 
             </div>

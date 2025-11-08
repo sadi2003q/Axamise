@@ -1,9 +1,11 @@
 
 
 import {Database, Firebase_Response} from "../../Utilities";
-import {collection,writeBatch, addDoc, query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot} from "firebase/firestore";
+import {collection,writeBatch, addDoc, query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot, orderBy,
+    limit} from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { Notification } from '../../models/Notification_Model'
+import {q} from "framer-motion/m";
 
 
 interface IUsersRepository {
@@ -19,6 +21,10 @@ interface IUsersRepository {
 }
 
 export class UsersRepository implements IUsersRepository{
+
+    /**
+     * Notifications Service
+     */
 
     /**
      * This function will create notification on the database
@@ -184,6 +190,100 @@ export class UsersRepository implements IUsersRepository{
             };
         }
     }
+
+
+    /**
+     * Feed Service
+     */
+    async _fetchRandomEvent() : Promise<Firebase_Response> {
+        try {
+            // This will fetch all event
+            // const eventRef = collection(db, Database.event);
+
+
+            // this will fetch top 5 most recent event
+            const eventRef = query(
+                collection(db, Database.event),
+                // Replace 'date' with the actual timestamp field in your Firestore documents (e.g. 'createdAt')
+                // If you store Firestore Timestamp, this works fine.
+                orderBy('date', 'desc'),
+                limit(5)
+            );
+
+
+            const snapshot = await getDocs(eventRef);
+
+            if (snapshot.empty) {
+                console.log('Event Database is empty')
+                return {
+                    success: true,
+                    message: 'No event found',
+                    data: []
+                }
+            }
+
+
+            const data = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
+                id: doc.id,
+                ...doc.data()
+            }))
+
+
+            return {
+                success: true,
+                data: data,
+                message: 'Message Return successful'
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Random Question will be fetched via this function
+     */
+    async _fetchRandomQuestion(): Promise<Firebase_Response> {
+        try {
+
+            const questionRef = query(
+                collection(db, Database.approvedQuestions),
+                orderBy('approvedAt', 'desc'),
+                limit(5)
+            )
+
+            const snapshot = await getDocs(questionRef);
+
+            if (snapshot.empty) {
+                console.log('Question Database is empty')
+                return {
+                    success: true,
+                    data: [],
+                    message: 'No Question Found on the database'
+                }
+            }
+
+            const data = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
+                id: doc.id,
+                ...doc.data()
+            }))
+
+
+            return {
+                success: true,
+                data: data,
+                message: 'Question is being returned from database'
+            }
+
+
+        }  catch(e) {
+            console.error(e);
+        }
+    }
+
+
+
+
+
 
 
 
