@@ -1,7 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unused-vars */
 import Profile_Background from "../../Components/__Profile.jsx";
-import { ContentTimeline, ExpandableList, EventCard, Event_Showing_Description } from "../../Components/__Feed.jsx";
+import {
+    ContentTimeline,
+    ExpandableList,
+    EventCard,
+    Event_Showing_Description,
+
+} from "../../Components/__Feed.jsx";
 import { Feed_Header } from "../../Utilities.ts";
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import FlowingMenu from '../../Components/Custom/FlowingMenu.jsx'
@@ -13,7 +19,7 @@ import { HeroSection, HeroContentSection, HeaderSection, QuestionSection, PageTi
 import { FeedController } from "../../controller/users/feed.controller.js";
 import IconButton from '@mui/material/IconButton';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import { Button_AddEvent } from '../../Components/__Feed.jsx'
+import { Button_visitEvent, Button_MoreEvent, Button_ContributeEvent } from '../../Components/__Feed.jsx'
 import { useNavigate } from "react-router-dom";
 
 
@@ -116,6 +122,8 @@ export const demoEvents = [
 
 
 export default function Feed() {
+
+    const navigate = useNavigate();
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     // Fetch Random question from the database to show
@@ -125,8 +133,30 @@ export default function Feed() {
     // Fetch Random Event on the Event Page to show
     const [randomQuestion, setRandomQuestion] = useState([]);
 
-    const navigate = useNavigate();
-    const controller = new FeedController(setRandomEvent, setRandomQuestion, navigate);
+    // Question count
+    const [easyQuestionCount, setEasyQuestionCount] = useState(0);
+    const [mediumQuestionCount, setMediumQuestionCount] = useState(0);
+    const [hardQuestionCount, setHardQuestionCount] = useState(0);
+
+    const [totalNumberOfQuestions, setTotalNumberOfQuestions] = useState(0);
+    const [solvedQuestionCount, setSolvedQuestionCount] = useState(0);
+
+
+
+
+
+    const controller = new FeedController(
+        setRandomEvent,
+        setRandomQuestion,
+        navigate,
+
+        setEasyQuestionCount,
+        setMediumQuestionCount,
+        setHardQuestionCount,
+
+        setSolvedQuestionCount,
+        setTotalNumberOfQuestions
+    );
 
     useEffect(() => {
         controller.fetchEventHandler().then(() => {})
@@ -169,7 +199,7 @@ export default function Feed() {
 
                 
                 <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
-                    <ExpandableList />
+                    <ExpandableList items={randomQuestion} />
 
                 </div>
 
@@ -215,9 +245,9 @@ export default function Feed() {
                 {/* Flowing Menu */}
                 <div className="w-[35vw] h-[86vh] overflow-auto mx-2">
                     <FlowingMenu
-                        items={randomEvent.map(e => ({ text: e.title, link: '#' }))}
+                        items={demoEvents.map(e => ({ text: e.title, link: '#' }))}
                         onItemClick={(title) => {
-                            const event = randomEvent.find(e => e.title === title);
+                            const event = demoEvents.find(e => e.title === title);
                             setSelectedEvent(event);
                         }}
                     />
@@ -226,13 +256,27 @@ export default function Feed() {
                 {/* Right Panel: Display selected event */}
                 <div className="w-[45vw] h-[86vh] overflow-auto mx-2 bg-gray-800 flex flex-col items-center justify-start text-white p-4">
                     {selectedEvent ? (
-                        <div>
+                        <div className={'w-[100%]'}>
 
                             <Event_Showing_Description event={selectedEvent} />
 
-                            <Button_AddEvent handleClick={() =>
-                                controller.handleNavigation_EventEnter(selectedEvent)
-                            }/>
+                            <div className="w-full flex justify-center items-center bg-gray-800 py-4 gap-2">
+                                {/*  This will */}
+                                <Button_visitEvent
+
+                                    handleClick={() =>
+                                        controller.handleNavigation_EventEnter(selectedEvent)
+                                    }
+                                />
+
+                                <Button_MoreEvent
+                                    handleClick={controller.handleNavigation_MoreEvent}
+                                />
+
+
+
+                            </div>
+
 
                         </div>
 

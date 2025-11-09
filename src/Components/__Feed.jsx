@@ -24,6 +24,9 @@ import { RotatingText } from './__Animation.jsx'
 
 import IconButton from '@mui/material/IconButton';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import StadiumIcon from '@mui/icons-material/Stadium';
+import SupportIcon from '@mui/icons-material/Support';
+
 
 import {Events_Model} from "../models/Event_Model.js";
 import {Background_Particles} from "./__Admin_Login.jsx";
@@ -375,7 +378,7 @@ export const sampleItems = [
 ];
 
 
-export const Button_AddEvent = ({
+export const Button_visitEvent = ({
     handleClick = () => { console.log("AddEvent"); },
 }) => {
     return (
@@ -395,10 +398,48 @@ export const Button_AddEvent = ({
     );
 }
 
+export const Button_MoreEvent = ({
+     handleClick = () => { console.log("More Event"); },
+}) => {
+    return (
+        <IconButton
+            aria-label="play"
+            onClick={handleClick}
+            sx={{
+                backgroundColor: "#1976d2", // medium blue
+                color: "white",             // white icon color
+                "&:hover": {
+                    backgroundColor: "#0d47a1", // dark blue on hover
+                },
+            }}
+        >
+            <StadiumIcon />
+        </IconButton>
+
+    );
+}
 
 
+export const Button_ContributeEvent = ({
+    handleClick = () => { console.log('Make Event')}
+}) => {
+    return (
+        <IconButton
+            aria-label="play"
+            onClick={handleClick}
+            sx={{
+                backgroundColor: "#1976d2", // medium blue
+                color: "white",             // white icon color
+                "&:hover": {
+                    backgroundColor: "#0d47a1", // dark blue on hover
+                },
+            }}
+        >
+            <SupportIcon />
+        </IconButton>
 
-
+    );
+}
 
 
 

@@ -94,7 +94,11 @@ export const ADMIN_APPROVAL_DISPLAY_MODE = {
     REJECTED: 'RejectionMode'
 }
 
-
+export const DIFFICULTY = {
+    easy: 'easy',
+    medium: 'medium',
+    hard: 'hard',
+}
 
 
 

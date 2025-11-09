@@ -1,11 +1,11 @@
 
 
 import {Database, Firebase_Response} from "../../Utilities";
-import {collection,writeBatch, addDoc, query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot, orderBy,
+import {collection,writeBatch, addDoc, getCountFromServer,  query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot, orderBy,
     limit} from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { Notification } from '../../models/Notification_Model'
-import {q} from "framer-motion/m";
+import { DIFFICULTY } from "../../Utilities";
 
 
 interface IUsersRepository {
@@ -280,6 +280,74 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+    /**
+     * Fetch the total number of question Available into the server
+     */
+    async _fetchTotalNumberOfQuestion(): Promise<Firebase_Response> {
+        try {
+
+            const snapshot = collection(db, Database.approvedQuestions);
+            const response = await getCountFromServer(snapshot);
+            const count = response.data().count ?? 0
+
+            return {
+                success: true,
+                data: count
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Fetch the count of question for each difficulty
+     * @param difficulty is the difficulty category of the question
+     * @returns Firebase_Response
+     */
+    async _fetchDifficultyCount({difficulty}): Promise<Firebase_Response> {
+        try {
+
+            const snapshot = query(
+                collection(db, Database.approvedQuestions),
+                where('difficulty', '==', difficulty)
+            )
+            const response = await getCountFromServer(snapshot);
+            const count = response.data().count ?? 0
+
+
+            return {
+                success: true,
+                data: count,
+                message: `Count from Server for Difficulty Count: ${count ?? 0}`
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Fetching solved question count from the database
+     * @param id  (userID)
+     * @param difficulty
+     */
+    async _solvedQuestionCount_byDifficulty({id}: {id: string}): Promise<Firebase_Response> {
+        try {
+
+            const snapshot = collection(db, Database.student, id, Database.solvedProblems)
+            const response = await getCountFromServer(snapshot);
+            const count = response.data().count ?? 0
+             return {
+                success: true,
+                data: count,
+                message: `Number of solved Question : ${count}`
+            }
+
+        } catch (error) {
+
+        }
+    }
 
 
 
