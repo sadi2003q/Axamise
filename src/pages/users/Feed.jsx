@@ -19,47 +19,13 @@ import { HeroSection, HeroContentSection, HeaderSection, QuestionSection, PageTi
 import { FeedController } from "../../controller/users/feed.controller.js";
 import IconButton from '@mui/material/IconButton';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import { Button_visitEvent, Button_MoreEvent, Button_ContributeEvent } from '../../Components/__Feed.jsx'
+import { Button_visitEvent, Button_MoreEvent, Button_MoreQuestions } from '../../Components/__Feed.jsx'
 import { useNavigate } from "react-router-dom";
+import { useGlobal } from "../../GlobalContext.jsx";
+import {DIFFICULTY} from "../../Utilities.ts";
 
 
 
-
-const MUI_X_PRODUCTS = [
-    {
-        id: 'grid',
-        label: 'Data Grid',
-        children: [
-            { id: 'grid-community', label: '@mui/x-data-grid' },
-            { id: 'grid-pro', label: '@mui/x-data-grid-pro' },
-            { id: 'grid-premium', label: '@mui/x-data-grid-premium' },
-        ],
-    },
-    {
-        id: 'pickers',
-        label: 'Date and Time Pickers',
-        children: [
-            { id: 'pickers-community', label: '@mui/x-date-pickers' },
-            { id: 'pickers-pro', label: '@mui/x-date-pickers-pro' },
-        ],
-    },
-    {
-        id: 'charts',
-        label: 'Charts',
-        children: [
-            { id: 'charts-community', label: '@mui/x-charts' },
-            { id: 'charts-pro', label: '@mui/charts-pro' },
-        ],
-    },
-    {
-        id: 'tree-view',
-        label: 'Tree View',
-        children: [
-            { id: 'tree-view-community', label: '@mui/x-tree-view' },
-            { id: 'tree-view-pro', label: '@mui/x-tree-view-pro' },
-        ],
-    },
-];
 
 export const demoEvents = [
     {
@@ -124,6 +90,7 @@ export const demoEvents = [
 export default function Feed() {
 
     const navigate = useNavigate();
+    const { user_uid } = useGlobal();
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     // Fetch Random question from the database to show
@@ -141,8 +108,49 @@ export default function Feed() {
     const [totalNumberOfQuestions, setTotalNumberOfQuestions] = useState(0);
     const [solvedQuestionCount, setSolvedQuestionCount] = useState(0);
 
+    const [questionCount_Category, setQuestionCount_Category] = useState({});
 
 
+
+    const MUI_X_PRODUCTS = [
+
+        {
+          id: 'Question Category',
+          label: 'Question Category',
+          children: Object.entries(questionCount_Category).map(([category, count]) => ({
+              id: category,
+              label: `${category} : ${count}`,
+          })),
+        },
+
+        {
+            id: 'Questions Difficulty',
+            label: 'Questions',
+            children: [
+                { id: 'easy', label: `Easy  -- ${easyQuestionCount}` },
+                { id: 'medium', label: `Medium -- ${mediumQuestionCount}` },
+                { id: 'hard', label: `Hard -- ${hardQuestionCount}` },
+            ],
+        },
+
+        {
+            id: 'totalNumberOfQuestions',
+            label: 'Total Number of Questions',
+            children: [
+                {id: 'TotalNumber', label: `count: ${totalNumberOfQuestions}` },
+            ]
+        },
+
+        {
+            id: 'solvedQuestionCount',
+            label: 'Solved Questions',
+            children: [
+                {id: 'solvedNumber', label: `count : ${solvedQuestionCount}` },
+            ]
+        },
+
+
+    ];
 
 
     const controller = new FeedController(
@@ -155,12 +163,25 @@ export default function Feed() {
         setHardQuestionCount,
 
         setSolvedQuestionCount,
-        setTotalNumberOfQuestions
+        setTotalNumberOfQuestions,
+        setQuestionCount_Category
     );
 
     useEffect(() => {
+
         controller.fetchEventHandler().then(() => {})
         controller.fetchQuestionHandler().then(() => {})
+
+        controller.fetchQuestionCount_byDifficulty({difficulty: DIFFICULTY.easy}).then(() => {})
+        controller.fetchQuestionCount_byDifficulty({difficulty: DIFFICULTY.medium}).then(() => {})
+        controller.fetchQuestionCount_byDifficulty({difficulty: DIFFICULTY.hard}).then(() => {})
+
+
+        controller.fetchTotalNumberOfQuestions().then(() => {})
+        controller.fetchSolvedQuestions_count({id: user_uid}).then(() => {})
+
+        controller.fetchQuestionCount_byCategory().then(() => {})
+
     }, [])
 
 
@@ -201,6 +222,9 @@ export default function Feed() {
                 <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
                     <ExpandableList items={randomQuestion} />
 
+                    <div className={'w-full flex justify-center items-center mt-4'}>
+                        <Button_MoreQuestions handleClick={controller.handleNavigation_MoreQuestion}/>
+                    </div>
                 </div>
 
                 <div className="w-[25vw] h-[80vh] rounded-2xl m-2.5 overflow-auto">

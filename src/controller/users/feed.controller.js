@@ -1,6 +1,6 @@
 
 import { FeedService } from "../../services/users/_Feed.service.js";
-import {routes, DIFFICULTY} from "../../Utilities.js";
+import {routes, DIFFICULTY, QUESTION_CATEGORY} from "../../Utilities.js";
 
 export class FeedController {
     constructor(setRandomEvent,
@@ -12,8 +12,9 @@ export class FeedController {
                 setHardQuestionCount,
 
                 setSolvedQuestionCount,
-                setTotalNumberOfQuestions
-        ) {
+                setTotalNumberOfQuestions,
+                setQuestionCount_Category
+   ) {
         // Server class
         this.service = new FeedService();
 
@@ -27,7 +28,8 @@ export class FeedController {
         this.setHardQuestionCount = setHardQuestionCount;
 
         this.setSolvedQuestionCount = setSolvedQuestionCount;
-        this.setTotalNumberOfQuestions = setTotalNumberOfQuestions
+        this.setTotalNumberOfQuestions = setTotalNumberOfQuestions;
+        this.setQuestionCount_Category = setQuestionCount_Category;
     }
 
     async fetchQuestionHandler () {
@@ -53,6 +55,10 @@ export class FeedController {
         this.navigate(routes.event_show)
     }
 
+    handleNavigation_MoreQuestion = () => {
+        this.navigate(routes.question_list)
+    }
+
 
     async fetchQuestionCount_byDifficulty ({ difficulty }) {
         const response = await this.service._Fetch_DifficultyCount({ difficulty });
@@ -73,13 +79,29 @@ export class FeedController {
 
     async fetchTotalNumberOfQuestions () {
         const response = await this.service._Fetch_QuestionCount()
+        console.log(response.message)
         this.setTotalNumberOfQuestions(response.data)
     }
 
     async fetchSolvedQuestions_count ({id}) {
-        const response = await this.service._Fetch_QuestionCount({ id });
+        const response = await this.service._Fetch_SolvedCount({ id });
+        console.log(response.message)
         this.setSolvedQuestionCount(response.data)
     }
+
+    async fetchQuestionCount_byCategory() {
+        const categories = Object.values(QUESTION_CATEGORY)
+
+        for (const category of categories) {
+            const response = await this.service._Fetch_QuestionByCategory({ category });
+            console.log(response.message)
+            this.setQuestionCount_Category(prev => ({
+                ...prev,
+                [category]: response.data, // ✅ use bracket notation (not 'category')
+            }));
+        }
+    }
+
 
 
 

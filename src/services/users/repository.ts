@@ -22,9 +22,7 @@ interface IUsersRepository {
 
 export class UsersRepository implements IUsersRepository{
 
-    /**
-     * Notifications Service
-     */
+    // Notifications Service
 
     /**
      * This function will create notification on the database
@@ -192,8 +190,12 @@ export class UsersRepository implements IUsersRepository{
     }
 
 
+
+
+    // Feed Queries
+
     /**
-     * Feed Service
+     * Fetch Latest Random Event From database
      */
     async _fetchRandomEvent() : Promise<Firebase_Response> {
         try {
@@ -319,7 +321,7 @@ export class UsersRepository implements IUsersRepository{
             return {
                 success: true,
                 data: count,
-                message: `Count from Server for Difficulty Count: ${count ?? 0}`
+                message: `Count from Server for ${difficulty} Count: ${count ?? 0}`
             }
 
         } catch (error) {
@@ -346,6 +348,27 @@ export class UsersRepository implements IUsersRepository{
 
         } catch (error) {
 
+        }
+    }
+
+    async _fetchQuestionCount_byCategory({category}: {category: string}): Promise<Firebase_Response> {
+        try {
+
+            const documentSnapshot = query(
+                collection(db, Database.approvedQuestions),
+                where('type', '==', category)
+            )
+
+            const response = await getCountFromServer(documentSnapshot)
+            const count = response.data().count ?? 0
+
+            return {
+                success: true,
+                data: count,
+                message: `Number of questions for ${category} Category : ${count}`
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 

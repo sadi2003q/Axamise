@@ -100,6 +100,16 @@ export const DIFFICULTY = {
     hard: 'hard',
 }
 
+export const QUESTION_CATEGORY = {
+    stack: 'Stack',
+    queue: 'Queue',
+    number: 'Number',
+    string: 'String',
+    BST: 'BST',
+    graph: 'Graph',
+
+}
+
 
 
 

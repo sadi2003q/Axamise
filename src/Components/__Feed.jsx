@@ -27,6 +27,8 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import StadiumIcon from '@mui/icons-material/Stadium';
 import SupportIcon from '@mui/icons-material/Support';
 
+import Button from '@mui/material/Button';
+
 
 import {Events_Model} from "../models/Event_Model.js";
 import {Background_Particles} from "./__Admin_Login.jsx";
@@ -441,6 +443,22 @@ export const Button_ContributeEvent = ({
     );
 }
 
+
+export const Button_MoreQuestions = ({ handleClick = () => console.log("more question") }) => {
+    return (
+        <Button
+            onClick={handleClick}
+            variant="outlined"
+            sx={{
+
+                width: "80%", // full width of parent container
+                marginX: '2rem'
+            }}
+        >
+            More Questions
+        </Button>
+    );
+};
 
 
 
