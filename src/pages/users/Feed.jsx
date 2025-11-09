@@ -1,32 +1,42 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unused-vars */
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
+
+// Components
 import Profile_Background from "../../Components/__Profile.jsx";
 import {
     ContentTimeline,
     ExpandableList,
     EventCard,
     Event_Showing_Description,
-
+    HeroSection,
+    HeroContentSection,
+    HeaderSection,
+    QuestionSection,
+    PageTimeline,
+    sampleItems,
+    Button_visitEvent,
+    Button_MoreEvent,
+    Button_MoreQuestions
 } from "../../Components/__Feed.jsx";
-import { Feed_Header } from "../../Utilities.ts";
-import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
-import FlowingMenu from '../../Components/Custom/FlowingMenu.jsx'
-import { Events_Model } from "../../models/Event_Model.js";
-import {useEffect, useState} from "react";
-import {Background_Particles} from "../../Components/__Admin_Login.jsx";
-import {Heading} from "../../Components/__Event_Question.jsx";
-import { HeroSection, HeroContentSection, HeaderSection, QuestionSection, PageTimeline, sampleItems } from '../../Components/__Feed.jsx'
+import FlowingMenu from '../../Components/Custom/FlowingMenu.jsx';
+import { Background_Particles } from "../../Components/__Admin_Login.jsx";
+import { Heading } from "../../Components/__Event_Question.jsx";
+
+// Controllers
 import { FeedController } from "../../controller/users/feed.controller.js";
-import IconButton from '@mui/material/IconButton';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import { Button_visitEvent, Button_MoreEvent, Button_MoreQuestions } from '../../Components/__Feed.jsx'
-import { useNavigate } from "react-router-dom";
-import { useGlobal } from "../../GlobalContext.jsx";
-import {DIFFICULTY} from "../../Utilities.ts";
 
+// Models & Utilities
+import { Events_Model } from "../../models/Event_Model.js";
+import { Feed_Header, DIFFICULTY } from "../../Utilities.ts";
+import {useGlobal} from "../../GlobalContext.jsx";
 
-
-
+// ----------------------
+// Demo Events (Mock Data)
+// ----------------------
 export const demoEvents = [
     {
         ...Events_Model,
@@ -85,22 +95,21 @@ export const demoEvents = [
     }
 ];
 
-
-
+// ----------------------
+// Feed Component
+// ----------------------
 export default function Feed() {
-
     const navigate = useNavigate();
     const { user_uid } = useGlobal();
+
+    // ----------------------
+    // State Variables
+    // ----------------------
     const [selectedEvent, setSelectedEvent] = useState(null);
 
-    // Fetch Random question from the database to show
     const [randomEvent, setRandomEvent] = useState([]);
-
-
-    // Fetch Random Event on the Event Page to show
     const [randomQuestion, setRandomQuestion] = useState([]);
 
-    // Question count
     const [easyQuestionCount, setEasyQuestionCount] = useState(0);
     const [mediumQuestionCount, setMediumQuestionCount] = useState(0);
     const [hardQuestionCount, setHardQuestionCount] = useState(0);
@@ -110,19 +119,18 @@ export default function Feed() {
 
     const [questionCount_Category, setQuestionCount_Category] = useState({});
 
-
-
+    // ----------------------
+    // TreeView Structure
+    // ----------------------
     const MUI_X_PRODUCTS = [
-
         {
-          id: 'Question Category',
-          label: 'Question Category',
-          children: Object.entries(questionCount_Category).map(([category, count]) => ({
-              id: category,
-              label: `${category} : ${count}`,
-          })),
+            id: 'Question Category',
+            label: 'Question Category',
+            children: Object.entries(questionCount_Category).map(([category, count]) => ({
+                id: category,
+                label: `${category} : ${count}`,
+            })),
         },
-
         {
             id: 'Questions Difficulty',
             label: 'Questions',
@@ -132,141 +140,107 @@ export default function Feed() {
                 { id: 'hard', label: `Hard -- ${hardQuestionCount}` },
             ],
         },
-
         {
             id: 'totalNumberOfQuestions',
             label: 'Total Number of Questions',
             children: [
-                {id: 'TotalNumber', label: `count: ${totalNumberOfQuestions}` },
-            ]
+                { id: 'TotalNumber', label: `count: ${totalNumberOfQuestions}` },
+            ],
         },
-
         {
             id: 'solvedQuestionCount',
             label: 'Solved Questions',
             children: [
-                {id: 'solvedNumber', label: `count : ${solvedQuestionCount}` },
-            ]
+                { id: 'solvedNumber', label: `count : ${solvedQuestionCount}` },
+            ],
         },
-
-
     ];
 
-
+    // ----------------------
+    // Controller Setup
+    // ----------------------
     const controller = new FeedController(
         setRandomEvent,
         setRandomQuestion,
         navigate,
-
         setEasyQuestionCount,
         setMediumQuestionCount,
         setHardQuestionCount,
-
         setSolvedQuestionCount,
         setTotalNumberOfQuestions,
         setQuestionCount_Category
     );
 
+    // ----------------------
+    // Fetch Data on Mount
+    // ----------------------
     useEffect(() => {
+        // Fetch Events and Questions
+        controller.fetchEventHandler();
+        controller.fetchQuestionHandler();
 
-        controller.fetchEventHandler().then(() => {})
-        controller.fetchQuestionHandler().then(() => {})
+        // Fetch Question Counts by Difficulty
+        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.easy });
+        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.medium });
+        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.hard });
 
-        controller.fetchQuestionCount_byDifficulty({difficulty: DIFFICULTY.easy}).then(() => {})
-        controller.fetchQuestionCount_byDifficulty({difficulty: DIFFICULTY.medium}).then(() => {})
-        controller.fetchQuestionCount_byDifficulty({difficulty: DIFFICULTY.hard}).then(() => {})
+        // Fetch Total & Solved Questions
+        controller.fetchTotalNumberOfQuestions();
+        controller.fetchSolvedQuestions_count({ id: user_uid });
 
+        // Fetch Question Counts by Category
+        controller.fetchQuestionCount_byCategory();
+    }, []);
 
-        controller.fetchTotalNumberOfQuestions().then(() => {})
-        controller.fetchSolvedQuestions_count({id: user_uid}).then(() => {})
-
-        controller.fetchQuestionCount_byCategory().then(() => {})
-
-    }, [])
-
-
-
+    // ----------------------
+    // JSX Rendering
+    // ----------------------
     return (
-        <div className={'w-screen h-screen'}>
+        <div className="w-screen h-screen">
+            {/* Background Animation */}
             <Background_Particles />
 
-
-            {/* Hero Section */}
+            {/* ---------------- Hero Section ---------------- */}
             <HeroSection>
-
                 <HeroContentSection>
                     <HeaderSection Title={Feed_Header} />
                 </HeroContentSection>
 
                 <PageTimeline>
                     <ContentTimeline items={['item1', 'item2', 'item3', 'item4']} />
-                    
                 </PageTimeline>
-
             </HeroSection>
 
-
-
-
-
+            {/* ---------------- Questions Section ---------------- */}
             <Heading
                 title="All Coding Challenges"
                 subtitle="Explore and Tackle Our Curated Collection of World-Class Coding Questions"
             />
 
-
-            {/* Questions */}
             <QuestionSection>
-
-                
+                {/* Question List */}
                 <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
                     <ExpandableList items={randomQuestion} />
 
-                    <div className={'w-full flex justify-center items-center mt-4'}>
-                        <Button_MoreQuestions handleClick={controller.handleNavigation_MoreQuestion}/>
+                    <div className="w-full flex justify-center items-center mt-4">
+                        <Button_MoreQuestions handleClick={controller.handleNavigation_MoreQuestion} />
                     </div>
                 </div>
 
+                {/* Question Stats TreeView */}
                 <div className="w-[25vw] h-[80vh] rounded-2xl m-2.5 overflow-auto">
-                    <RichTreeView
-                        items={ MUI_X_PRODUCTS }
-                    />
+                    <RichTreeView items={MUI_X_PRODUCTS} />
                 </div>
-
             </QuestionSection>
 
-
-            {/* <div className="w-screen h-[10vh] bh-white flex items-center justify-center"> */}
-
-            {/* <div className=" w-[25vw] h-[80vh] rounded-2xl m-2.5 overflow-auto">
-
-                    
-
-                    
-
-                </div> */}
-
-
-
-            {/* <div className="w-[55vw] h-[80vh] m-2.5 overflow-auto">
-
-
-                </div> */}
-
-            {/* </div> */}
-
-
-
+            {/* ---------------- Event Section ---------------- */}
             <Heading
                 title="Event Listings"
                 subtitle="Filter and Find Top-Tier Events to Source Elite Global Talent"
             />
 
-
-            {/* Event Showing Screen */}
             <div className="w-screen h-screen flex items-center justify-center overflow-auto">
-
-                {/* Flowing Menu */}
+                {/* Event Menu */}
                 <div className="w-[35vw] h-[86vh] overflow-auto mx-2">
                     <FlowingMenu
                         items={demoEvents.map(e => ({ text: e.title, link: '#' }))}
@@ -277,45 +251,24 @@ export default function Feed() {
                     />
                 </div>
 
-                {/* Right Panel: Display selected event */}
+                {/* Event Details Panel */}
                 <div className="w-[45vw] h-[86vh] overflow-auto mx-2 bg-gray-800 flex flex-col items-center justify-start text-white p-4">
                     {selectedEvent ? (
-                        <div className={'w-[100%]'}>
-
+                        <>
                             <Event_Showing_Description event={selectedEvent} />
 
                             <div className="w-full flex justify-center items-center bg-gray-800 py-4 gap-2">
-                                {/*  This will */}
                                 <Button_visitEvent
-
-                                    handleClick={() =>
-                                        controller.handleNavigation_EventEnter(selectedEvent)
-                                    }
+                                    handleClick={() => controller.handleNavigation_EventEnter(selectedEvent)}
                                 />
-
-                                <Button_MoreEvent
-                                    handleClick={controller.handleNavigation_MoreEvent}
-                                />
-
-
-
+                                <Button_MoreEvent handleClick={controller.handleNavigation_MoreEvent} />
                             </div>
-
-
-                        </div>
-
+                        </>
                     ) : (
                         <p className="text-gray-400 text-xl mt-20">Select an event from the menu</p>
                     )}
-
                 </div>
-
             </div>
-
-
-
-
-
         </div>
     );
 }
