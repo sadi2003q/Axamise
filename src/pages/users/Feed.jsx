@@ -14,7 +14,7 @@ import { FeedController } from "../../controller/users/feed.controller.js";
 import IconButton from '@mui/material/IconButton';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { Button_AddEvent } from '../../Components/__Feed.jsx'
-
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -125,7 +125,8 @@ export default function Feed() {
     // Fetch Random Event on the Event Page to show
     const [randomQuestion, setRandomQuestion] = useState([]);
 
-    const controller = new FeedController(setRandomEvent, setRandomQuestion);
+    const navigate = useNavigate();
+    const controller = new FeedController(setRandomEvent, setRandomQuestion, navigate);
 
     useEffect(() => {
         controller.fetchEventHandler().then(() => {})
@@ -228,7 +229,10 @@ export default function Feed() {
                         <div>
 
                             <Event_Showing_Description event={selectedEvent} />
-                            <Button_AddEvent handleClick={() => console.log("Add Event")}/>
+
+                            <Button_AddEvent handleClick={() =>
+                                controller.handleNavigation_EventEnter(selectedEvent)
+                            }/>
 
                         </div>
 

@@ -1,14 +1,16 @@
 
 import { FeedService } from "../../services/users/_Feed.service.js";
+import {routes} from "../../Utilities.js";
 
 export class FeedController {
-    constructor(setRandomEvent, setRandomQuestion) {
+    constructor(setRandomEvent, setRandomQuestion, navigate) {
         // Server class
         this.service = new FeedService();
 
         // Attribute
         this.setRandomEvent = setRandomEvent;
         this.setRandomQuestion = setRandomQuestion;
+        this.navigate = navigate;
     }
 
     async fetchQuestionHandler () {
@@ -26,6 +28,9 @@ export class FeedController {
     }
 
 
+    handleNavigation_EventEnter = (item) => {
+        this.navigate(routes.event_enter, { state: {item: item} });
+    }
 
 
 
