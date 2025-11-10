@@ -118,6 +118,13 @@ export default function Solving_Section() {
      */
     const [isSuccess, setIsSuccess] = useState(null);
 
+    // Disable button if event exists and timer is 0
+    const isButtonDisabled = () => {
+        return isRunning ||
+        !code.trim() ||
+        (enteredEvent && hour === 0 && minute === 0 && second === 0);
+    }
+
     /**
      * Current code content in the editor
      * @type {[string, Function]}
@@ -585,7 +592,7 @@ add required library as necessary
                                     }}
 
                                     variant="contained"
-                                    disabled={!code.trim() || isRunning}
+                                    disabled={ isButtonDisabled() }
                                     sx={{
                                         backgroundColor: !code.trim() || isRunning ? "gray" : "primary.main",
                                         color: "white",
@@ -661,7 +668,7 @@ add required library as necessary
                     {/* =================================================================
                         RIGHT PANEL - CODE EDITOR
                         ================================================================= */}
-                    <div style={{ flex: editorWidth, minWidth: "300px" }}>
+                    <div style={{ flex: editorWidth, minWidth: "300px", minHeight: "300px" }}>
                         <Code_Editor>
                             <Editor
                                 height="100%"

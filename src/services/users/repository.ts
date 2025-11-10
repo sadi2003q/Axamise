@@ -351,6 +351,10 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+    /**
+     * Fetch Question from each type
+     * @param category
+     */
     async _fetchQuestionCount_byCategory({category}: {category: string}): Promise<Firebase_Response> {
         try {
 
@@ -372,6 +376,39 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+    /**
+     * Fetch User Information from Database
+     * @param id
+     */
+    async _fetch_userInformation({ id }: { id: string }): Promise<Firebase_Response> {
+        try {
+            // Reference the specific document
+            const docRef = doc(collection(db, Database.student), id);
+
+            // Get the document snapshot
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+
+                return {
+                    success: true,
+                    message: "User Information Found",
+                    data: docSnap.data(), // you can include document data here
+                };
+            } else {
+                return {
+                    success: false,
+                    message: "User not found",
+                };
+            }
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                message: "Error fetching user information",
+            };
+        }
+    }
 
 
 

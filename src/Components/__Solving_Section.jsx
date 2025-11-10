@@ -130,10 +130,7 @@ export const Question_Showing_Description = ({ question }) => {
                 <span>{difficultyKey}</span>
             </div>
 
-            <div className="flex items-center space-x-2">
-                <FaStar className="text-yellow-400" />
-                <span> Mark: {question.points}</span>
-            </div>
+
 
             {/* Type */}
             <div className="flex items-center space-x-2">
