@@ -1,6 +1,9 @@
 // src/Pages/Profile/Profile_Components.jsx
 import { LineChart, Line, Tooltip, ResponsiveContainer } from "recharts";
 import { X, Edit, Plus } from "lucide-react";
+import { useMemo } from 'react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 // Tooltip for graph
 export const CustomTooltip = ({ active, payload, label }) => {
@@ -91,9 +94,9 @@ export const ProfileInfoJSON = ({ user }) => {
     };
 
     return (
-        <div className="w-full h-[100%] flex flex-col p-4 gap-6 mt-6 font-['Roboto_Mono'] text-white">
+        <div className="w-full h-auto flex flex-col p-4 gap-6 mt-6 font-['Roboto_Mono'] text-white">
             <h2 className="text-2xl font-bold text-white border-b border-white/20 pb-2 tracking-wide ">
-                Profile Information
+                {user.firstName + " " + user.lastName}
             </h2>
 
             <div
@@ -114,3 +117,33 @@ export const ProfileInfoJSON = ({ user }) => {
         </div>
     );
 };
+
+
+
+
+export function SolvedRatio({ total, solved }) {
+    const percentage = useMemo(() => {
+        if (!total || total === 0) return 0;
+        return Math.round((solved / total) * 100);
+    }, [solved, total]);
+
+    return (
+        <div className="bg-gray-900 text-white p-6 rounded-2xl flex items-center gap-6 w-full max-w-sm shadow-lg">
+            <div className="w-28 h-28">
+                <CircularProgressbar
+                    value={percentage}
+                    text={`${solved}/${total}`}
+                    styles={buildStyles({
+                        textColor: '#fff',
+                        pathColor: '#3fd9e7',
+                        trailColor: '#4A4A4A',
+                    })}
+                />
+            </div>
+            <div className="flex flex-col">
+                <span className="text-xl font-semibold">{solved} Solved</span>
+                <span className="text-gray-400 text-sm">{total - solved} Remaining</span>
+            </div>
+        </div>
+    );
+}

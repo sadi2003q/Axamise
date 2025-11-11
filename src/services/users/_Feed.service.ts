@@ -29,7 +29,7 @@ export class FeedService {
     }
 
     async _Fetch_SolvedCount({id}: {id: string}): Promise<Firebase_Response> {
-        return await this.repository._solvedQuestionCount_byDifficulty({id: id})
+        return await this.repository._solvedQuestionCount({id: id})
     }
 
     async _Fetch_QuestionByCategory({category}: {category: string}): Promise<Firebase_Response> {

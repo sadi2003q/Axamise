@@ -283,7 +283,7 @@ export class UsersRepository implements IUsersRepository{
     }
 
     /**
-     * Fetch the total number of question Available into the server
+     * Fetch Total Question Count from server
      */
     async _fetchTotalNumberOfQuestion(): Promise<Firebase_Response> {
         try {
@@ -303,7 +303,7 @@ export class UsersRepository implements IUsersRepository{
     }
 
     /**
-     * Fetch the count of question for each difficulty
+     * Fetch Total Question Count Based on Difficulty
      * @param difficulty is the difficulty category of the question
      * @returns Firebase_Response
      */
@@ -330,11 +330,11 @@ export class UsersRepository implements IUsersRepository{
     }
 
     /**
-     * Fetching solved question count from the database
+     * Fetching Solved Question Count from the database
      * @param id  (userID)
      * @param difficulty
      */
-    async _solvedQuestionCount_byDifficulty({id}: {id: string}): Promise<Firebase_Response> {
+    async _solvedQuestionCount({id}: {id: string}): Promise<Firebase_Response> {
         try {
 
             const snapshot = collection(db, Database.student, id, Database.solvedProblems)

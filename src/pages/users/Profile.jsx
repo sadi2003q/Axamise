@@ -7,7 +7,8 @@ import {
     ProfileImage,
     ProfileInfoJSON,
     GraphSection,
-    CustomCard
+    CustomCard,
+    SolvedRatio
 } from "../../Components/__Profile2.jsx";
 import { ProfileController } from "../../controller/users/profile.controller.js";
 
@@ -15,18 +16,27 @@ export default function Profile() {
     const { user_uid } = useGlobal();
     const [user, setUser] = useState(null);
 
+    const [totalQuestionCount, setTotalQuestionCount] = useState(0);
+    const [solvedQuestionCount, setSolvedQuestionCount] = useState(0);
+
+
+
     // Example chart data
     const data = Array.from({ length: 100 }, (_, i) => ({
         day: `Day ${i + 1}`,
         problemsSolved: Math.floor(Math.random() * 11),
     }));
 
-    const controller = new ProfileController(setUser)
+
+
+
+    const controller = new ProfileController(setUser, setTotalQuestionCount, setSolvedQuestionCount)
 
 
 
     useEffect(() => {
         controller.getProfileInformation({id: user_uid}).then(() => {})
+        controller.getSolvedRatio({id: user_uid}).then(() => {})
     }, []);
 
 
@@ -44,7 +54,10 @@ export default function Profile() {
                 {/* Left Info Card */}
                 <div className="bg-white/5 overflow-auto backdrop-blur-sm border border-white/20 rounded-3xl shadow-lg w-[28vw] h-[85vh] flex flex-col p-6 overflow-hidden">
                     <div style={{ flex: 1, overflowY: "auto" }}>
-                        <ProfileInfoJSON user={user} />E
+                        <ProfileInfoJSON user={user} />
+
+                        <SolvedRatio solved={solvedQuestionCount} total={totalQuestionCount} />
+
                     </div>
                 </div>
 
