@@ -69,6 +69,26 @@ export class EventEnterController  {
         }
     }
 
+    addEventToParticipation = async ({
+         event = '',
+         id = '',
+         title = ''
+     }) => {
+try {
 
+const response = await this.service.AddToParticipationList({
+id: id,
+title: title,
+event: event
+})
+
+console.log('response : ', response.message);
+
+
+
+} catch(error) {
+console.error(error)
+}
+}
 }
 

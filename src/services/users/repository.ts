@@ -410,8 +410,86 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+    /**
+     * fetch User Created Event from Server
+     * @param id
+     */
+    async _fetch_Event_Created_by_user({id} : {id: string}): Promise<Firebase_Response> {
+        try {
+
+            const eventSnapShot = query(
+                collection(db, Database.approvedQuestions),
+                where('createdBy_uid' , '==', id),
+                where('status', '==', 'approved')
+            )
+
+            const response = await getDocs(eventSnapShot)
+            const data = response.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            return {
+                success: true,
+                data: data,
+                message: `Response from Server : ${data}`
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * fetch Questions Created by Server from Database
+     * @param id
+     */
+    async _fetch_Question_created_by_user({id}: {id: string}): Promise<Firebase_Response> {
+        try {
+
+            const questionSnapshot = query(
+                collection(db, Database.approvedQuestions),
+                where('createdBy_uid' , '==', id)
+            )
+
+            const response = await getDocs(questionSnapshot);
+            const data = response.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }))
 
 
+            return {
+                success: true,
+                data: data,
+                message: `Response from Server : ${data}`
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Fetch Solved Questions By server
+     * @param id (user ID)
+     */
+    async _fetch_solved_Questions({id}: {id: string}): Promise<Firebase_Response> {
+        try {
+            const eventParticipateSnapshot = collection(db, Database.student, id, Database.solvedProblems);
+
+            const response = await getDocs(eventParticipateSnapshot);
+            const data = response.docs.map((doc) => ({
+                id: doc.id,
+            }))
+
+            return {
+                success: true,
+                message: "Participating User Information",
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
 
 

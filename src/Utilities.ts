@@ -69,6 +69,7 @@ export const Database = {
     solvedProblems: 'solvedProblems',
     eventScoreCard: 'ScoreCard',
     notification: 'Notifications',
+    participatedEvent: 'ParticipatedEvent',
 }
 
 export const routes = {
@@ -110,7 +111,12 @@ export const QUESTION_CATEGORY = {
 
 }
 
-
+export const EVENT_STATE = {
+    running: 'Running',
+    ended: 'Ended',
+    leftOut: 'LeftOut',
+    Incomplete: 'Incomplete',
+}
 
 
 export const Feed_Header = [

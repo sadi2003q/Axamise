@@ -111,6 +111,21 @@ export default function EventStart() {
     }, [])
 
 
+    // -------------------- Add to the Participation list --------------------
+    useEffect(() => {
+        if(location.state?.item) {
+            const id = location.state?.item?.id;
+            const name = location.state?.item?.title;
+
+            controller.addEventToParticipation({
+                eventID: id,
+                title: name,
+                id: user_uid
+            }).then()
+        }
+    })
+
+
     // -------------------- JSX Return --------------------
     return (
         <div className="w-screen min-h-screen bg-black relative overflow-hidden flex flex-col">

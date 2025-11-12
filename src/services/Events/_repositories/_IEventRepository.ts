@@ -1,12 +1,12 @@
 
 import { Events_Model } from '../../../models/Event_Model'
-import { Firebase_Response} from "../../../Utilities";
+import {EVENT_STATE, Firebase_Response} from "../../../Utilities";
 import { db } from "../../../firebase";
 import { collection, doc, setDoc, addDoc, getDoc, query, where, getDocs, deleteDoc} from "firebase/firestore";
 import { Database } from '../../../Utilities'
 import { EVENT_APPROVAL_STATUS } from '../../../Utilities'
 import { Participant } from '../../../models/Participants_Model'
-
+import { EventParticipationModel } from '../../../models/Event_ParticipationModel'
 
 
 interface IEventRepository {
@@ -249,7 +249,10 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
-
+    /**
+     * Get score card For the Event
+     * @param eventID
+     */
     async _FetchScoreCard(eventID: string) : Promise<Firebase_Response> {
         try {
 
@@ -278,6 +281,45 @@ export class FirebaseEventRepository implements IEventRepository {
         }
 
     }
+
+    /**
+     * This function will add the data into the specific users account
+     * @param id
+     * @param eventID
+     * @param title (event title)
+     */
+    async _AddParticipation({id, eventID, title}: {id: string, eventID: string, title: string}) : Promise<Firebase_Response> {
+        try {
+            // Reference to the collection document
+            const eventRef = doc(db, Database.student, id, Database.participatedEvent, eventID);
+            const participationModel = new EventParticipationModel({
+                title: title,
+                eventID: eventID,
+                time_of_participation: Date.now(),
+                eventState: EVENT_STATE.running,
+                score: 0,
+                rank: 'Not Fixed'
+            })
+
+
+            // Write or update the data
+            await setDoc(eventRef, {
+                participationModel
+            }, { merge: true }); // merge ensures it updates if exists
+
+            return {
+                success: true,
+                message: `Event ${eventID} added successfully for student ${id}`,
+            };
+        } catch (error) {
+            console.error(`Error adding participation: ${error}`);
+            return {
+                success: false,
+                message: `Error adding participation: ${error}`,
+            };
+        }
+    }
+
 
 
 

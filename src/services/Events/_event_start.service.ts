@@ -101,7 +101,20 @@ export class EventStartService {
 
     }
 
+    AddToParticipationList = async ({id, eventId, title}: {id: string, eventId: string, title: string}): Promise<Firebase_Response> => {
+        try {
 
+            await this.repository._AddParticipation({id: id, eventID: eventId, title: title});
+
+            return {
+                success: true,
+                message: 'Participation is being Added'
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
 
 }
