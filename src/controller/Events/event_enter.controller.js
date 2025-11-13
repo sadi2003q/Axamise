@@ -13,7 +13,11 @@ export class EventEnterController  {
 
     }
 
-
+    /**
+     * This will help them to navigate into another page
+     * @param item
+     * @private
+     */
     _handleNavigation_EventSolve(item){
         this.navigate(routes.solving_page, { state: {event: item} } );
     }

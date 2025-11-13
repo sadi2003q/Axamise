@@ -57,11 +57,6 @@ export default function EventStart() {
     const controller = new EventEnterController(navigate, setCurrentScoreState);
 
     // for showing all participants score
-
-
-
-
-
     // -------------------- User Info Setup --------------------
     /**
      * Saves or updates user information when they try to enter an event.
