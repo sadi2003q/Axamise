@@ -105,6 +105,7 @@ export default function Solving_Section() {
      * @type {[boolean, Function]}
      */
     const [isRunning, setIsRunning] = useState(false);
+    const [isCalculatingScore, setIsCalculatingScore] = useState(false);
 
     /**
      * Result output from code execution (stdout/stderr)
@@ -227,6 +228,8 @@ add required library as necessary
      */
     const [forEvent, setForEvent] = useState(false);
 
+
+
     // =========================================================================
     // CONTROLLER INITIALIZATION
     // =========================================================================
@@ -244,6 +247,7 @@ add required library as necessary
         setIsSuccess,
         editorRef,
         setIsRunning,
+        setIsCalculatingScore,
         setCurrentCode,
         libraryPart,
         mainPart,
@@ -601,17 +605,16 @@ add required library as necessary
                                         },
                                     }}
                                 >
-                                    {isRunning ? (
+                                    {isRunning || isCalculatingScore ? (
                                         <div className="flex items-center gap-2 text-white">
-                                            <CircularProgress
-                                                size={20}
-                                                sx={{ color: "white" }}
-                                            />
-                                            Running...
+                                            <CircularProgress size={20} sx={{ color: "white" }} />
+                                            {isRunning && "Running..."}
+                                            {isCalculatingScore && "Calculating score..."}
                                         </div>
                                     ) : (
                                         "Run the code"
                                     )}
+
                                 </Button>
 
                                 {/* Code Execution Output Display */}

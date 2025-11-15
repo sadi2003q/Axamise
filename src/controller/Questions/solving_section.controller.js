@@ -8,7 +8,7 @@ import { evaluateQuestion } from "../../Gemini/ai.js";
 
 export class SolvingSectionController {
     constructor(setQuestion, setRunResult, setIsSuccess, editorRef,
-                setIsRunning, setCurrentCode, libraryPart, mainPart,
+                setIsRunning, setIsCalculatingScore, setCurrentCode, libraryPart, mainPart,
                 solver, setSolver, navigate, submitCount) {
         // this.service = new SolveService();
         this.service = QuestionService.createService(SERVICE.SOLVE);
@@ -19,6 +19,7 @@ export class SolvingSectionController {
         this.setRunResult = setRunResult;
         this.setIsSuccess = setIsSuccess;
         this.setIsRunning = setIsRunning;
+        this.setIsCalculatingScore = setIsCalculatingScore;
         this.setCurrentCode = setCurrentCode;
         this.libraryPart = libraryPart;
         this.mainPart = mainPart;
@@ -97,6 +98,8 @@ ${this.mainPart}` // From Start to main function
                         });
 
                         this.setSolver(updatedSolver);
+
+                        this.setIsRunning(false);
                         if(id.length===0) {
                             console.log('ID is not sent, Solution cannot be uploaded')
                         } else {
@@ -106,6 +109,7 @@ ${this.mainPart}` // From Start to main function
                              */
                             if(forEvent) {
                                 console.log('For Event: ', forEvent);
+                                this.setIsCalculatingScore(true)
                                 const data = await evaluateQuestion({
                                     questions: allQuestions,
                                     answers: `${code}`,
@@ -113,8 +117,7 @@ ${this.mainPart}` // From Start to main function
                                     timeSpent: timeSpent
                                 })
 
-                                console.log('submit count ', this.submitCount)
-                                console.log('time spent ',timeSpent)
+
 
 
                                 // This will store the event score on the server
@@ -130,6 +133,8 @@ ${this.mainPart}` // From Start to main function
                                 }).catch((err) => {
                                     console.log('something is wrong : ', err)
                                 })
+                                this.setIsCalculatingScore(false)
+
 
                             }
 
