@@ -283,29 +283,38 @@ export class FirebaseEventRepository implements IEventRepository {
     }
 
     /**
-     * This function will add the data into the specific users account
+     * Add the participated event into new users Participated Subcollection
      * @param id
      * @param eventID
      * @param title (event title)
      */
     async _AddParticipation({id, eventID, title}: {id: string, eventID: string, title: string}) : Promise<Firebase_Response> {
         try {
-            // Reference to the collection document
-            const eventRef = doc(db, Database.student, id, Database.participatedEvent, eventID);
-            const participationModel = new EventParticipationModel({
+
+
+
+            const eventRef = doc (
+                collection(db, Database.student, id, Database.participatedEvent),
+                eventID
+            )
+
+
+
+
+
+
+            // Write or update the data
+            await setDoc(eventRef, {
                 title: title,
                 eventID: eventID,
                 time_of_participation: Date.now(),
                 eventState: EVENT_STATE.running,
                 score: 0,
                 rank: 'Not Fixed'
-            })
-
-
-            // Write or update the data
-            await setDoc(eventRef, {
-                participationModel
             }, { merge: true }); // merge ensures it updates if exists
+
+
+
 
             return {
                 success: true,
@@ -319,9 +328,6 @@ export class FirebaseEventRepository implements IEventRepository {
             };
         }
     }
-
-
-
 
 
 }

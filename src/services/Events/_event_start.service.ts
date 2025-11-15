@@ -106,6 +106,12 @@ export class EventStartService {
 
             await this.repository._AddParticipation({id: id, eventID: eventId, title: title});
 
+
+
+            console.log('Event ID from AddToParticipant(server class) : ', eventId);
+            console.log('\n\n\n\n\n')
+
+
             return {
                 success: true,
                 message: 'Participation is being Added'

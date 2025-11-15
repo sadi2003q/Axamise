@@ -56,19 +56,11 @@ export default function EventStart() {
     const [currentScoreState, setCurrentScoreState] = useState([])
     const controller = new EventEnterController(navigate, setCurrentScoreState);
 
-    // for showing all participants score
-    // -------------------- User Info Setup --------------------
-    /**
-     * Saves or updates user information when they try to enter an event.
-     * This ensures the user is registered in the event's participant data.
-     */
-    const handleUserManagement = () => {
-        controller._handleUserInformationForEvent({
-            eventID: location.state?.item.id,
-            userID: user_uid,
-            name: currentName,
-        });
-    };
+
+
+
+
+
 
     // -------------------- Load Event Data --------------------
     useEffect(() => {
@@ -96,7 +88,6 @@ export default function EventStart() {
         }
     }, []);
 
-
     // -------------------- Fetch Score Card --------------------
     useEffect(() => {
         if (location.state?.item) {
@@ -106,19 +97,38 @@ export default function EventStart() {
     }, [])
 
 
-    // -------------------- Add to the Participation list --------------------
-    useEffect(() => {
+
+
+
+    // for showing all participants score
+    // -------------------- User Info Setup --------------------
+    /**
+     * Saves or updates user information when they try to enter an event.
+     * This ensures the user is registered in the event's participant data.
+     */
+    const handleUserManagement = () => {
+        controller._handleUserInformationForEvent({
+            eventID: location.state?.item.id,
+            userID: user_uid,
+            name: currentName,
+        });
+    };
+
+
+    const handleAddingToParticipatedEvent = () => {
         if(location.state?.item) {
             const id = location.state?.item?.id;
             const name = location.state?.item?.title;
+
+            console.log('ID : ', id)
 
             controller.addEventToParticipation({
                 eventID: id,
                 title: name,
                 id: user_uid
-            }).then()
+            }).then(()  => {})
         }
-    })
+    }
 
 
     // -------------------- JSX Return --------------------
@@ -316,6 +326,7 @@ export default function EventStart() {
                                 onClick={() => {
                                     handleUserManagement();
                                     controller._handleNavigation_EventSolve(event);
+                                    handleAddingToParticipatedEvent()
                                 }}
                                 disabled={entryRestricted}
                                 variant="contained"
