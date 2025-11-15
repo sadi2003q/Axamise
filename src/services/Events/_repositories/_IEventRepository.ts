@@ -330,6 +330,22 @@ export class FirebaseEventRepository implements IEventRepository {
     }
 
 
+    async _ModifyScoreAfterRun({id, eventId, score}: {id: string, eventId: string, score: number}) : Promise<Firebase_Response> {
+        try {
+
+
+
+
+
+            return {
+                success: true,
+                message: `successfully Modified score to ${score}`,
+            }
+        } catch (error) {
+            console.error(`Error deleting the event: ${error}`);
+        }
+    }
+
 }
 
 
