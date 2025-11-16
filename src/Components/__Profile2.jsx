@@ -1,9 +1,22 @@
 // src/Pages/Profile/Profile_Components.jsx
+import React, { useState } from "react";
 import { LineChart, Line, Tooltip, ResponsiveContainer } from "recharts";
 import { X, Edit, Plus } from "lucide-react";
 import { useMemo } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { Flag, Users } from "lucide-react";
+import { Calendar, Star, Award, Activity, Bookmark } from "lucide-react";
+
+
 
 // Tooltip for graph
 export const CustomTooltip = ({ active, payload, label }) => {
@@ -174,3 +187,362 @@ export function SolvedRatio({ total, solved }) {
         </div>
     );
 }
+
+
+
+export function EventTable({ data }) {
+    // data is an object like:
+    // { event01: 22, event02: 23, ... }
+
+    const rows = Object.entries(data).map(([name, count]) => ({
+        name,
+        count,
+    }));
+
+    const columns = [
+        { id: "name", label: "Event Name", minWidth: 170 },
+        { id: "count", label: "Participants", minWidth: 100, align: "right" },
+    ];
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    return (
+        <Paper sx={{ width: "100%", overflow: "hidden", background: "rgba(255,255,255,0.08)" }}>
+            <TableContainer sx={{ maxHeight: 400 }}>
+                <Table stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                        {rows
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, idx) => (
+                                <TableRow hover key={idx}>
+                                    {columns.map((column) => (
+                                        <TableCell key={column.id} align={column.align}>
+                                            {row[column.id]}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Paper>
+    );
+}
+
+
+export function EventTable2({ data }) {
+    const rows = Object.entries(data).map(([name, value]) => ({
+        name,
+        value,
+    }));
+
+    return (
+        <div className="w-full mt-6">
+            <h2 className="text-white text-xl font-bold mb-4">
+                My Events
+            </h2>
+            <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
+                <table className="w-full border-collapse">
+
+                    {/* Header */}
+                    <thead className="bg-white/10 text-white">
+                    <tr>
+                        <th className="px-4 py-2 text-left font-semibold align-middle">
+                            <div className="flex items-center gap-2">
+                                <Flag size={16}/>
+                                Event Name
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-right font-semibold align-middle">
+                            <div className="flex justify-end items-center gap-2">
+                                <Users size={16}/>
+                                Participants
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    {/* Body */}
+                    <tbody>
+                    {rows.map((row, index) => (
+                        <tr
+                            key={index}
+                            className="text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                        >
+                            <td className="px-4 py-2 align-middle text-left">
+                                {row.name}
+                            </td>
+
+                            <td className="px-4 py-2 align-middle text-right">
+                                {row.value}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    );
+}
+
+
+export function SolvedQuestion({data}) {
+    return (
+        <div className="w-full mt-6">
+        <h2 className="text-white text-xl font-bold mb-4">
+                All Solved Questions
+            </h2>
+            <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
+                <table className="w-full border-collapse">
+
+                    {/* Header */}
+                    <thead className="bg-white/10 text-white">
+                    <tr>
+                        <th className="px-4 py-2 text-left font-semibold">
+                            <div className="flex items-center gap-2">
+                                <Bookmark size={16}/>
+                                Title
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-right font-semibold">
+                            <div className="flex justify-end items-center gap-2">
+                                <Calendar size={16}/>
+                                Date
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    {/* Body */}
+                    <tbody>
+                    {data.map((item, index) => (
+                        <tr
+                            key={index}
+                            className="text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                        >
+                            <td className="px-4 py-2 text-left">
+                                {item.title}
+                            </td>
+
+                            <td className="px-4 py-2 text-right">
+                                {item.date}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    );
+}
+
+
+export function ParticipatedEvent({data}) {
+
+    // Small helper to return color class based on status
+    const getStatusColor = (status) => {
+        switch (status.toLowerCase()) {
+            case "running":
+                return "bg-yellow-400";
+            case "completed":
+                return "bg-green-400";
+            case "incomplete":
+                return "bg-red-400";
+            default:
+                return "bg-blue-400";
+        }
+    };
+
+    return (
+        <div className="w-full mt-6">
+            <h2 className="text-white text-xl font-bold mb-4">
+                All Participated Events
+            </h2>
+            <div className="overflow-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
+                <table className="w-full border-collapse">
+
+                    {/* Header */}
+                    <thead className="bg-white/10 text-white">
+                    <tr>
+                        <th className="px-4 py-2 text-left font-semibold">
+                            <div className="flex items-center gap-2">
+                                <Flag size={16}/>
+                                Event Title
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-left font-semibold">
+                            <div className="flex items-center gap-2">
+                                <Calendar size={16}/>
+                                Date
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-left font-semibold">
+                            <div className="flex items-center gap-2">
+                                <Activity size={16}/>
+                                Status
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-right font-semibold">
+                            <div className="flex items-center gap-2 justify-end">
+                                <Star size={16}/>
+                                Score
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-right font-semibold">
+                            <div className="flex items-center gap-2 justify-end">
+                                <Award size={16}/>
+                                Rank
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    {/* Body */}
+                    <tbody>
+                    {data.map((row, index) => (
+                        <tr
+                            key={index}
+                            className="text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                        >
+                            <td className="px-4 py-2">{row.title}</td>
+
+                            <td className="px-4 py-2">{row.time_of_participation}</td>
+
+                            {/* STATUS WITH COLORED DOT */}
+                            <td className="px-4 py-2 capitalize">
+                                <div className="flex items-center gap-2">
+                                    <span
+                                        className={`w-3 h-3 rounded-full ${getStatusColor(row.eventState)}`}
+                                    ></span>
+                                    {row.eventState}
+                                </div>
+                            </td>
+
+                            <td className="px-4 py-2 text-right">{row.score}</td>
+
+                            <td className="px-4 py-2 text-right">{row.rank}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    );
+}
+
+
+export function CreatedQuestionTable({data}) {
+    return (
+        <div className="w-full mt-6">
+            {/* Table Heading */}
+            <h2 className="text-white text-xl font-bold mb-4">
+                My Questions
+            </h2>
+            <div className="overflow-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
+                <table className="w-full border-collapse">
+
+                    {/* Header */}
+                    <thead className="bg-white/10 text-white">
+                    <tr>
+                        <th className="px-4 py-2 text-left font-semibold">
+                            <div className="flex items-center gap-2">
+                                <Bookmark size={16} />
+                                Question Title
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-center font-semibold">
+                            <div className="flex items-center gap-2 justify-center">
+                                <Users size={16} />
+                                Participants
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-right font-semibold">
+                            <div className="flex items-center gap-2 justify-end">
+                                <Calendar size={16} />
+                                Created At
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    {/* Body */}
+                    <tbody>
+                    {data.map((row, index) => (
+                        <tr
+                            key={index}
+                            className="text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                        >
+                            <td className="px-4 py-2">
+                                {row.title}
+                            </td>
+
+                            <td className="px-4 py-2 text-center">
+                                {row.participationCount}
+                            </td>
+
+                            <td className="px-4 py-2 text-right">
+                                {row.createdAt}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    );
+}
+
+
+
+
+
+
+
+
+

@@ -2,13 +2,16 @@
 import { useEffect, useState } from "react";
 import { useGlobal } from "../../GlobalContext.jsx";
 import { Background_Particles } from "../../Components/__Admin_Login.jsx";
-import Profile_Background from "../../Components/__Profile.jsx";
 import {
-    ProfileImage,
     ProfileInfoJSON,
     GraphSection,
     CustomCard,
-    SolvedRatio
+    SolvedRatio,
+    CreatedQuestionTable,
+    EventTable2,
+    ParticipatedEvent,
+    SolvedQuestion,
+
 } from "../../Components/__Profile2.jsx";
 import { ProfileController } from "../../controller/users/profile.controller.js";
 
@@ -38,6 +41,72 @@ export default function Profile() {
         controller.getProfileInformation({id: user_uid}).then(() => {})
         controller.getSolvedRatio({id: user_uid}).then(() => {})
     }, []);
+
+
+
+
+    const [eventParticipant, setEventParticipant] = useState({
+        event01: 22,
+        event02: 23,
+        event03: 24,
+        event04: 25,
+        event05: 26,
+    })
+
+    const [eventInformation, setEventInformation] = useState([
+        {
+            title: "Binary Battle Championship",
+            time_of_participation: "12/11/2024",
+            eventState: "running",
+            score: 4.3,
+            rank: "Not Fixed",
+        },
+        {
+            title: "Algorithm Masters Cup",
+            time_of_participation: "03/02/2024",
+            eventState: "completed",
+            score: 8.7,
+            rank: 12,
+        },
+        {
+            title: "Hackathon 360",
+            time_of_participation: "18/07/2024",
+            eventState: "completed",
+            score: 6.5,
+            rank: 27,
+        },
+        {
+            title: "Data Structure Duel",
+            time_of_participation: "25/08/2024",
+            eventState: "running",
+            score: 3.9,
+            rank: "Not Fixed",
+        },
+        {
+            title: "CodeSprint Global",
+            time_of_participation: "30/09/2024",
+            eventState: "completed",
+            score: 9.1,
+            rank: 3,
+        }
+    ]);
+
+    const [questionSolved, setQuestionSolved] = useState([
+        {title: 'Two sum', date:"18/07/2024"},
+        {title: 'Three sum', date:"18/07/2024"},
+        {title: 'Four sum', date:"18/07/2024"},
+        {title: 'Four sum', date:"18/07/2024"},
+        {title: 'Four sum', date:"18/07/2024"},
+    ]);
+
+    const [createdQuestion, setCreateQuestion] = useState([
+        {title: 'question01', participationCount: 21, createdAt: '12/12/2025'},
+        {title: 'question02', participationCount: 22, createdAt: '13/12/2025'},
+        {title: 'question03', participationCount: 23, createdAt: '14/12/2025'},
+        {title: 'question04', participationCount: 24, createdAt: '15/12/2025'},
+        {title: 'question05', participationCount: 25, createdAt: '16/12/2025'}
+
+    ])
 
 
 
@@ -81,12 +150,13 @@ export default function Profile() {
                             eventParticipated={8}
                         />
 
-                        <CustomCard
-                            problemEncounter={12}
-                            problemCount={45}
-                            eventParticipated={8}
-                        />
+                        <EventTable2 data={eventParticipant} />
 
+                        <ParticipatedEvent data={eventInformation}/>
+
+                        <SolvedQuestion data={questionSolved}/>
+
+                        <CreatedQuestionTable data={createdQuestion} />
 
                     </div>
 
