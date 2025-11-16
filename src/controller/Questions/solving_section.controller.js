@@ -118,6 +118,14 @@ ${this.mainPart}` // From Start to main function
                                 })
 
 
+                                // Here
+                                await this.handleUpdateScore({
+                                    userId: id,
+                                    eventId: eventID,
+                                    score: data.score,
+                                    submitCount: this.submitCount
+                                })
+
 
 
                                 // This will store the event score on the server
@@ -165,6 +173,25 @@ ${this.mainPart}` // From Start to main function
 
         return this.service._CheckIfSolved({user_id: userID, question_id: questionID}).then();
 
+    }
+
+
+    handleUpdateScore = async ({userId, eventId, score, submitCount}) => {
+        const response = await this.service._ModifyScoreAfterRun({
+            userID: userId,
+            eventId: eventId,
+            score: score,
+            submitCount: submitCount
+        })
+        console.log(response.message)
+    }
+
+
+    addToSolverList = async ({userID, questionID}) => {
+        await this.service._AddToSolverList({
+            userID: userID,
+            questionID: questionID,
+        })
     }
 
 }

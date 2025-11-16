@@ -2,7 +2,7 @@
 import { Events_Model } from '../../../models/Event_Model'
 import {EVENT_STATE, Firebase_Response} from "../../../Utilities";
 import { db } from "../../../firebase";
-import { collection, doc, setDoc, addDoc, getDoc, query, where, getDocs, deleteDoc} from "firebase/firestore";
+import {collection, doc, setDoc, addDoc, getDoc, query, where, getDocs, deleteDoc, updateDoc} from "firebase/firestore";
 import { Database } from '../../../Utilities'
 import { EVENT_APPROVAL_STATUS } from '../../../Utilities'
 import { Participant } from '../../../models/Participants_Model'
@@ -307,7 +307,7 @@ export class FirebaseEventRepository implements IEventRepository {
             await setDoc(eventRef, {
                 title: title,
                 eventID: eventID,
-                time_of_participation: Date.now(),
+                time_of_participation: new Date().toISOString(),
                 eventState: EVENT_STATE.running,
                 score: 0,
                 rank: 'Not Fixed'
@@ -326,23 +326,6 @@ export class FirebaseEventRepository implements IEventRepository {
                 success: false,
                 message: `Error adding participation: ${error}`,
             };
-        }
-    }
-
-
-    async _ModifyScoreAfterRun({id, eventId, score}: {id: string, eventId: string, score: number}) : Promise<Firebase_Response> {
-        try {
-
-
-
-
-
-            return {
-                success: true,
-                message: `successfully Modified score to ${score}`,
-            }
-        } catch (error) {
-            console.error(`Error deleting the event: ${error}`);
         }
     }
 

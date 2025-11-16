@@ -2,8 +2,8 @@
 // services/_solving_section.service.js
 
 import { db } from "../../firebase.js";
-import {doc, getDoc, setDoc, addDoc, collection} from 'firebase/firestore'
-import { Database, Firebase_Response } from "../../Utilities";
+import {doc, getDoc, setDoc, updateDoc, collection} from 'firebase/firestore'
+import {Database, EVENT_STATE, Firebase_Response} from "../../Utilities";
 import Question from '../../models/Question_Model'
 import { Solve_Model} from "../../models/Solve_Model";
 
@@ -203,6 +203,67 @@ export class SolveService {
             };
         }
     };
+
+
+    /**
+     * This will update the score in the event and student database for the particular event
+     * @param userID
+     * @param eventId
+     * @param score
+     * @param submitCount
+     */
+    _ModifyScoreAfterRun = async ({userID, eventId, score, submitCount}: {userID: string, eventId: string, score: number, submitCount: number}) : Promise<Firebase_Response> =>{
+        try {
+
+            const studentRef = doc(db, Database.student, userID, Database.participatedEvent, eventId);
+            const eventRef = doc(db, Database.event, eventId, Database.event_participants, userID);
+
+
+            await updateDoc(studentRef, {
+                score: score,
+                eventState: EVENT_STATE.solved,
+                submitCount: submitCount
+
+            });
+            await updateDoc(eventRef, { points: score });
+
+
+            return {
+                success: true,
+                message: `successfully Modified score to ${score}`,
+            }
+        } catch (error) {
+            console.error(`Error deleting the event: ${error}`);
+        }
+    }
+
+
+    _AddToSolverList = async ({userID, questionID}: {userID: string, questionID: string}): Promise<Firebase_Response> => {
+        try {
+
+            const questionRef = doc(db, Database.question, questionID, Database.eventSolverList, userID);
+
+            await setDoc(questionRef, {
+                userID: userID,
+                questionID: questionID,
+                date: new Date().toISOString(),
+            })
+
+
+
+
+            return {
+                success: true,
+                message: `User: ${userID} successfully added to SolverList`,
+            }
+
+        } catch (error) {
+            console.error("Error adding the event addToSolverList:\n", error);
+        }
+
+    }
+
+
 
 }
 

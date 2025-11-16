@@ -473,7 +473,15 @@ add required library as necessary
 
 
 
+    const addToSolverList = async () => {
+        if(questionID) {
+            await controller.addToSolverList({
+                userID: user_uid,
+                questionID: questionID,
+            }).then(r => {})
+        }
 
+    }
 
 
 
@@ -579,6 +587,7 @@ add required library as necessary
                                 <Button
                                     onClick={() => {
 
+
                                         // Calculating how many seconds hae passed
                                         const currentRemaining = hour * 3600 + minute * 60 + second;
                                         const elapsedSeconds = totalSecondsRef.current - currentRemaining;
@@ -593,6 +602,7 @@ add required library as necessary
                                             timeSpent: `${elapsedSeconds}s`
                                         });
                                         setSubmitCount(prev => prev + 1);
+
                                     }}
 
                                     variant="contained"

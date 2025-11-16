@@ -70,6 +70,7 @@ export const Database = {
     eventScoreCard: 'ScoreCard',
     notification: 'Notifications',
     participatedEvent: 'ParticipatedEvent',
+    eventSolverList: 'SolverList',
 }
 
 export const routes = {
@@ -116,6 +117,7 @@ export const EVENT_STATE = {
     ended: 'Ended',
     leftOut: 'LeftOut',
     Incomplete: 'Incomplete',
+    solved: 'Solved',
 }
 
 
