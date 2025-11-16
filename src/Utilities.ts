@@ -70,7 +70,8 @@ export const Database = {
     eventScoreCard: 'ScoreCard',
     notification: 'Notifications',
     participatedEvent: 'ParticipatedEvent',
-    eventSolverList: 'SolverList',
+    SolvedQuestionList: 'SolverList',
+    problemEncounteredList: 'ProblemEncounterList',
 }
 
 export const routes = {

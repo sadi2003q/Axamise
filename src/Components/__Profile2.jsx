@@ -31,36 +31,63 @@ export const GraphSection = ({ title, data }) => (
     </div>
 );
 
-// Custom card component
-export const CustomCard = ({ title, description, onDelete, onEdit, onAdd }) => (
-    <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg p-6 w-full mt-12 flex flex-col gap-4">
-        <button
-            onClick={onDelete}
-            className="absolute top-3 right-3 p-2 rounded-full bg-red-500/80 hover:bg-red-600 transition text-white"
-            aria-label="Delete"
-        >
-            <X size={18} />
-        </button>
+// Custom card component CustomCard
+export const CustomCard = ({
+                               problemEncounter,
+                               problemCount,
+                               eventParticipated,
+                           }) => {
+    const items = [
+        { label: "Problem Encountered", value: problemEncounter, colorFrom: "from-red-400", colorTo: "to-red-600" },
+        { label: "Problem Count", value: problemCount, colorFrom: "from-blue-400", colorTo: "to-blue-600" },
+        { label: "Event Participated", value: eventParticipated, colorFrom: "from-green-400", colorTo: "to-green-600" },
+    ];
 
-        <h2 className="text-xl font-bold text-white">{title}</h2>
-        <p className="text-white/70 text-sm flex-1">{description}</p>
+    return (
+        <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-8 w-full mt-12 flex flex-col items-center gap-12">
 
-        <div className="flex gap-3 mt-2">
-            <button
-                onClick={onEdit}
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl transition"
-            >
-                <Edit size={16} /> Edit
-            </button>
-            <button
-                onClick={onAdd}
-                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition"
-            >
-                <Plus size={16} /> Add
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 w-full place-items-center">
+
+                {items.map((item, i) => (
+                    <div key={i} className="flex flex-col items-center justify-center relative">
+
+                        {/* Spinning Outer Ring */}
+                        <div className="relative w-40 h-40 flex items-center justify-center">
+                            <div
+                                className={`absolute inset-0 rounded-full border-8 border-t-[12px] border-b-[12px] border-t-transparent border-b-transparent border-l-[12px] border-l-white border-r-[12px] border-r-white ${item.colorFrom} ${item.colorTo}`}
+                                style={{ animation: "spin 2s linear infinite" }}
+                            ></div>
+
+                            {/* Inner static content */}
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <span className="text-4xl font-extrabold text-white">{item.value}</span>
+                                <span className="text-xs text-white/70 text-center mt-1 px-2">{item.label}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+
+            </div>
+
+            {/* Inline Tailwind animation keyframes */}
+            <style>
+                {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+            </style>
+
         </div>
-    </div>
-);
+    );
+};
+
+
+
+
+
 
 // Profile image
 export const ProfileImage = ({ name }) => (

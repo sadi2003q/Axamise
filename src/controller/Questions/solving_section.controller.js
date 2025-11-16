@@ -194,4 +194,12 @@ ${this.mainPart}` // From Start to main function
         })
     }
 
+
+    addToProblemEncountered = async ({userID, questionID}) => {
+        await this.service._EncounterProblem({
+            userID: userID,
+            questionID: questionID,
+        })
+    }
+
 }

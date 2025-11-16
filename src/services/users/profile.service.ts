@@ -1,5 +1,6 @@
 
 import { UsersRepository} from "./repository";
+import {Firebase_Response} from "../../Utilities";
 
 export class ProfileService {
     private repository: UsersRepository;
@@ -17,7 +18,10 @@ export class ProfileService {
     }
 
 
-
+    /**
+     * Fetch number of problem solved and show the Ratio with total number
+     * @param id
+     */
     async fetch_Solved_Ratio({id}: {id: string}) {
         const totalQuestions = await this.repository._fetchTotalNumberOfQuestion()
         const solvedQuestions = await this.repository._solvedQuestionCount({id})
@@ -27,6 +31,12 @@ export class ProfileService {
             solvedQuestions: solvedQuestions.data
         }
     }
+
+
+
+    // async fetch_created_Probelm_list({id}: {id: string}): Promise<Firebase_Response> {
+    //
+    // }
 
 
 

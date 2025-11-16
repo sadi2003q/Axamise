@@ -1,11 +1,12 @@
 
 
-import {Database, Firebase_Response} from "../../Utilities";
+import {Database, EVENT_APPROVAL_STATUS, Firebase_Response} from "../../Utilities";
 import {collection,writeBatch, addDoc, getCountFromServer,  query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot, orderBy,
     limit} from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { Notification } from '../../models/Notification_Model'
 import { DIFFICULTY } from "../../Utilities";
+import {data} from "framer-motion/m";
 
 
 interface IUsersRepository {
@@ -410,6 +411,14 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+
+
+
+
+
+
+    // Profile Page Functions
+
     /**
      * fetch User Created Event from Server
      * @param id
@@ -490,6 +499,117 @@ export class UsersRepository implements IUsersRepository{
             console.error(error);
         }
     }
+
+    /**
+     * Fetch all question created by user
+     * @param user_id
+     */
+    async _Fetch_Created_Problem_by_Id({user_id}: {user_id: string}): Promise<Firebase_Response> {
+        try {
+
+            const questionRef = collection(db, Database.approvedQuestions);
+            const documents = query(
+                questionRef,
+                where('createdBy_uid', '==', user_id)
+            )
+
+            const response = await getDocs(documents);
+
+            const data = response.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }))
+
+            return {
+                success: true,
+                data: data,
+                message: "list of problems"
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Fetch the number of user solved the problem
+     * @param questionID
+     */
+    async _Fetch_Participation_Count({questionID}: {questionID: string}): Promise<Firebase_Response> {
+        try {
+
+            const ref = collection(db, Database.approvedQuestions, questionID, Database.participatedEvent);
+
+            const countSnapshot = await getCountFromServer(ref);
+
+            const count = countSnapshot.data().count;
+
+            return {
+                success: true,
+                data: count,
+                message: 'The Data receive from question is this : '
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    /**
+     * Get Created event of the ID
+     * @param user_id
+     */
+    async _Fetch_Created_Event_By_Id({user_id}: {user_id: string}): Promise<Firebase_Response> {
+        try {
+            // Reference to "Events" collection
+            const eventsRef = collection(db, Database.event);
+
+            // Query for events where createdBy_uid == uid
+            const q = query(
+                eventsRef,
+                where("createdBy_uid", "==", user_id),
+                where("status", "==", EVENT_APPROVAL_STATUS.approved)
+            );
+
+            // Execute query
+            const querySnapshot = await getDocs(q);
+
+            // Map documents into array
+            const events = querySnapshot.docs.map((doc) => ({
+                id: doc.id,       // include doc id
+                ...doc.data(),    // spread event fields
+            }));
+
+            return { success: true, data: events };
+        } catch (error) {
+            console.error("Error retrieving events:", error);
+            return { success: false, error };
+        }
+    }
+
+    /**
+     * Fetch Event Participant count for each event
+     * @param eventID
+     * @constructor
+     */
+    async Fetch_Event_Participant_Count({eventID}: {eventID: string}): Promise<Firebase_Response> {
+        try {
+
+            const eventRef = collection(db, Database.event, eventID, Database.participatedEvent);
+            const countSnapshot = await getCountFromServer(eventRef);
+            const count = countSnapshot.data().count;
+
+
+            return {
+                success: true,
+                data: count,
+                message: 'The Data receive from question is this : '+count
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
 
 

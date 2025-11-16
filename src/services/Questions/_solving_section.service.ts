@@ -241,16 +241,13 @@ export class SolveService {
     _AddToSolverList = async ({userID, questionID}: {userID: string, questionID: string}): Promise<Firebase_Response> => {
         try {
 
-            const questionRef = doc(db, Database.question, questionID, Database.eventSolverList, userID);
+            const questionRef = doc(db, Database.approvedQuestions, questionID, Database.SolvedQuestionList, userID);
 
             await setDoc(questionRef, {
                 userID: userID,
                 questionID: questionID,
                 date: new Date().toISOString(),
             })
-
-
-
 
             return {
                 success: true,
@@ -261,6 +258,29 @@ export class SolveService {
             console.error("Error adding the event addToSolverList:\n", error);
         }
 
+    }
+
+
+    _EncounterProblem = async ({userID, questionID}: {userID: string, questionID: string}): Promise<Firebase_Response> => {
+        try {
+
+            const studentRef = doc(db, Database.student, userID, Database.problemEncounteredList, questionID);
+
+            await setDoc(studentRef, {
+                userID: userID,
+                questionID: questionID,
+                date: new Date().toISOString(),
+            })
+
+
+            return {
+                success: true,
+                message: `Problem ${questionID} encountered successfully!`,
+            }
+
+        } catch (error) {
+            console.error("Error deleting the event encounter Problem:\n", error);
+        }
     }
 
 

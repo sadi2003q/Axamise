@@ -111,7 +111,6 @@ export class FirebaseEventRepository implements IEventRepository {
      */
     async _GetAllEventById(id: string) : Promise<Firebase_Response> {
         try {
-            console.log(`id : ${id}`)
             // Reference to "Events" collection
             const eventsRef = collection(db, Database.event);
 

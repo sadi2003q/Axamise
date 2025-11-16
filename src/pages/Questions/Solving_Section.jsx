@@ -18,7 +18,7 @@
  * return <Solving_Section />
  */
 
-import { useState, useRef, useEffect } from "react";
+import {useState, useRef, useEffect, useCallback} from "react";
 
 // Components
 import {Heading} from "../../Components/__Event_Question.jsx";
@@ -472,16 +472,33 @@ add required library as necessary
 
 
 
-
-    const addToSolverList = async () => {
-        if(questionID) {
+    const addToSolverList = useCallback(async () => {
+        if (questionID) {
             await controller.addToSolverList({
                 userID: user_uid,
                 questionID: questionID,
-            }).then(r => {})
+            });
         }
+    }, [controller, user_uid, questionID]);
 
-    }
+
+    useEffect(() => {
+        if (isSuccess && questionID) {
+            addToSolverList().then();
+            console.log('Function is called')
+        }
+    }, [isSuccess, questionID, addToSolverList]);
+
+
+    useEffect(() => {
+        if(questionID) {
+            controller.addToProblemEncountered({
+                userID: user_uid,
+                questionID: questionID,
+            }).then()
+        }
+    })
+
 
 
 
@@ -596,12 +613,13 @@ add required library as necessary
                                             id: user_uid,
                                             dryRun: dryRun,
                                             forEvent: forEvent,
-                                            eventID: enteredEvent.id ?? '',
-                                            allQuestions: enteredEvent.questions ?? [],
+                                            eventID: enteredEvent?.id ?? '',
+                                            allQuestions: enteredEvent?.questions ?? [],
                                             name: currentName,
                                             timeSpent: `${elapsedSeconds}s`
-                                        });
+                                        }).then();
                                         setSubmitCount(prev => prev + 1);
+                                        console.log('clicked')
 
                                     }}
 

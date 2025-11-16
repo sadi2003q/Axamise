@@ -66,22 +66,40 @@ export default function Profile() {
                     <h2 className="text-2xl font-bold text-white border-b border-white/20 pb-2 mb-4">
                         Dashboard
                     </h2>
+                    <div className="flex-1 overflow-y-auto px-6">
+                        <div className="text-white/70 mb-4">
+                            <p>✨ Skills</p>
+                            <p>📚 Education</p>
+                            <p>💼 Experience</p>
+                        </div>
 
-                    <div className="text-white/70 mb-4">
-                        <p>✨ Skills</p>
-                        <p>📚 Education</p>
-                        <p>💼 Experience</p>
+                        <GraphSection title="Problems Solved per Day" data={data} />
+
+                        <CustomCard
+                            problemEncounter={12}
+                            problemCount={45}
+                            eventParticipated={8}
+                        />
+
+                        <CustomCard
+                            problemEncounter={12}
+                            problemCount={45}
+                            eventParticipated={8}
+                        />
+
+
                     </div>
 
-                    <GraphSection title="Problems Solved per Day" data={data} />
 
-                    <CustomCard
-                        title="My Project"
-                        description="This is a short description of the project."
-                        onDelete={() => console.log("Delete clicked")}
-                        onEdit={() => console.log("Edit clicked")}
-                        onAdd={() => console.log("Add clicked")}
-                    />
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>
