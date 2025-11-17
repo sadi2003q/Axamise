@@ -11,7 +11,6 @@ import {
     EventTable2,
     ParticipatedEvent,
     SolvedQuestion,
-
 } from "../../Components/__Profile2.jsx";
 import { ProfileController } from "../../controller/users/profile.controller.js";
 
@@ -22,38 +21,32 @@ export default function Profile() {
     const [totalQuestionCount, setTotalQuestionCount] = useState(0);
     const [solvedQuestionCount, setSolvedQuestionCount] = useState(0);
 
-
-
     // Example chart data
     const data = Array.from({ length: 100 }, (_, i) => ({
         day: `Day ${i + 1}`,
         problemsSolved: Math.floor(Math.random() * 11),
     }));
 
-
-
-
-    const controller = new ProfileController(setUser, setTotalQuestionCount, setSolvedQuestionCount)
-
-
+    const controller = new ProfileController(
+        setUser,
+        setTotalQuestionCount,
+        setSolvedQuestionCount
+    );
 
     useEffect(() => {
-        controller.getProfileInformation({id: user_uid}).then(() => {})
-        controller.getSolvedRatio({id: user_uid}).then(() => {})
+        controller.getProfileInformation({ id: user_uid });
+        controller.getSolvedRatio({ id: user_uid });
     }, []);
 
-
-
-
-    const [eventParticipant, setEventParticipant] = useState({
+    const [eventParticipant] = useState({
         event01: 22,
         event02: 23,
         event03: 24,
         event04: 25,
         event05: 26,
-    })
+    });
 
-    const [eventInformation, setEventInformation] = useState([
+    const [eventInformation] = useState([
         {
             title: "Binary Battle Championship",
             time_of_participation: "12/11/2024",
@@ -88,55 +81,67 @@ export default function Profile() {
             eventState: "completed",
             score: 9.1,
             rank: 3,
-        }
+        },
     ]);
 
-    const [questionSolved, setQuestionSolved] = useState([
-        {title: 'Two sum', date:"18/07/2024"},
-        {title: 'Three sum', date:"18/07/2024"},
-        {title: 'Four sum', date:"18/07/2024"},
-        {title: 'Four sum', date:"18/07/2024"},
-        {title: 'Four sum', date:"18/07/2024"},
+    const [questionSolved] = useState([
+        { title: "Two sum", date: "18/07/2024" },
+        { title: "Three sum", date: "18/07/2024" },
+        { title: "Four sum", date: "18/07/2024" },
+        { title: "Four sum", date: "18/07/2024" },
+        { title: "Four sum", date: "18/07/2024" },
     ]);
 
-    const [createdQuestion, setCreateQuestion] = useState([
-        {title: 'question01', participationCount: 21, createdAt: '12/12/2025'},
-        {title: 'question02', participationCount: 22, createdAt: '13/12/2025'},
-        {title: 'question03', participationCount: 23, createdAt: '14/12/2025'},
-        {title: 'question04', participationCount: 24, createdAt: '15/12/2025'},
-        {title: 'question05', participationCount: 25, createdAt: '16/12/2025'}
-
-    ])
-
-
-
-
-
-
-
+    const [createdQuestion] = useState([
+        { title: "question01", participationCount: 21, createdAt: "12/12/2025" },
+        { title: "question02", participationCount: 22, createdAt: "13/12/2025" },
+        { title: "question03", participationCount: 23, createdAt: "14/12/2025" },
+        { title: "question04", participationCount: 24, createdAt: "15/12/2025" },
+        { title: "question05", participationCount: 25, createdAt: "16/12/2025" },
+    ]);
 
     return (
-        <div className="relative w-screen h-screen overflow-auto flex items-center justify-center">
+        <div className="relative w-screen flex items-center justify-center">
             <Background_Particles />
 
-            <div className="flex items-center justify-center gap-8 w-full h-full px-10">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-center gap-6 w-full h-full px-4 sm:px-6 md:px-10 py-6">
+
                 {/* Left Info Card */}
-                <div className="bg-white/5 overflow-auto backdrop-blur-sm border border-white/20 rounded-3xl shadow-lg w-[28vw] h-[85vh] flex flex-col p-6 overflow-hidden">
-                    <div style={{ flex: 1, overflowY: "auto" }}>
+                <div
+                    className="
+                    bg-white/5 backdrop-blur-sm border border-white/20
+                    rounded-3xl shadow-lg
+                    w-full md:w-[32vw]
+                    h-auto md:h-[85vh]
+                    flex flex-col p-6
+                    overflow-hidden
+                    "
+                >
+                    <div className="flex-1 overflow-y-auto">
                         <ProfileInfoJSON user={user} />
-
-                        <SolvedRatio solved={solvedQuestionCount} total={totalQuestionCount} />
-
+                        <SolvedRatio
+                            solved={solvedQuestionCount}
+                            total={totalQuestionCount}
+                        />
                     </div>
                 </div>
 
                 {/* Right Dashboard */}
-                <div className="bg-white/5 overflow-auto backdrop-blur-sm border border-white/20 rounded-3xl shadow-lg w-[55vw] h-[85vh] p-6 flex flex-col overflow-y-auto">
+                <div
+                    className="
+                    bg-white/5 backdrop-blur-sm border border-white/20
+                    rounded-3xl shadow-lg
+                    w-full md:w-[55vw]
+                    h-auto md:h-[85vh]
+                    p-6 flex flex-col overflow-hidden
+                    "
+                >
                     <h2 className="text-2xl font-bold text-white border-b border-white/20 pb-2 mb-4">
                         Dashboard
                     </h2>
-                    <div className="flex-1 overflow-y-auto px-6">
-                        <div className="text-white/70 mb-4">
+
+                    <div className="flex-1 overflow-y-auto space-y-6">
+                        <div className="text-white/70">
                             <p>✨ Skills</p>
                             <p>📚 Education</p>
                             <p>💼 Experience</p>
@@ -152,24 +157,12 @@ export default function Profile() {
 
                         <EventTable2 data={eventParticipant} />
 
-                        <ParticipatedEvent data={eventInformation}/>
+                        <ParticipatedEvent data={eventInformation} />
 
-                        <SolvedQuestion data={questionSolved}/>
+                        <SolvedQuestion data={questionSolved} />
 
                         <CreatedQuestionTable data={createdQuestion} />
-
                     </div>
-
-
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>

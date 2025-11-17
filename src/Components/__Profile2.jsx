@@ -272,7 +272,7 @@ export function EventTable2({ data }) {
 
     return (
         <div className="w-full mt-6">
-            <h2 className="text-white text-xl font-bold mb-4">
+            <h2 className="text-white text-xl font-bold mb-4 pl-2">
                 My Events
             </h2>
             <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
@@ -325,7 +325,7 @@ export function EventTable2({ data }) {
 export function SolvedQuestion({data}) {
     return (
         <div className="w-full mt-6">
-        <h2 className="text-white text-xl font-bold mb-4">
+        <h2 className="text-white text-xl font-bold mb-4 pl-2">
                 All Solved Questions
             </h2>
             <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
@@ -393,7 +393,7 @@ export function ParticipatedEvent({data}) {
 
     return (
         <div className="w-full mt-6">
-            <h2 className="text-white text-xl font-bold mb-4">
+            <h2 className="text-white text-xl font-bold mb-4 pl-2">
                 All Participated Events
             </h2>
             <div className="overflow-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
@@ -478,7 +478,7 @@ export function CreatedQuestionTable({data}) {
     return (
         <div className="w-full mt-6">
             {/* Table Heading */}
-            <h2 className="text-white text-xl font-bold mb-4">
+            <h2 className="text-white text-xl font-bold mb-4 pl-2">
                 My Questions
             </h2>
             <div className="overflow-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
