@@ -27,18 +27,15 @@ export default function Profile() {
         problemsSolved: Math.floor(Math.random() * 11),
     }));
 
-    const controller = new ProfileController(
-        setUser,
-        setTotalQuestionCount,
-        setSolvedQuestionCount
-    );
+
 
     useEffect(() => {
         controller.getProfileInformation({ id: user_uid });
         controller.getSolvedRatio({ id: user_uid });
     }, []);
 
-    const [eventParticipant] = useState({
+    // My created event
+    const [myEventParticipant, setMyEventParticipant] = useState({
         event01: 22,
         event02: 23,
         event03: 24,
@@ -46,7 +43,9 @@ export default function Profile() {
         event05: 26,
     });
 
-    const [eventInformation] = useState([
+
+    // Event I am Participated
+    const [myParticipatedEvent, setMyParticipatedEvent] = useState([
         {
             title: "Binary Battle Championship",
             time_of_participation: "12/11/2024",
@@ -84,7 +83,9 @@ export default function Profile() {
         },
     ]);
 
-    const [questionSolved] = useState([
+
+    // My solved Question
+    const [mySolvedQuestions, setMySolvedQuestions] = useState([
         { title: "Two sum", date: "18/07/2024" },
         { title: "Three sum", date: "18/07/2024" },
         { title: "Four sum", date: "18/07/2024" },
@@ -92,13 +93,33 @@ export default function Profile() {
         { title: "Four sum", date: "18/07/2024" },
     ]);
 
-    const [createdQuestion] = useState([
+
+    // My created Question
+    const [myCreatedQuestion, setMyCreatedQuestions] = useState([
         { title: "question01", participationCount: 21, createdAt: "12/12/2025" },
         { title: "question02", participationCount: 22, createdAt: "13/12/2025" },
         { title: "question03", participationCount: 23, createdAt: "14/12/2025" },
         { title: "question04", participationCount: 24, createdAt: "15/12/2025" },
         { title: "question05", participationCount: 25, createdAt: "16/12/2025" },
     ]);
+
+
+    const controller = new ProfileController(
+
+        setUser,
+        setTotalQuestionCount,
+        setSolvedQuestionCount,
+
+        setMyEventParticipant,
+        setMyParticipatedEvent,
+        setMySolvedQuestions,
+        setMyCreatedQuestions
+
+    );
+
+
+
+
 
     return (
         <div className="relative w-screen flex items-center justify-center">
@@ -155,13 +176,19 @@ export default function Profile() {
                             eventParticipated={8}
                         />
 
-                        <EventTable2 data={eventParticipant} />
+                        {/* My Created Event with Participant */}
+                        <EventTable2 data={myEventParticipant} />
 
-                        <ParticipatedEvent data={eventInformation} />
 
-                        <SolvedQuestion data={questionSolved} />
+                        {/* event I am Participated */}
+                        <ParticipatedEvent data={myParticipatedEvent} />
 
-                        <CreatedQuestionTable data={createdQuestion} />
+                        {/*  My solved Questions */}
+                        <SolvedQuestion data={mySolvedQuestions} />
+
+
+                        {/*  Created questions with participant */}
+                        <CreatedQuestionTable data={myCreatedQuestion} />
                     </div>
                 </div>
             </div>

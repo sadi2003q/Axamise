@@ -427,7 +427,7 @@ export class UsersRepository implements IUsersRepository{
         try {
 
             const eventSnapShot = query(
-                collection(db, Database.approvedQuestions),
+                collection(db, Database.event),
                 where('createdBy_uid' , '==', id),
                 where('status', '==', 'approved')
             )
@@ -481,7 +481,7 @@ export class UsersRepository implements IUsersRepository{
      * Fetch Solved Questions By server
      * @param id (user ID)
      */
-    async _fetch_solved_Questions({id}: {id: string}): Promise<Firebase_Response> {
+    async _fetch_solved_Questions_list({id}: {id: string}): Promise<Firebase_Response> {
         try {
             const eventParticipateSnapshot = collection(db, Database.student, id, Database.solvedProblems);
 
@@ -492,6 +492,7 @@ export class UsersRepository implements IUsersRepository{
 
             return {
                 success: true,
+                data: data,
                 message: "Participating User Information",
             }
 
@@ -501,19 +502,14 @@ export class UsersRepository implements IUsersRepository{
     }
 
     /**
-     * Fetch all question created by user
-     * @param user_id
+     * Fetch All those Event that was Participated
+     * @param id
      */
-    async _Fetch_Created_Problem_by_Id({user_id}: {user_id: string}): Promise<Firebase_Response> {
+    async _fetch_participated_Event_Information({id}: {id: string}): Promise<Firebase_Response> {
         try {
 
-            const questionRef = collection(db, Database.approvedQuestions);
-            const documents = query(
-                questionRef,
-                where('createdBy_uid', '==', user_id)
-            )
-
-            const response = await getDocs(documents);
+            const participatedEventRef = collection(db, Database.student, id, Database.participatedEvent);
+            const response = await getDocs(participatedEventRef)
 
             const data = response.docs.map((doc) => ({
                 id: doc.id,
@@ -523,7 +519,7 @@ export class UsersRepository implements IUsersRepository{
             return {
                 success: true,
                 data: data,
-                message: "list of problems"
+                message: `Participating Event List : ${data}`,
             }
 
         } catch (error) {
@@ -531,14 +527,20 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+
+
+
+
+
+
     /**
      * Fetch the number of user solved the problem
      * @param questionID
      */
-    async _Fetch_Participation_Count({questionID}: {questionID: string}): Promise<Firebase_Response> {
+    async _Fetch_Question_Participation_Count({questionID}: {questionID: string}): Promise<Firebase_Response> {
         try {
 
-            const ref = collection(db, Database.approvedQuestions, questionID, Database.participatedEvent);
+            const ref = collection(db, Database.approvedQuestions, questionID, Database.SolvedQuestionList);
 
             const countSnapshot = await getCountFromServer(ref);
 
@@ -555,43 +557,11 @@ export class UsersRepository implements IUsersRepository{
     }
 
     /**
-     * Get Created event of the ID
-     * @param user_id
-     */
-    async _Fetch_Created_Event_By_Id({user_id}: {user_id: string}): Promise<Firebase_Response> {
-        try {
-            // Reference to "Events" collection
-            const eventsRef = collection(db, Database.event);
-
-            // Query for events where createdBy_uid == uid
-            const q = query(
-                eventsRef,
-                where("createdBy_uid", "==", user_id),
-                where("status", "==", EVENT_APPROVAL_STATUS.approved)
-            );
-
-            // Execute query
-            const querySnapshot = await getDocs(q);
-
-            // Map documents into array
-            const events = querySnapshot.docs.map((doc) => ({
-                id: doc.id,       // include doc id
-                ...doc.data(),    // spread event fields
-            }));
-
-            return { success: true, data: events };
-        } catch (error) {
-            console.error("Error retrieving events:", error);
-            return { success: false, error };
-        }
-    }
-
-    /**
      * Fetch Event Participant count for each event
      * @param eventID
      * @constructor
      */
-    async Fetch_Event_Participant_Count({eventID}: {eventID: string}): Promise<Firebase_Response> {
+    async _Fetch_Event_Participant_Count({eventID}: {eventID: string}): Promise<Firebase_Response> {
         try {
 
             const eventRef = collection(db, Database.event, eventID, Database.participatedEvent);
@@ -609,6 +579,8 @@ export class UsersRepository implements IUsersRepository{
             console.error(error);
         }
     }
+
+
 
 
 
