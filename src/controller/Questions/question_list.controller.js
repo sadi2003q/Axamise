@@ -3,7 +3,7 @@
 
 import { QuestionListService } from "../../services/Questions/_question_list.service.ts";
 import { routes } from "../../Utilities.ts"
-
+import { LocalCache } from "../../localCache.js";
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
 import { SERVICE} from "../../Utilities.ts";
 
@@ -20,6 +20,9 @@ export class QuestionListController {
         this.setError = setError;
         this.navigate = navigate;
         this.setSolvedProblem = setSolvedProblem
+
+        // initialize cache
+        this.cache = new LocalCache("allQuestionsCache");
     }
 
     /*
@@ -34,11 +37,30 @@ export class QuestionListController {
 
     async handleFetchAll() {
 
+        // 1. Load cache instantly if exists
+        const cached = this.cache.load();
+        if (cached) this.setAllQuestion(cached);
+
+        // 2. Fetch from Firebase
         const result = await this.service._Fetch_All_Question();
-        
-        if (result.success) this.setAllQuestion(result.data);
-        else this.setError(result.error);
+
+        if (!result.success) {
+            this.setError(result.error);
+            return;
+        }
+
+        const fresh = result.data;
+
+        // 3. Compare using LocalCache method
+        if (!this.cache.isSame(fresh)) {
+            console.log("Cache updated with fresh data");
+            this.cache.save(fresh);
+            this.setAllQuestion(fresh);
+        } else {
+            console.log("Cache is identical. No update needed.");
+        }
     }
+
 
 
     handleEditButton = (uid) => {

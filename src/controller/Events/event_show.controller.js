@@ -5,6 +5,7 @@ import { EventShowService } from '../../services/Events/_event_show.service.ts'
 import { routes } from '../../Utilities.ts'
 import { EventService } from "../../services/Events/_repositories/_factory.event.service.js";
 import { SERVICE } from '../../Utilities.js'
+import { LocalCache } from '../../localCache.js'
 
 
 export class EventShowController {
@@ -19,6 +20,9 @@ export class EventShowController {
         this.events = events;
         this.setLoading = setLoading;
         this.setError = setError;
+
+        // Initialising Local Cache
+        this.cache = new LocalCache('EventCache');
     }
 
 
@@ -53,19 +57,36 @@ export class EventShowController {
 
     fetchEvents = async (id) => {
         try {
+            const cached = this.cache.load();
+
+            // STEP 1: If cache exists → show cached data instantly
+            if (cached) this.setEvents(cached);
+
+            // STEP 2: Fetch from server
             const result = await this.service.GetAllEvents(id);
 
-            if (result.success) {
-                console.log(result.data);
-                if (result.data && result.data.length > 0) this.setEvents(result.data);
-                else this.setError("No events found");
-            } else {
+            if (!result.success) {
                 this.setError(result.error || "Failed to fetch events");
+                return;
             }
+
+            const fresh = result.data || [];
+
+            // STEP 3: If cache AND fresh data are same → no UI update needed
+            if (this.cache.isSame(fresh)) {
+                console.log("Cache is already up-to-date");
+                return;
+            }
+
+            // STEP 4: Cache is different → update cache & UI
+            this.cache.save(fresh);
+            this.setEvents(fresh);
+
         } catch (err) {
             this.setError(err.message || "Something went wrong");
         } finally {
             this.setLoading(false);
         }
     };
+
 }
