@@ -22,6 +22,7 @@ import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
 import EventStart from "./pages/Events/Event_Start.jsx";
 import Notifications from "./pages/users/Notifications.jsx";
+import Logout from "./pages/Authentication/logout.jsx";
 
 // ============================================================
 // 🌐 Navigation Bar Component
@@ -100,6 +101,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Route path="/PROFILE" element={<Profile />} />
                 <Route path="/EVENT_START" element={<EventStart />} />
                 <Route path="/NOTIFICATION" element={<Notifications />} />
+                <Route path="/LOGOUT" element={<Logout />} />
             </Route>
 
             {/* 🔹 Admin Area (no navbar) */}

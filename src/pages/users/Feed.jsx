@@ -6,18 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 
 // Components
-import Profile_Background from "../../Components/__Profile.jsx";
 import {
     ContentTimeline,
     ExpandableList,
-    EventCard,
     Event_Showing_Description,
     HeroSection,
     HeroContentSection,
     HeaderSection,
     QuestionSection,
     PageTimeline,
-    sampleItems,
     Button_visitEvent,
     Button_MoreEvent,
     Button_MoreQuestions
