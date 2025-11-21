@@ -171,22 +171,25 @@ export default function Feed() {
     // ----------------------
     // Fetch Data on Mount
     // ----------------------
+
+    //LEFT:
+    //Error handling
     useEffect(() => {
         // Fetch Events and Questions
-        controller.fetchEventHandler();
-        controller.fetchQuestionHandler();
+        controller.fetchEventHandler().then();
+        controller.fetchQuestionHandler().then();
 
         // Fetch Question Counts by Difficulty
-        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.easy });
-        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.medium });
-        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.hard });
+        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.easy }).then();
+        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.medium }).then();
+        controller.fetchQuestionCount_byDifficulty({ difficulty: DIFFICULTY.hard }).then();
 
         // Fetch Total & Solved Questions
-        controller.fetchTotalNumberOfQuestions();
-        controller.fetchSolvedQuestions_count({ id: user_uid });
+        controller.fetchTotalNumberOfQuestions().then();
+        controller.fetchSolvedQuestions_count({ id: user_uid }).then();
 
         // Fetch Question Counts by Category
-        controller.fetchQuestionCount_byCategory();
+        controller.fetchQuestionCount_byCategory().then();
     }, []);
 
     // ----------------------
@@ -204,7 +207,7 @@ export default function Feed() {
                 </HeroContentSection>
 
                 <PageTimeline>
-                    <ContentTimeline items={['item1', 'item2', 'item3', 'item4']} />
+                    <ContentTimeline items={['My Performance', 'Participated Event', 'All Questions', 'All Events']} />
                 </PageTimeline>
             </HeroSection>
 

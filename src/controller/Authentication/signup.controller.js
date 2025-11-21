@@ -3,7 +3,7 @@
 
 import SignUpService from "../../services/Authentication/_signup.service.ts";
 
-import { SERVICE } from "../../Utilities.ts";
+import {routes, SERVICE} from "../../Utilities.ts";
 import { AuthenticationService } from "../../services/Authentication/_factory.Authentication.service.ts";
 
 export default class SignUpController {
@@ -38,5 +38,10 @@ export default class SignUpController {
                 message: result.error.message || "Signup failed",
             });
         }
+    }
+
+
+    handleLogin = () => {
+        this.navigate(routes.login);
     }
 }

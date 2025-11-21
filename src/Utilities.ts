@@ -121,6 +121,15 @@ export const EVENT_STATE = {
     solved: 'Solved',
 }
 
+export const CACHE_STATE = {
+    eventCache: 'EventCache',
+    questionCache: 'QuestionCache',
+    // solvedQuestionsCache: 'SolvedQuestionsCache',
+    // participatedEventCache: 'ParticipatedEventCache',
+    // myEventCache: 'MyEventCache',
+    // participatedCount_QuestionsCache: 'ParticipatedCount_QuestionsCache',
+    // participatedCount_EventCache: 'ParticipatedCount_EventCache',
+}
 
 export const Feed_Header = [
     "Coding exams test your problem-solving skills",

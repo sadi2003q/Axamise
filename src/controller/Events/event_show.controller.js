@@ -2,7 +2,7 @@
 // path: src/controller/event_show.controller.js
 
 import { EventShowService } from '../../services/Events/_event_show.service.ts'
-import { routes } from '../../Utilities.ts'
+import { routes, CACHE_STATE} from '../../Utilities.ts'
 import { EventService } from "../../services/Events/_repositories/_factory.event.service.js";
 import { SERVICE } from '../../Utilities.js'
 import { LocalCache } from '../../localCache.js'
@@ -22,7 +22,7 @@ export class EventShowController {
         this.setError = setError;
 
         // Initialising Local Cache
-        this.cache = new LocalCache('EventCache');
+        this.cache = new LocalCache(CACHE_STATE.eventCache);
     }
 
 
