@@ -78,7 +78,7 @@ export const routes = {
     feed: '/FEED',
     event_create: '/EVENT_CREATE',
     login: '/LOGIN',
-    signup: '/SIGN_UP',
+    signup: '/SIGNUP',
     profile: '/PROFILE',
     question_create: '/QUESTION_CREATE',
     solving_page: '/SOLVE',

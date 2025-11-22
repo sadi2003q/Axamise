@@ -140,18 +140,16 @@ export default function Signup() {
                         </Button>
 
 
+
+                        <Button onClick={() => controller.handleGoogleSignUp()} variant="outlined" startIcon={<GoogleIcon />}>
+                            Sign in with Google
+                        </Button>
                         <Button
                             onClick={controller.handleLogin}
                             variant="outlined"
                             endIcon={<SendIcon />}
                         >
                             Have an Account, Login
-                        </Button>
-
-
-
-                        <Button onClick={() => controller.handleGoogleSignUp()} variant="outlined" startIcon={<GoogleIcon />}>
-                            Sign in with Google
                         </Button>
                     </div>
                 </div>
