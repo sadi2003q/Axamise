@@ -32,7 +32,7 @@ export default function Profile() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(user_uid.isEmpty()) {
+        if(!user_uid) {
             navigate(routes.login)
         }
     }, []);

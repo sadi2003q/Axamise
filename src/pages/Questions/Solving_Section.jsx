@@ -305,7 +305,7 @@ add required library as necessary
 
 
     useEffect(() => {
-        if(user_uid.isEmpty()) {
+        if(!user_uid) {
             navigate(routes.login)
         }
     }, []);

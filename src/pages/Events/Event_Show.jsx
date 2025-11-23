@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { EventShowController } from "../../controller/Events/event_show.controller.js";
 import {Background_Particles} from "../../Components/__Admin_Login.jsx";
 import {Heading} from "../../Components/__Event_Question.jsx";
+import {routes} from "../../Utilities.js";
 
 
 // =======================
@@ -48,6 +49,13 @@ export default function Event_Show() {
     setError,
     navigate
   );
+
+
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
 
   // ✅ Fetch events through controller
   useEffect(() => {

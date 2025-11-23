@@ -26,6 +26,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { EventEnterController } from "../../controller/Events/event_enter.controller.js";
 import { useGlobal } from "../../GlobalContext.jsx";
+import {routes} from "../../Utilities.js";
 
 export default function EventStart() {
     // -------------------- Global Context --------------------
@@ -58,6 +59,11 @@ export default function EventStart() {
 
 
 
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
 
 
 

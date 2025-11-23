@@ -172,7 +172,7 @@ export default function Feed() {
     // ----------------------
 
     useEffect(() => {
-        if(user_uid.isEmpty()) {
+        if(!user_uid) {
             navigate(routes.login)
         }
     }, []);

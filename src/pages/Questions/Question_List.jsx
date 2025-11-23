@@ -47,10 +47,8 @@ export default function Question_List() {
         setSolvedProblem
     );
 
-
-
     useEffect(() => {
-        if(user_uid.isEmpty()) {
+        if(!user_uid) {
             navigate(routes.login)
         }
     }, []);
