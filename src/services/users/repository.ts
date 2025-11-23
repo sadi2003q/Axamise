@@ -210,7 +210,6 @@ export class UsersRepository implements IUsersRepository{
                 // Replace 'date' with the actual timestamp field in your Firestore documents (e.g. 'createdAt')
                 // If you store Firestore Timestamp, this works fine.
                 orderBy('date', 'desc'),
-                limit(5)
             );
 
 
@@ -251,7 +250,6 @@ export class UsersRepository implements IUsersRepository{
             const questionRef = query(
                 collection(db, Database.approvedQuestions),
                 orderBy('approvedAt', 'desc'),
-                limit(5)
             )
 
             const snapshot = await getDocs(questionRef);

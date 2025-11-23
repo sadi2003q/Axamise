@@ -13,6 +13,8 @@ import {
     SolvedQuestion,
 } from "../../Components/__Profile2.jsx";
 import { ProfileController } from "../../controller/users/profile.controller.js";
+import {useNavigate} from "react-router-dom";
+import {routes} from "../../Utilities.js";
 
 export default function Profile() {
     const { user_uid } = useGlobal();
@@ -27,6 +29,13 @@ export default function Profile() {
         problemsSolved: Math.floor(Math.random() * 11),
     }));
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(user_uid.isEmpty()) {
+            navigate(routes.login)
+        }
+    }, []);
 
 
     useEffect(() => {

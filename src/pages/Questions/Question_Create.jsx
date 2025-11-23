@@ -51,6 +51,7 @@ import { useGlobal } from "../../GlobalContext.jsx";
 
 // Routes
 import { useNavigate } from "react-router-dom";
+import {routes} from "../../Utilities.js";
 
 // =========================================================================
 // MAIN COMPONENT
@@ -205,6 +206,16 @@ export default function Question_Create() {
     // =========================================================================
     // LIFECYCLE & SIDE EFFECTS
     // =========================================================================
+
+
+
+    useEffect(() => {
+        if(user_uid.isEmpty()) {
+            navigate(routes.login)
+        }
+    }, []);
+
+
 
     /**
      * Effect to load initial data on component mount:

@@ -50,6 +50,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 // Controller
 import { SolvingSectionController } from "../../controller/Questions/solving_section.controller.js";
 import { Background_Particles } from "../../Components/__Admin_Login.jsx";
+import {routes} from "../../Utilities.js";
 
 export default function Solving_Section() {
     // =========================================================================
@@ -299,6 +300,18 @@ add required library as necessary
 
 
     const totalSecondsRef = useRef(0);
+
+
+
+
+    useEffect(() => {
+        if(user_uid.isEmpty()) {
+            navigate(routes.login)
+        }
+    }, []);
+
+
+
 
     useEffect(() => {
         if (!enteredEvent) return;

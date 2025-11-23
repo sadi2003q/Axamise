@@ -28,9 +28,8 @@ import { FeedController } from "../../controller/users/feed.controller.js";
 
 // Models & Utilities
 import { Events_Model } from "../../models/Event_Model.js";
-import { Feed_Header, DIFFICULTY } from "../../Utilities.ts";
+import {Feed_Header, DIFFICULTY, routes} from "../../Utilities.ts";
 import {useGlobal} from "../../GlobalContext.jsx";
-
 // ----------------------
 // Demo Events (Mock Data)
 // ----------------------
@@ -172,11 +171,21 @@ export default function Feed() {
     // Fetch Data on Mount
     // ----------------------
 
+    useEffect(() => {
+        if(user_uid.isEmpty()) {
+            navigate(routes.login)
+        }
+    }, []);
+
+
+
     //LEFT:
     //Error handling
     useEffect(() => {
         // Fetch Events and Questions
-        controller.fetchEventHandler().then();
+        controller.fetchEventHandler().then(() => {
+            console.log('Event Fetching is now complete')
+        });
         controller.fetchQuestionHandler().then();
 
         // Fetch Question Counts by Difficulty
@@ -243,9 +252,9 @@ export default function Feed() {
                 {/* Event Menu */}
                 <div className="w-[35vw] h-[86vh] overflow-auto mx-2">
                     <FlowingMenu
-                        items={demoEvents.map(e => ({ text: e.title, link: '#' }))}
+                        items={randomEvent.map(e => ({ text: e.title, link: '#' }))}
                         onItemClick={(title) => {
-                            const event = demoEvents.find(e => e.title === title);
+                            const event = randomEvent.find(e => e.title === title);
                             setSelectedEvent(event);
                         }}
                     />

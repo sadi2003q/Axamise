@@ -25,6 +25,7 @@ import { QuestionListController } from "../../controller/Questions/question_list
 // Router
 import { useNavigate } from "react-router-dom";
 import {Background_Particles} from "../../Components/__Admin_Login.jsx";
+import {routes} from "../../Utilities.js";
 
 export default function Question_List() {
 
@@ -45,6 +46,14 @@ export default function Question_List() {
         navigate,
         setSolvedProblem
     );
+
+
+
+    useEffect(() => {
+        if(user_uid.isEmpty()) {
+            navigate(routes.login)
+        }
+    }, []);
 
     // Fetch all questions on mount
     useEffect(() => {
