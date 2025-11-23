@@ -51,7 +51,7 @@ export default function Admin_Approval() {
     // =========================================================================
 
     // Global Context
-    const { adminEmail } = useGlobal();
+    const { adminEmail, adminUID } = useGlobal();
 
     /**
      * State for managing all pending questions awaiting approval
@@ -149,13 +149,19 @@ export default function Admin_Approval() {
 #include <iostream>
 #include <string>
 #include <cstdlib>  
+#include <bits/stdc++.h>
+
+
+using namespace std;
 
 //---PART01---
-using namespace std;
 
 ${rType} ${fName}() {
     // Your logic here
 }
+
+
+
 //---PART02---
 int main() {
     
@@ -198,13 +204,15 @@ int main() {
      * - Closes approval panel
      *
      * @param {string} id - The ID of the question being approved
+     * @param {approvedBy}
+     * @param {approvedBy_uid}
      */
-    const handleApprove = (id) => {
+    const handleApprove = (id, approvedBy = adminEmail, approvedBy_uid = adminUID) => {
         // Create approved question object with all necessary data
         const approvedQuestion = new AdminApproval_Question({
             question,
-            approvedBy: "Admin",
-            approvedBy_uid: "Admin123",
+            approvedBy: approvedBy,
+            approvedBy_uid: approvedBy_uid,
             functionName,
             returnType,
             status,
@@ -329,6 +337,15 @@ int main() {
                     >
                         {/* Conditional rendering based on current display mode */}
                         {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.APPROVAL ? (
+
+
+
+
+
+
+
+
+
                             // APPROVAL PANEL - For reviewing and approving questions
                             <ApprovalPanel
                                 functionName={functionName}
@@ -345,6 +362,17 @@ int main() {
                                 onClose={controller.OpenSidePage}
                             />
                         ) : (
+
+
+
+
+
+
+
+
+
+
+
                             // REJECTION/MODIFICATION PANEL - For providing feedback
                             <ObservationField
                                 title={title}

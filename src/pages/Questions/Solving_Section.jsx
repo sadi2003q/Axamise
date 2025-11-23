@@ -597,7 +597,7 @@ add required library as necessary
                     {/* =================================================================
                         LEFT PANEL - PROBLEM DESCRIPTION & CONTROLS
                         ================================================================= */}
-                    <div style={{flex: 1 - editorWidth, minWidth: "200px"}}>
+                    <div style={{flex: 1 - editorWidth, minWidth: "200px", minHeight: "300px"}}>
                         <Solve_Description>
                             {/* Code Execution Controls */}
                             <div className="flex flex-col space-y-3 mx-1.">

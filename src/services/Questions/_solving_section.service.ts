@@ -4,11 +4,14 @@
 import { db } from "../../firebase.js";
 import {doc, getDoc, setDoc, updateDoc, collection} from 'firebase/firestore'
 import {Database, EVENT_STATE, Firebase_Response} from "../../Utilities";
-import Question from '../../models/Question_Model'
+import { Notification } from '../../models/Notification_Model'
 import { Solve_Model} from "../../models/Solve_Model";
+import { NOTIFICATION_TYPES } from "../../Utilities";
+import { NotificationsService } from '../users/_Notifications.service'
 
 
 export class SolveService {
+
 
     /**
      * Fetch the Problem from database
@@ -180,6 +183,19 @@ export class SolveService {
             // Reference the ScoreCard subcollection
             const scoreCardRef = collection(db, Database.event, eventID, Database.eventScoreCard);
 
+            const notification: Notification = new Notification({
+                title : "Score",
+                message: `Final Score : ${score}`,
+                type: NOTIFICATION_TYPES.event_score,
+                objectID : eventID,
+                recipientID: userID,
+                isRead: false,
+                timestamp: new Date()
+            })
+
+            const notificationService = new NotificationsService();
+
+
             // Create a new document with auto-generated ID
             const newScoreRef = doc(scoreCardRef, userID);
             await setDoc(newScoreRef, {
@@ -190,6 +206,8 @@ export class SolveService {
                 timeComplexity,
                 createdAt: new Date().toISOString(),
             });
+
+            await notificationService._Send_Notification(notification);
 
             return {
                 success: true,

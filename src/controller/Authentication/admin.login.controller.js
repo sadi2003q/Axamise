@@ -9,7 +9,7 @@ import { AuthenticationService } from "../../services/Authentication/_factory.Au
 export class Admin_LoginController {
     // Global Context
 
-    constructor(user, navigate, setFieldError) {
+    constructor(user, navigate, setFieldError, setAdminUID) {
         
         this.user = user;
         // this.service = new Admin_LoginService(user);
@@ -18,6 +18,7 @@ export class Admin_LoginController {
 
         this.navigate = navigate;
         this.setFieldError = setFieldError;
+        this.setAdminUID = setAdminUID
     }
 
     
@@ -36,7 +37,7 @@ export class Admin_LoginController {
             console.log(`UID : ${result.id}`)
             // You can navigate here if you want:
 
-
+            this.setAdminUID=result.id;
             this.navigate(routes.approval_question);
 
 
