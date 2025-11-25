@@ -172,10 +172,10 @@ export default function Feed() {
     // ----------------------
 
     useEffect(() => {
-        if(!user_uid) {
-            navigate(routes.login)
+        if (user_uid === undefined || user_uid === null || user_uid === "") {
+            navigate(routes.login, { replace: true });
         }
-    }, []);
+    }, [user_uid]);
 
 
 
