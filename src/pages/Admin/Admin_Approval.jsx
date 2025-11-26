@@ -156,7 +156,7 @@ using namespace std;
 
 //---PART01---
 
-${rType} ${fName}() {
+int ${fName}() {
     // Your logic here
 }
 
