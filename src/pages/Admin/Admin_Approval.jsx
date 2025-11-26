@@ -156,7 +156,7 @@ using namespace std;
 
 //---PART01---
 
-int ${fName}() {
+int functionName() {
     // Your logic here
 }
 
@@ -169,7 +169,7 @@ int main() {
     
     _ output =  ;
     
-    ${rType} result = ${fName}();
+    ${rType} result = functionName();
     
     if(output == result) cout<<"Submission Accepted"<<endl;
     else {
@@ -216,7 +216,7 @@ int main() {
             functionName,
             returnType,
             status,
-            mainFunctionCode: generateFunctionCode()
+            mainFunctionCode: functionCode
         });
 
         // Process approval through controller
