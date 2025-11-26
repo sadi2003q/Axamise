@@ -1,6 +1,6 @@
 // path: services/_signup.service.js
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import {deleteDoc, doc, setDoc} from "firebase/firestore";
+import {collection, deleteDoc, doc, setDoc} from "firebase/firestore";
 import { auth, googleProvider, db } from "../../firebase.js";
 import { Database } from "../../Utilities";
 import { Firebase_Response} from "../../Utilities";
@@ -91,4 +91,36 @@ export default class SignUpService extends _Base_SignUp<Student>{
     }
 
 
+
+    async signup_with_raw_data (uid:string, student: Student) : Promise<Firebase_Response> {
+        try {
+
+            const studentRef = collection(db, Database.student);
+            // @ts-ignore
+            const response = await setDoc(studentRef, {
+                firstName: this.user.firstName,
+                lastName: this.user.lastName,
+                email: this.user.email,
+                gender: this.user.gender,
+                id: this.user.id,
+                image: this.user.image,
+                dob: this.user.dob ? new Date(this.user.dob) : null,
+            })
+
+            return {
+                success: true,
+                message: 'Data is set on the database'
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
 }
+
+
+// SignUpService
+// signup()
+// storeUserInfo<>

@@ -46,4 +46,12 @@ export default class LoginController {
             });
         }
     }
+
+    handleSignUp = () => {
+        this.navigate(routes.signup);
+    }
+
+
+
+
 }

@@ -1,4 +1,6 @@
 import { LogoutService } from "../../services/Authentication/_logout.service.js";
+import { CacheManager } from '../../localCache.js'
+
 
 export class LogoutController {
     constructor({
@@ -28,17 +30,23 @@ export class LogoutController {
     };
 
     handleConfirmLogout = async () => {
-        await this.service.logout();
+        try {
+            await this.service.logout();
+            CacheManager.clearAll();
 
-        // CLEAR GLOBAL VARIABLES
-        this.setCurrentUser(null);
-        this.setUser_uid("Not Defined");
-        this.setCurrentName(null);
-        this.setAdminEmail(null);
+            // CLEAR GLOBAL VARIABLES
+            this.setCurrentUser(null);
+            this.setUser_uid("Not Defined");
+            this.setCurrentName(null);
+            this.setAdminEmail(null);
 
-        this.setOpen(false);
+            this.setOpen(false);
 
-        // Redirect to LOGIN page
-        this.navigate("/LOGIN");
+            // Redirect to LOGIN page
+            this.navigate("/LOGIN");
+        } catch (error) {
+            console.error(error);
+        }
+
     };
 }

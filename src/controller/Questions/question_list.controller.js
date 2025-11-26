@@ -2,10 +2,11 @@
 // File Path: controller/question_list.controller.js
 
 import { QuestionListService } from "../../services/Questions/_question_list.service.ts";
-import { routes } from "../../Utilities.ts"
+import { routes, CACHE_STATE } from "../../Utilities.ts"
 import { LocalCache } from "../../localCache.js";
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
 import { SERVICE} from "../../Utilities.ts";
+
 
 
 export class QuestionListController {
@@ -22,7 +23,7 @@ export class QuestionListController {
         this.setSolvedProblem = setSolvedProblem
 
         // initialize cache
-        this.cache = new LocalCache("allQuestionsCache");
+        this.cache = new LocalCache(CACHE_STATE.questionCache);
     }
 
     /*

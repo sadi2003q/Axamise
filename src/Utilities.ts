@@ -78,7 +78,7 @@ export const routes = {
     feed: '/FEED',
     event_create: '/EVENT_CREATE',
     login: '/LOGIN',
-    signup: '/SIGN_UP',
+    signup: '/SIGNUP',
     profile: '/PROFILE',
     question_create: '/QUESTION_CREATE',
     solving_page: '/SOLVE',
@@ -121,6 +121,15 @@ export const EVENT_STATE = {
     solved: 'Solved',
 }
 
+export const CACHE_STATE = {
+    eventCache: 'EventCache',
+    questionCache: 'QuestionCache',
+    // solvedQuestionsCache: 'SolvedQuestionsCache',
+    // participatedEventCache: 'ParticipatedEventCache',
+    // myEventCache: 'MyEventCache',
+    // participatedCount_QuestionsCache: 'ParticipatedCount_QuestionsCache',
+    // participatedCount_EventCache: 'ParticipatedCount_EventCache',
+}
 
 export const Feed_Header = [
     "Coding exams test your problem-solving skills",

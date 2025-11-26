@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import TextField from "@mui/material/TextField";
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 // Custom Components & Styles & assets
 import { _LOGIN_styles, LogoForm, LoginName } from "../../Components/__LogIn.jsx";
@@ -60,18 +61,24 @@ export default function Login() {
     };
 
 
+    const controller = new LoginController(
+        user,
+        setUser_uid,
+        setCurrentName,
+        navigate,
+        setLoginError
+    );
+
+
     // Form submission handler
     const handleLogin = async (e) => {
         e.preventDefault();
-        const controller = new LoginController(
-            user,
-            setUser_uid,
-            setCurrentName,
-            navigate,
-            setLoginError
-        );
+
         await controller.handleEmailLogin();
     };
+
+
+
 
     return (
 
@@ -131,6 +138,17 @@ export default function Login() {
                         >
                             Login
                         </Button>
+
+                        <Button
+                            variant="outlined"
+                            onClick={controller.handleSignUp}
+                            endIcon={<DirectionsRunIcon />}
+                            type="submit"
+                             // Disable button if form is not valid
+                        >
+                            Don't have an Account, Signup
+                        </Button>
+
                     </div>
                 </div>
 

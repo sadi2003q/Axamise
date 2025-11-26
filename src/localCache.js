@@ -1,3 +1,6 @@
+
+import { CACHE_STATE} from "./Utilities.js";
+
 export class LocalCache {
     constructor(key) {
         this.key = key;
@@ -37,3 +40,13 @@ export class LocalCache {
         return JSON.stringify(cached) === JSON.stringify(freshData);
     }
 }
+
+
+
+export const CacheManager = {
+    clearAll() {
+        Object.values(CACHE_STATE).forEach(key => {
+            new LocalCache(key).clear();
+        });
+    }
+};
