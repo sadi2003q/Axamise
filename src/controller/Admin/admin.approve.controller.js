@@ -56,6 +56,15 @@ export class Admin_ApproveController {
         }
     }
 
+
+
+
+
+
+
+
+
+
     deleteQuestion = async (id) => {
         try {
             const result = await this.service._Delete_Specific_Function(id);
@@ -80,7 +89,7 @@ export class Admin_ApproveController {
         // console.log(`mainFunctionCode : ${approveQuestion.mainFunctionCode}`)
 
 
-        this.service.getAllPending(questionID, approveQuestion);
+        this.service.getAllPending(questionID, approveQuestion).then();
     }
 
     OpenSidePage = () => this.setApprovalOpen(prev => !prev);
@@ -105,8 +114,8 @@ export class Admin_ApproveController {
         })
         // notification.printNotification();
 
-        this.notificationService.createNotification({...notification})
-        this.service._Delete_Specific_Function(objectID);
+        this.notificationService.createNotification({...notification}).then()
+        this.service._Delete_Specific_Function(objectID).then();
 
 
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.REJECTED);
@@ -134,16 +143,17 @@ export class Admin_ApproveController {
     }
 
 
+    handleModified = async({id}) => {
 
-    approveQuestion = async (id, question) => {
-        try {
-            const result = await this.service.getAllPending(id, question);
-            if (result.success) console.log('Data set Successful')
-        } catch (error) {
-            console.log("Error approving question:", error);
-            return { success: false, error: error.message };
-        }
+        this.service._AddModifiedQuestion({questionID: id}).then()
+
+        console.log('controller End')
+
     }
+
+
+
+
 
 
 }
