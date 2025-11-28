@@ -66,8 +66,27 @@ export class ProfileController {
     }
 
     async getMySolvedQuestionList({userID}) {
-        const response = this.service.Fetch_Solved_Questions_list({id: userID})
-        this.setMySolvedQuestions(response.data)
+
+
+
+        const response = await this.service.Fetch_Solved_Questions_list({id: userID})
+
+        console.log(response.data)
+
+        const combineData = [];
+
+        const data = response.data
+        data.forEach((item) => {
+            this.service.Fetch_Question_Name({questionId: item.question_id}).then(async (p) => {
+                combineData.push({
+                    date: new Date(item.date).toLocaleString(),
+                    title: p.data.title,
+                })
+            })
+        })
+
+
+        this.setMySolvedQuestions(combineData)
     }
 
     async getMyQuestionParticipatedInformation({userID}) {

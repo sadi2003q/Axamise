@@ -38,10 +38,7 @@ export default function Profile() {
     }, []);
 
 
-    useEffect(() => {
-        controller.getProfileInformation({ id: user_uid });
-        controller.getSolvedRatio({ id: user_uid });
-    }, []);
+
 
     // My created event
     const [myEventParticipant, setMyEventParticipant] = useState({
@@ -125,6 +122,20 @@ export default function Profile() {
         setMyCreatedQuestions
 
     );
+
+
+
+
+
+    useEffect(() => {
+        controller.getProfileInformation({ id: user_uid }).then();
+        controller.getSolvedRatio({ id: user_uid }).then();
+
+
+        // Fetch All Solved Problem List
+        controller.getMySolvedQuestionList({userID: user_uid}).then();
+
+    }, []);
 
 
 

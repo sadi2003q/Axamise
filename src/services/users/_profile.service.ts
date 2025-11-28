@@ -62,7 +62,14 @@ export class _profileService {
         return this.repository._fetch_participated_Event_Information({id: userID})
     }
 
+    async Fetch_Question_Name({questionId}: {questionId: string}) {
+        return this.repository._Fetch_Solved_Question_name({questionID: questionId})
+    }
 
+
+    async Fetch_Relevant_Counts({userID, type}: {userID: string, type: string}) {
+        return this.repository._Fetch_Problem_EventCount({userID: userID, type: type})
+    }
 
 
 

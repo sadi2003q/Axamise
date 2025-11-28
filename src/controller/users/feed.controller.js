@@ -14,7 +14,8 @@ export class FeedController {
 
                 setSolvedQuestionCount,
                 setTotalNumberOfQuestions,
-                setQuestionCount_Category
+                setQuestionCount_Category,
+                setError
    ) {
         // Server class
         this.service = new FeedService();
@@ -35,6 +36,8 @@ export class FeedController {
 
         this.cache = new LocalCache(CACHE_STATE.eventCache);
         this.questionCache = new LocalCache(CACHE_STATE.questionCache);
+
+        this.setError = setError;
 
     }
 
@@ -85,16 +88,21 @@ export class FeedController {
 
         const response = await this.service._Fetch_Events()
 
-        const data = response.data
+        if(response.success) {
+            const data = response.data
 
-        if(!this.cache.isSame(data)) this.cache.save(data);
+            if(!this.cache.isSame(data)) this.cache.save(data);
 
 
-        const shuffled = [...data].sort(() => Math.random() - 0.5);
-        const selected = shuffled.slice(0, Math.min(8, shuffled.length));
-        this.setRandomEvent(selected)
-        console.log(`event length : ${selected.length}`);
-        console.log(`data length : ${data.length}`);
+            const shuffled = [...data].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, Math.min(8, shuffled.length));
+            this.setRandomEvent(selected)
+            console.log(`event length : ${selected.length}`);
+            console.log(`data length : ${data.length}`);
+        } else {
+            this.setError(response.message)
+        }
+
 
 
     }

@@ -28,6 +28,8 @@ Return a JSON array with an entry for each question. Each entry should include:
 
 the weight of the question is provided with the question as point, if any question is exception then may consider the weight as 7
 
+- If the number is not assigned for any of the questions then consider each has a weight of 10.
+
 
 Example structure:
 {

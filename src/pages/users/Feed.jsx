@@ -115,6 +115,10 @@ export default function Feed() {
 
     const [questionCount_Category, setQuestionCount_Category] = useState({});
 
+    // Error Handling
+    const [error, setError] = useState("");
+
+
     // ----------------------
     // TreeView Structure
     // ----------------------
@@ -164,7 +168,8 @@ export default function Feed() {
         setHardQuestionCount,
         setSolvedQuestionCount,
         setTotalNumberOfQuestions,
-        setQuestionCount_Category
+        setQuestionCount_Category,
+        setError
     );
 
     // ----------------------
