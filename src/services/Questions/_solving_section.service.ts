@@ -229,8 +229,16 @@ export class SolveService {
      * @param eventId
      * @param score
      * @param submitCount
+     * @param eventState
      */
-    _ModifyScoreAfterRun = async ({userID, eventId, score, submitCount}: {userID: string, eventId: string, score: number, submitCount: number}) : Promise<Firebase_Response> =>{
+    _ModifyScoreAfterRun = async ({userID, eventId, score, submitCount,
+                                      eventState = EVENT_STATE.solved}: {
+        userID: string,
+        eventId: string,
+        score: number,
+        submitCount: number,
+        eventState: string ,
+    }) : Promise<Firebase_Response> =>{
         try {
 
             const studentRef = doc(db, Database.student, userID, Database.participatedEvent, eventId);
@@ -239,7 +247,7 @@ export class SolveService {
 
             await updateDoc(studentRef, {
                 score: score,
-                eventState: EVENT_STATE.solved,
+                eventState: eventState,
                 submitCount: submitCount
 
             });

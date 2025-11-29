@@ -41,16 +41,16 @@ export default function Profile() {
 
 
     // My created event
-    const [myEventParticipant, setMyEventParticipant] = useState({
+    const [myEventParticipant, setMyEventParticipant] = useState([{
         event01: 22,
         event02: 23,
         event03: 24,
         event04: 25,
         event05: 26,
-    });
+    }]);
 
 
-    // Event I am Participated
+    // All those Event's that I have Participated
     const [myParticipatedEvent, setMyParticipatedEvent] = useState([
         {
             title: "Binary Battle Championship",
@@ -140,11 +140,25 @@ export default function Profile() {
         controller.getSolvedRatio({ id: user_uid }).then();
 
 
+
+        // Fetch My Created Events
+        controller.getMyEventParticipant({userID: user_uid}).then();
+
+
         // Fetch All Solved Problem List
         controller.getMySolvedQuestionList({userID: user_uid}).then();
 
         // Fetch Problem encountered Count
         controller.getEncounteredQuestionsCount({userID: user_uid}).then();
+
+        // Fetch event Information That I Have Participated
+        controller.getMyParticipatedEventInformation({userID: user_uid}).then();
+
+        // Fetch My Question Information Count
+        controller.getMyQuestionParticipatedInformation({userID: user_uid}).then();
+
+
+
 
     }, []);
 
@@ -193,11 +207,23 @@ export default function Profile() {
                     </h2>
 
                     <div className="flex-1 overflow-y-auto space-y-6">
-                        <div className="text-white/70">
-                            <p>✨ Skills</p>
-                            <p>📚 Education</p>
-                            <p>💼 Experience</p>
+                        <div className="grid grid-cols-2 gap-4 text-white/80">
+                            {/* Original items */}
+                            <p className="flex items-center gap-2">✨ Run</p>
+                            <p className="flex items-center gap-2">📚 Education</p>
+                            <p className="flex items-center gap-2">💼 Experience</p>
+
+                            {/* New items */}
+                            <p className="text-green-400 flex items-center gap-2">💻 Coding</p>
+                            <p className="text-pink-400 flex items-center gap-2">🎨 Design & Creativity</p>
+                            <p className="text-blue-400 flex items-center gap-2">📚 Continuous Learning</p>
+                            <p className="text-yellow-400 flex items-center gap-2">🚀 Projects & Achievements</p>
+                            <p className="text-purple-400 flex items-center gap-2">🤝 Collaboration & Teamwork</p>
+                            <p className="text-orange-400 flex items-center gap-2">🧩 Problem Solving</p>
+                            <p className="text-teal-400 flex items-center gap-2">🌐 Networking & Community</p>
                         </div>
+
+
 
                         <GraphSection title="Problems Solved per Day" data={data} />
 

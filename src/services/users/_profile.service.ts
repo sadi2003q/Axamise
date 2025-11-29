@@ -73,4 +73,12 @@ export class _profileService {
 
 
 
+    async Fetch_Question_Participation_Count({questionId}: {questionId: string}) {
+        return this.repository._Fetch_Question_Participation_Count({questionID: questionId})
+    }
+
+
+
+
+
 }

@@ -1,20 +1,12 @@
 // src/Pages/Profile/Profile_Components.jsx
-import React, { useState } from "react";
+import React from "react";
 import { LineChart, Line, Tooltip, ResponsiveContainer } from "recharts";
-import { X, Edit, Plus } from "lucide-react";
 import { useMemo } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
 import { Flag, Users } from "lucide-react";
-import { Calendar, Star, Award, Activity, Bookmark } from "lucide-react";
+import { Calendar, Star, Award, Activity, Bookmark, Clock } from "lucide-react";
+import {EVENT_STATE} from "../Utilities.js";
 
 
 
@@ -191,13 +183,9 @@ export function SolvedRatio({ total, solved }) {
 
 
 export function EventTable2({ data }) {
-    const rows = Object.entries(data).map(([name, value]) => ({
-        name,
-        value,
-    }));
-
     return (
         <div className="w-full mt-6">
+            {/* Table Heading */}
             <h2 className="text-white text-xl font-bold mb-4 pl-2">
                 My Events
             </h2>
@@ -207,17 +195,28 @@ export function EventTable2({ data }) {
                     {/* Header */}
                     <thead className="sticky top-0 z-20 bg-[#333333] text-white">
                     <tr>
-                        <th className="px-4 py-2 text-left font-semibold align-middle rounded-tl-xl rounded-tr-xl">
-                            <div className="flex items-center gap-2">
-                                <Flag size={16}/>
-                                Event Name
+                        <th className="px-4 py-2 text-left font-semibold rounded-tl-xl rounded-tr-xl">
+                            Event Name
+                        </th>
+
+                        <th className="px-4 py-2 text-center font-semibold">
+                            <div className="flex items-center gap-2 justify-center">
+                                <Users size={16} />
+                                Participants
                             </div>
                         </th>
 
-                        <th className="px-4 py-2 text-right font-semibold align-middle">
-                            <div className="flex justify-end items-center gap-2">
-                                <Users size={16}/>
-                                Participants
+                        <th className="px-4 py-2 text-right font-semibold">
+                            <div className="flex items-center gap-2 justify-end">
+                                <Clock size={16} />
+                                State
+                            </div>
+                        </th>
+
+                        <th className="px-4 py-2 text-right font-semibold">
+                            <div className="flex items-center gap-2 justify-end">
+                                <Calendar size={16} />
+                                Date
                             </div>
                         </th>
                     </tr>
@@ -225,20 +224,30 @@ export function EventTable2({ data }) {
 
                     {/* Body */}
                     <tbody>
-                    {rows.map((row, index) => (
-                        <tr
-                            key={index}
-                            className="text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
-                        >
-                            <td className="px-4 py-2 align-middle text-left">
-                                {row.name}
-                            </td>
+                    {data.map((row, index) => {
+                        // Determine color based on state
+                        let colorClass = "";
+                        if (row.state === EVENT_STATE.running) colorClass = "bg-green-500";
+                        else if (row.state === EVENT_STATE.ended) colorClass = "bg-red-500";
+                        else colorClass = "bg-yellow-400";
 
-                            <td className="px-4 py-2 align-middle text-right">
-                                {row.value}
-                            </td>
-                        </tr>
-                    ))}
+                        return (
+                            <tr
+                                key={index}
+                                className="text-white/90 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                            >
+                                <td className="px-4 py-2">{row.name}</td>
+                                <td className="px-4 py-2 text-center">{row.value}</td>
+                                <td className="px-4 py-2 text-right flex items-center justify-end gap-2">
+                                        <span
+                                            className={`h-3 w-3 rounded-full ${colorClass}`}
+                                        ></span>
+                                    {row.state}
+                                </td>
+                                <td className="px-4 py-2 text-right">{row.date}</td>
+                            </tr>
+                        );
+                    })}
                     </tbody>
 
                 </table>
@@ -246,6 +255,7 @@ export function EventTable2({ data }) {
         </div>
     );
 }
+
 
 
 export function SolvedQuestion({data}) {
@@ -401,6 +411,10 @@ export function ParticipatedEvent({data}) {
 
 
 export function CreatedQuestionTable({data}) {
+
+
+
+
     return (
         <div className="w-full mt-6">
             {/* Table Heading */}

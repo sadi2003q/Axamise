@@ -70,18 +70,24 @@ export default function EventStart() {
 
     // -------------------- Load Event Data --------------------
     useEffect(() => {
-        // Load event data passed through react-router state
         if (location.state?.item) {
-            setEvent(location.state.item);
+            const eventItem = location.state.item;
+            setEvent(eventItem);
 
-            const eventName = location.state?.item
-            eventName.allQuestions.forEach((question) => {
-                console.log('mark : ', question.point)
-                setTotalMark(prev => Number(prev) + Number(question.point))
-            })
+            const questions = eventItem.allQuestions || eventItem.questions || [];
+
+            console.log(` questions : ${questions}`);
+
+            questions.forEach((question) => {
+                console.log('mark : ', question.point);
+                setTotalMark(prev => Number(prev) + Number(question.point));
+            });
+
+        } else {
+            console.log("No eventID found in state");
         }
-        else console.log("No eventID found in state");
     }, [location.state]);
+
 
     // -------------------- Entry Permission Check --------------------
     useEffect(() => {

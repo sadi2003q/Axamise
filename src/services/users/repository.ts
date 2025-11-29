@@ -568,7 +568,7 @@ export class UsersRepository implements IUsersRepository{
 
             const countSnapshot = await getCountFromServer(ref);
 
-            const count = countSnapshot.data().count;
+            const count = countSnapshot.data().count ?? 0;
 
             return {
                 success: true,
@@ -590,7 +590,7 @@ export class UsersRepository implements IUsersRepository{
 
             const eventRef = collection(db, Database.event, eventID, Database.participatedEvent);
             const countSnapshot = await getCountFromServer(eventRef);
-            const count = countSnapshot.data().count;
+            const count = countSnapshot.data().count ?? 0;
 
 
             return {
@@ -632,7 +632,11 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
-
+    /**
+     * Fetch Count of relevant Events, Questions
+     * @param userID
+     * @param type
+     */
     async _Fetch_Problem_EventCount({userID, type}: {userID: string, type: string}): Promise<Firebase_Response> {
         try {
 
@@ -669,6 +673,24 @@ export class UsersRepository implements IUsersRepository{
     }
 
 
+    async _Fetching_Question_Participation_Count({questionID}: {questionID: string}): Promise<Firebase_Response> {
+        try {
+
+            const ref = collection(db, Database.approvedQuestions, questionID, Database.SolvedQuestionList);
+            const response = await getCountFromServer(ref);
+            const count = response.data().count ?? 0
+
+            return {
+                success: true,
+                data: count,
+                message: "Encountered Question Count : " + count
+            }
+
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
 
 }

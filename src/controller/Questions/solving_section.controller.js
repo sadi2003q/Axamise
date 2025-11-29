@@ -2,7 +2,7 @@
 
 import { SolveService } from "../../services/Questions/_solving_section.service.ts";
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
-import { SERVICE} from "../../Utilities.ts";
+import {EVENT_STATE, SERVICE} from "../../Utilities.ts";
 import { Solve_Model} from "../../models/Solve_Model.js";
 import { evaluateQuestion } from "../../Gemini/ai.js";
 
@@ -46,124 +46,180 @@ export class SolvingSectionController {
     };
 
     // ✅ Run the code from Editor
-    handleRunCode = async ( { id = '',
-                                dryRun = false,
-                                forEvent = false,
-                                eventID = '',
-        allQuestions = [],
-        name = 'Not Defined',
-        timeSpent = '32s',
-    }) => {
-        if (this.editorRef.current) {
-                const code = this.editorRef.current.getValue();
+    handleRunCode = async ({
+                               id = '',
+                               dryRun = false,
+                               forEvent = false,
+                               eventID = '',
+                               allQuestions = [],
+                               name = 'Not Defined',
+                               timeSpent = '32s',
+                               processCurrentCode = false
+                           }) => {
 
+        console.log('Clicked: handleRunCode started');
 
-                const fullCode = `
-${this.libraryPart}
+        if (!this.editorRef?.current) {
+            console.warn('Editor not ready yet!');
+            return;
+        }
+
+        // Get code safely
+        const code = this.editorRef.current.getValue() || "";
+        const fullCode = `
+${this.libraryPart || ''}
 ${code}
-            
-${this.mainPart}` // From Start to main function
-                this.setIsRunning(true); // Show Loading Screen
+${this.mainPart || ''}
+`;
 
-                try {
+        // -------------------------------
+        // CASE 1: Only process event score
+        // -------------------------------
+        if (processCurrentCode) {
+            console.log('Processing event score only...');
+            this.setIsCalculatingScore(true);
 
-                    /**
-                     * Run the Code on Server
-                     * @type {Firebase_Response}
-                     */
-                    const result = await this.service.runCode(fullCode);
+            try {
+                const data = await evaluateQuestion({
+                    questions: allQuestions,
+                    answers: code,
+                    submissionTime: this.submitCount,
+                    timeSpent
+                });
 
-                    if (result.error && result.error.trim() !== "") {
+                console.log('Evaluation data:', data);
 
-                        /**
-                         * IF any Syntax Error Found
-                         */
-                        this.setRunResult(result.error);
-                        this.setIsSuccess(false);
-                    } else {
+                await this.handleUpdateScore({
+                    userId: id,
+                    eventId: eventID,
+                    score: data.score,
+                    submitCount: this.submitCount,
+                    eventState: EVENT_STATE.leftOut
+                });
 
+                await this.service._SetEventScore({
+                    userID: id,
+                    name,
+                    eventID,
+                    score: data.score,
+                    state: data.state,
+                    timeComplexity: data.overallTimeComplexity,
+                });
 
+                console.log('Event score successfully updated');
 
-
-
-                        /**
-                         * Successful execution
-                         */
-                        this.setRunResult(result.output || "");
-                        console.log('Approved')
-                        this.setIsSuccess(true);
-                        const updatedSolver = new Solve_Model({
-                            ...this.solver,
-                            solve_code: fullCode
-                        });
-
-                        this.setSolver(updatedSolver);
-
-                        this.setIsRunning(false);
-                        if(id.length===0) {
-                            console.log('ID is not sent, Solution cannot be uploaded')
-                        } else {
-
-                            /**
-                             * For Competition
-                             */
-                            if(forEvent) {
-                                console.log('For Event: ', forEvent);
-                                this.setIsCalculatingScore(true)
-                                const data = await evaluateQuestion({
-                                    questions: allQuestions,
-                                    answers: `${code}`,
-                                    submissionTime: this.submitCount,
-                                    timeSpent: timeSpent
-                                })
-
-
-                                // Here
-                                await this.handleUpdateScore({
-                                    userId: id,
-                                    eventId: eventID,
-                                    score: data.score,
-                                    submitCount: this.submitCount
-                                })
-
-
-
-                                // This will store the event score on the server
-                                await this.service._SetEventScore({
-                                    userID: id,
-                                    name: name,
-                                    eventID: eventID,
-                                    score: data.score,
-                                    state: data.state,
-                                    timeComplexity: data.overallTimeComplexity,
-                                }).then(() => {
-                                    console.log('Successfully Approved on the scorecard')
-                                }).catch((err) => {
-                                    console.log('something is wrong : ', err)
-                                })
-                                this.setIsCalculatingScore(false)
-
-
-                            }
-
-                            /**
-                             * If the Problem is not solved Earlier
-                             * it won't update the database
-                             */
-                            if( !dryRun )  await this.service.solve_approve(id, updatedSolver);
-                        }
-
-                    }
-                } catch (error) {
-                    this.setRunResult(`Runtime error: ${error.message}`);
-                    this.setIsSuccess(false);
-                } finally {
-                    this.setIsRunning(false);
-                }
-            } else {
-                console.log("⚠️ Editor is not ready yet!");
+            } catch (err) {
+                console.error('Error in processCurrentCode:', err);
+            } finally {
+                this.setIsCalculatingScore(false);
             }
+
+            return; // stop here, normal runCode not executed
+        }
+
+        // -------------------------------
+        // CASE 2: Normal code run
+        // -------------------------------
+        this.setIsRunning(true);
+
+        try {
+            const result = await this.service.runCode(fullCode);
+
+            if (result?.error?.trim()) {
+                console.error('Code execution error:', result.error);
+                this.setRunResult(result.error);
+                this.setIsSuccess(false);
+            } else {
+                console.log('Code executed successfully');
+                this.setRunResult(result.output || "");
+                this.setIsSuccess(true);
+
+                // Update solver model
+                const updatedSolver = new Solve_Model({
+                    ...this.solver,
+                    solve_code: fullCode
+                });
+                this.setSolver(updatedSolver);
+
+                if (!id) {
+                    console.warn('User ID not provided, solution cannot be uploaded');
+                } else {
+                    // If forEvent, calculate score
+                    if (forEvent) {
+                        this.setIsCalculatingScore(true);
+
+                        try {
+                            const data = await evaluateQuestion({
+                                questions: allQuestions,
+                                answers: code,
+                                submissionTime: this.submitCount,
+                                timeSpent
+                            });
+
+                            console.log('Event evaluation data:', data);
+
+                            await this.handleUpdateScore({
+                                userId: id,
+                                eventId: eventID,
+                                score: data.score,
+                                submitCount: this.submitCount,
+                                eventState: EVENT_STATE.solved
+                            });
+
+                            await this.service._SetEventScore({
+                                userID: id,
+                                name,
+                                eventID,
+                                score: data.score,
+                                state: data.state,
+                                timeComplexity: data.overallTimeComplexity
+                            });
+
+                            this.setRunResult(prev => {
+                                return prev + `\n\n *** SCORE :: ${data.score} ***\n`;
+                            });
+
+                        } catch (err) {
+                            console.error('Error during event scoring:', err);
+                        } finally {
+                            this.setIsCalculatingScore(false);
+                        }
+                    }
+
+                    // Only save solution if dryRun is false
+                    if (!dryRun) {
+                        try {
+                            await this.service.solve_approve(id, updatedSolver);
+                            console.log('Solution approved successfully');
+                        } catch (err) {
+                            console.error('Error saving solution:', err);
+                        }
+                    }
+                }
+            }
+
+        } catch (err) {
+            console.error('Runtime error during code execution:', err);
+            this.setRunResult(`Runtime error: ${err.message}`);
+            this.setIsSuccess(false);
+        } finally {
+            this.setIsRunning(false);
+        }
+
+        console.log('handleRunCode finished');
     };
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -176,12 +232,13 @@ ${this.mainPart}` // From Start to main function
     }
 
 
-    handleUpdateScore = async ({userId, eventId, score, submitCount}) => {
+    handleUpdateScore = async ({userId, eventId, score, submitCount, eventState = EVENT_STATE.solved}) => {
         const response = await this.service._ModifyScoreAfterRun({
             userID: userId,
             eventId: eventId,
             score: score,
-            submitCount: submitCount
+            submitCount: submitCount,
+            eventState: eventState
         })
         console.log(response.message)
     }

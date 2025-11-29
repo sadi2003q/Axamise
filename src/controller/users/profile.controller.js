@@ -1,5 +1,6 @@
 
 import { _profileService } from '../../services/users/_profile.service.ts';
+import {EVENT_STATE} from "../../Utilities.js";
 
 
 
@@ -51,18 +52,42 @@ export class ProfileController {
 
     async getMyEventParticipant({userID}) {
         const response = await this.service.Fetch_Created_Event_by_Id({id: userID})
-
         const finalData = [];
 
+        const data = response.data;
 
-        response.data.map(async (item) => {
-            const participantCount = await this.service.Fetch_Event_Participation_Count({eventID: item.id})
-            finalData.push({
-                title: item.title,
-                count: participantCount.data,
-            })
+        data.forEach((item) => {
+            // Parse the item date to a proper Date object
+            const eventDate = new Date(item.date);
+            const now = new Date();
 
-        })
+            // Determine state
+            let state;
+            if (
+                now.getFullYear() === eventDate.getFullYear() &&
+                now.getMonth() === eventDate.getMonth() &&
+                now.getDate() === eventDate.getDate()
+            ) {
+                state = EVENT_STATE.running;
+            } else if (now > eventDate) {
+                state = EVENT_STATE.ended;
+            } else {
+                state = EVENT_STATE.coming;
+            }
+
+            // Fetch participation count and push to finalData
+            this.service.Fetch_Event_Participation_Count({ eventID: item.id }).then((p) => {
+                finalData.push({
+                    name: item.title,
+                    value: p.data,
+                    state: state,
+                    date: item.date,
+                });
+
+                // Optionally, update state after all promises resolve
+                this.setMyEventParticipant([...finalData]);
+            });
+        });
         this.setMyEventParticipant(finalData)
 
     }
@@ -72,9 +97,6 @@ export class ProfileController {
 
 
         const response = await this.service.Fetch_Solved_Questions_list({id: userID})
-
-        console.log(response.data)
-
         const combineData = [];
 
         const data = response.data
@@ -87,7 +109,6 @@ export class ProfileController {
             })
         })
 
-
         this.setMySolvedQuestions(combineData)
     }
 
@@ -97,11 +118,25 @@ export class ProfileController {
 
 
         response.data.map(async (item) => {
+            console.log(item.id);
+            console.log(item.title);
+        })
+
+        response.data.map(async (item) => {
             const participantCount = await this.service.Fetch_Question_Participant_Count({questionId:item.id})
+
+
+
             finalData.push({
                 title: item.title,
-                count: participantCount.data,
+                participationCount: participantCount.data ?? 0,
+                createdAt: item.approvedAt
+                    ? new Date(item.approvedAt.seconds * 1000).toLocaleDateString("en-GB")
+                    : "N/A"
             })
+
+
+
             this.setMyCreatedQuestions(finalData)
         })
 
@@ -113,6 +148,10 @@ export class ProfileController {
     }
 
 
+    async getQuestionParticpationCount({questionId}) {
+        const response = await this.service.Fetch_Question_Participation_Count({questionId})
+        return response.data;
+    }
 
 
 

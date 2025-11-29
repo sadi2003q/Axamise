@@ -6,7 +6,7 @@ export class EventParticipationModel {
         title = '',
         eventID = '',
         time_of_participation = Date.now(),
-        eventState = EVENT_STATE.running,
+        eventState = EVENT_STATE.Incomplete,
         score = 0,
         rank = 'Not Fixed'
     }) {
