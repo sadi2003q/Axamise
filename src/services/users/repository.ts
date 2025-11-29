@@ -655,9 +655,11 @@ export class UsersRepository implements IUsersRepository{
 
             const response = await getCountFromServer(questionRef)
 
+            const count = response.data().count ?? 0
+
             return {
                 success: true,
-                data: response ?? 0,
+                data: count,
                 message: "Encountered Question Count"
             }
 

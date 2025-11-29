@@ -110,6 +110,13 @@ export default function Profile() {
     ]);
 
 
+    // Counts
+    const [encounteredQuestionsCount, setEncounteredQuestionsCount] = useState(15);
+
+
+
+
+
     const controller = new ProfileController(
 
         setUser,
@@ -119,7 +126,8 @@ export default function Profile() {
         setMyEventParticipant,
         setMyParticipatedEvent,
         setMySolvedQuestions,
-        setMyCreatedQuestions
+        setMyCreatedQuestions,
+        setEncounteredQuestionsCount
 
     );
 
@@ -134,6 +142,9 @@ export default function Profile() {
 
         // Fetch All Solved Problem List
         controller.getMySolvedQuestionList({userID: user_uid}).then();
+
+        // Fetch Problem encountered Count
+        controller.getEncounteredQuestionsCount({userID: user_uid}).then();
 
     }, []);
 
@@ -191,8 +202,8 @@ export default function Profile() {
                         <GraphSection title="Problems Solved per Day" data={data} />
 
                         <CustomCard
-                            problemEncounter={12}
-                            problemCount={45}
+                            problemEncounter={encounteredQuestionsCount}
+                            problemCount={mySolvedQuestions.length}
                             eventParticipated={8}
                         />
 

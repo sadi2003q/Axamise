@@ -13,7 +13,8 @@ export class ProfileController {
                 setMyEventParticipant,
                 setMyParticipatedEvent,
                 setMySolvedQuestions,
-                setMyCreatedQuestions
+                setMyCreatedQuestions,
+                setEncounteredQuestionsCount
     ) {
         this.service = new _profileService();
 
@@ -25,6 +26,7 @@ export class ProfileController {
         this.setMyParticipatedEvent = setMyParticipatedEvent;
         this.setMySolvedQuestions = setMySolvedQuestions;
         this.setMyCreatedQuestions = setMyCreatedQuestions;
+        this.setEncounteredQuestionsCount = setEncounteredQuestionsCount
     }
 
 
@@ -103,6 +105,11 @@ export class ProfileController {
             this.setMyCreatedQuestions(finalData)
         })
 
+    }
+
+    async getEncounteredQuestionsCount({userID, type = "encountered"}) {
+        const response = await this.service.Fetch_Relevant_Counts({userID, type})
+        this.setEncounteredQuestionsCount(response.data)
     }
 
 
