@@ -440,6 +440,9 @@ export class UsersRepository implements IUsersRepository{
                 ...doc.data(),
             }));
 
+
+            console.log("The data that is assigned:", data);
+
             return {
                 success: true,
                 data: data,
@@ -509,7 +512,6 @@ export class UsersRepository implements IUsersRepository{
                 };
             });
 
-            console.log(data)
 
             return {
                 success: true,
@@ -588,9 +590,11 @@ export class UsersRepository implements IUsersRepository{
     async _Fetch_Event_Participant_Count({eventID}: {eventID: string}): Promise<Firebase_Response> {
         try {
 
-            const eventRef = collection(db, Database.event, eventID, Database.participatedEvent);
+            const eventRef = collection(db, Database.event, eventID, Database.event_participants);
             const countSnapshot = await getCountFromServer(eventRef);
             const count = countSnapshot.data().count ?? 0;
+
+            console.log(`event id : ${eventID} count: ${count}`);
 
 
             return {

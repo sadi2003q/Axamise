@@ -64,9 +64,6 @@ export class FeedController {
         this.setRandomQuestion(selected)
 
 
-        console.log(`question length : ${selected.length}`);
-        console.log(`data length : ${data.length}`);
-
 
 
     }
@@ -97,8 +94,7 @@ export class FeedController {
             const shuffled = [...data].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, Math.min(8, shuffled.length));
             this.setRandomEvent(selected)
-            console.log(`event length : ${selected.length}`);
-            console.log(`data length : ${data.length}`);
+
         } else {
             this.setError(response.message)
         }
@@ -140,13 +136,11 @@ export class FeedController {
 
     async fetchTotalNumberOfQuestions () {
         const response = await this.service._Fetch_QuestionCount()
-        console.log(response.message)
         this.setTotalNumberOfQuestions(response.data)
     }
 
     async fetchSolvedQuestions_count ({id}) {
         const response = await this.service._Fetch_SolvedCount({ id });
-        console.log(response.message)
         this.setSolvedQuestionCount(response.data)
     }
 
@@ -155,7 +149,6 @@ export class FeedController {
 
         for (const category of categories) {
             const response = await this.service._Fetch_QuestionByCategory({ category });
-            console.log(response.message)
             this.setQuestionCount_Category(prev => ({
                 ...prev,
                 [category]: response.data, // ✅ use bracket notation (not 'category')

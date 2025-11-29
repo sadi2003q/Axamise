@@ -33,7 +33,7 @@ export class ProfileController {
 
     async getProfileInformation({id}) {
         const response = await this.service.fetch_users_Information({id})
-        console.log(response.data)
+
         this.setUser(response.data)
     }
 
@@ -50,47 +50,44 @@ export class ProfileController {
         this.setMyParticipatedEvent(response.data)
     }
 
-    async getMyEventParticipant({userID}) {
-        const response = await this.service.Fetch_Created_Event_by_Id({id: userID})
-        const finalData = [];
-
+    async getMyEventParticipant({ userID }) {
+        const response = await this.service.Fetch_Created_Event_by_Id({ id: userID });
         const data = response.data;
 
-        data.forEach((item) => {
-            // Parse the item date to a proper Date object
-            const eventDate = new Date(item.date);
-            const now = new Date();
+        const finalData = await Promise.all(
+            data.map(async (item) => {
+                const participantCount = await this.service.Fetch_Event_Participation_Count({ eventID: item.id });
 
-            // Determine state
-            let state;
-            if (
-                now.getFullYear() === eventDate.getFullYear() &&
-                now.getMonth() === eventDate.getMonth() &&
-                now.getDate() === eventDate.getDate()
-            ) {
-                state = EVENT_STATE.running;
-            } else if (now > eventDate) {
-                state = EVENT_STATE.ended;
-            } else {
-                state = EVENT_STATE.coming;
-            }
+                // Parse the correct date
+                const eventDate = new Date(item.date);
+                const now = new Date();
 
-            // Fetch participation count and push to finalData
-            this.service.Fetch_Event_Participation_Count({ eventID: item.id }).then((p) => {
-                finalData.push({
+                // Determine state
+                let state;
+                if (
+                    now.getFullYear() === eventDate.getFullYear() &&
+                    now.getMonth() === eventDate.getMonth() &&
+                    now.getDate() === eventDate.getDate()
+                ) {
+                    state = EVENT_STATE.running;
+                } else if (now > eventDate) {
+                    state = EVENT_STATE.ended;
+                } else {
+                    state = EVENT_STATE.coming;
+                }
+
+                return {
                     name: item.title,
-                    value: p.data,
-                    state: state,
+                    value: participantCount.data ?? 0,
+                    state,
                     date: item.date,
-                });
+                };
+            })
+        );
 
-                // Optionally, update state after all promises resolve
-                this.setMyEventParticipant([...finalData]);
-            });
-        });
-        this.setMyEventParticipant(finalData)
-
+        this.setMyEventParticipant(finalData);
     }
+
 
     async getMySolvedQuestionList({userID}) {
 
@@ -106,8 +103,12 @@ export class ProfileController {
                     date: new Date(item.date).toLocaleString(),
                     title: p.data.title,
                 })
+
             })
+
         })
+
+
 
         this.setMySolvedQuestions(combineData)
     }
@@ -117,10 +118,7 @@ export class ProfileController {
         const finalData = [];
 
 
-        response.data.map(async (item) => {
-            console.log(item.id);
-            console.log(item.title);
-        })
+
 
         response.data.map(async (item) => {
             const participantCount = await this.service.Fetch_Question_Participant_Count({questionId:item.id})
