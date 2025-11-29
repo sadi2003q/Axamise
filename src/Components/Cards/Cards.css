@@ -1,0 +1,66 @@
+/* grid c1 */
+.grid-c1 {
+  display: flex;
+  flex-direction: column;
+}
+.grid-c1-content {
+  background: rgba(41, 34, 29, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  color: var(--clr-white);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  transition: box-shadow 0.3s;
+}
+.grid-c1-content:hover {
+  box-shadow: 0 12px 48px 0 rgba(102, 126, 234, 0.18);
+}
+.grid-c1-content .lg-value {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  color: #c7c4c6;
+}
+.grid-c1-content .expiry-text {
+  margin-bottom: 6px;
+}
+.grid-c1-content .card-wrapper {
+  display: flex;
+}
+.grid-c1-content .card-pin-hidden {
+  font-size: 32px;
+  margin-right: 8px;
+}
+.grid-c1-content span {
+  color: #8a8587;
+}
+.grid-c1 .card-logo-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.grid-c1 .card-logo {
+  display: flex;
+}
+.grid-c1 .logo-shape1,
+.grid-c1 .logo-shape2 {
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+}
+.grid-c1 .logo-shape1 {
+  background-color: var(--clr-scarlet-v1);
+  margin-right: -15px;
+  z-index: 0;
+}
+.grid-c1 .logo-shape2 {
+  background-color: var(--clr-yellow);
+}
+
+@media screen and (max-width: 768px) {
+  .grid-c1 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}

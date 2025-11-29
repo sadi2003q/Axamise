@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link, Outlet, useLocation, Navigate } fro
 // 🧠 Context Providers
 import { GlobalProvider } from "./GlobalContext";
 import { EventProvider } from "./EventContext.jsx";
+import { SidebarProvider } from "./context/sidebarContext";
 
 // 📄 Pages
 import Login from "./pages/Authentication/Login.jsx";
@@ -16,6 +17,7 @@ import Solving_Section from "./pages/Questions/Solving_Section.jsx";
 import Event_Show from "./pages/Events/Event_Show.jsx";
 import Question_List from "./pages/Questions/Question_List.jsx";
 import Feed from "./pages/users/Feed.jsx";
+import PendingQuestionsPage from "./pages/PendingQuestionsPage.jsx";
 import Admin_login from "./pages/Authentication/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
@@ -23,6 +25,7 @@ import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
 import EventStart from "./pages/Events/Event_Start.jsx";
 import Notifications from "./pages/users/Notifications.jsx";
 import Logout from "./pages/Authentication/logout.jsx";
+import Dashboard from "./pages/Authentication/Admin_Dashboard.jsx";
 
 // ============================================================
 // 🌐 Navigation Bar Component
@@ -80,8 +83,9 @@ function AppLayout() {
 ReactDOM.createRoot(document.getElementById("root")).render(
     <GlobalProvider>
       <EventProvider>
-        <BrowserRouter>
-          <Routes>
+        <SidebarProvider>
+          <BrowserRouter>
+            <Routes>
 
             {/* 🔹 Default route: redirect to FEED for logged-in users */}
             <Route path="/" element={<Navigate to="/LOGIN" replace />} />
@@ -91,20 +95,22 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/SIGNUP" element={<Signup />} />
 
             {/* 🔹 Pages with Navbar (after login) */}
-            <Route element={<AppLayout />}>
-                <Route path="/FEED" element={<Feed />} />
-                <Route path="/EVENT_CREATE" element={<Event_Create />} />
-                <Route path="/EVENT_SHOW" element={<Event_Show />} />
-                <Route path="/SOLVE" element={<Solving_Section />} />
-                <Route path="/QUESTION_CREATE" element={<Question_Create />} />
-                <Route path="/QUESTION_LIST" element={<Question_List />} />
-                <Route path="/PROFILE" element={<Profile />} />
-                <Route path="/EVENT_START" element={<EventStart />} />
-                <Route path="/NOTIFICATION" element={<Notifications />} />
-                <Route path="/LOGOUT" element={<Logout />} />
-            </Route>
+      <Route element={<AppLayout />}>
+        <Route path="/FEED" element={<Feed />} />
+        <Route path="/EVENT_CREATE" element={<Event_Create />} />
+        <Route path="/EVENT_SHOW" element={<Event_Show />} />
+        <Route path="/SOLVE" element={<Solving_Section />} />
+        <Route path="/QUESTION_CREATE" element={<Question_Create />} />
+        <Route path="/QUESTION_LIST" element={<Question_List />} />
+        <Route path="/PROFILE" element={<Profile />} />
+        <Route path="/EVENT_START" element={<EventStart />} />
+        <Route path="/NOTIFICATION" element={<Notifications />} />
+        <Route path="/LOGOUT" element={<Logout />} />
+        <Route path="/pending-questions" element={<PendingQuestionsPage />} />
+      </Route>
 
             {/* 🔹 Admin Area (no navbar) */}
+            <Route path="/DASHBOARD" element={<Dashboard />} />
             <Route path="/ADMIN_LOGIN" element={<Admin_login />} />
             <Route path="/ADMIN_SETUSER" element={<Admin_SetUsr />} />
             <Route path="/ADMIN_APPROVAL" element={<Admin_Approval />} />
@@ -113,6 +119,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           </Routes>
         </BrowserRouter>
+        </SidebarProvider>
       </EventProvider>
     </GlobalProvider>
 );
