@@ -199,6 +199,8 @@ export const ObservationField = ({
                     </div>
                 ) : (
                     <div className="flex flex-col gap-4 mt-4 flex-1">
+
+
                         <TextField
                             {...GetCommonProps2({
                                 borderColor: "gray",

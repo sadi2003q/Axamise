@@ -9,7 +9,7 @@ import {Database, NOTIFICATION_TYPES} from "../../Utilities";
 import { QuestionListService } from "../Questions/_question_list.service.js";
 
 // Firestore methods
-import { doc, collection, getDocs, deleteDoc, setDoc, serverTimestamp  } from "firebase/firestore";
+import {doc, collection, getDocs, deleteDoc, setDoc, serverTimestamp, addDoc} from "firebase/firestore";
 import { BaseApprovalService } from './_base/_base.approval.service'
 import { Firebase_Response} from "../../Utilities";
 import Question from '../../models/Question_Model.js'
@@ -32,10 +32,10 @@ export class Admin_ApproveService extends QuestionListService {
     async ApproveQuestion(id: string, question: any) {
         try {
 
-            // console.log(`Approving question with ID: ${id}`)
 
-            console.log(question.question);
-            console.log({
+
+
+            await setDoc(doc(db, Database.approvedQuestions, id), {
                 approvedAt: serverTimestamp(),
                 approvedBy: question.approvedBy,
                 approvedBy_uid: question.approvedBy_uid,
@@ -51,33 +51,15 @@ export class Admin_ApproveService extends QuestionListService {
                 title: question.question.title,
                 type: question.question.type,
                 mainFunctionCode: question.mainFunctionCode
-            })
-
-            // await setDoc(doc(db, Database.approvedQuestions, id), {
-            //     approvedAt: serverTimestamp(),
-            //     approvedBy: question.approvedBy,
-            //     approvedBy_uid: question.approvedBy_uid,
-            //     createdBy: question.question.createdBy,
-            //     createdBy_uid: question.question.createdBy_uid,
-            //     description: question.question.description,
-            //     difficulty: question.question.difficulty,
-            //     event_uid: question.question.event_uid,
-            //     functionName: question.functionName,
-            //     mark: question.question.mark,
-            //     returnType: question.returnType,
-            //     status: question.status,
-            //     title: question.question.title,
-            //     type: question.question.type,
-            //     mainFunctionCode: question.mainFunctionCode
-            // });
-            // await this._Delete_Specific_Function(id);
+            });
+            await this._Delete_Specific_Function(id);
 
 
             await this.SendNotification({
                 userID: question.question.createdBy_uid,
                 questionID: question.question.id,
-                title: `Question has been Approved Successfully!`,
-                body: `Your Question :: ${question.question.title}`,
+                title: `Question Approved!`,
+                body: `Your Question :: ${question.question.title} is Successfully Approved`,
                 eventID: '',
                 status: NOTIFICATION_TYPES.approve_question
             })
@@ -103,9 +85,9 @@ export class Admin_ApproveService extends QuestionListService {
     }): Promise<Firebase_Response> => {
         try {
             console.log('function called')
-            const notificationRef = doc(db, Database.notification, userID);
+            const notificationRef = collection(db, Database.notification);
 
-            await setDoc(notificationRef, {
+            await addDoc(notificationRef, {
                 recipientID: userID,
                 questionID: questionID,
                 date: new Date().toISOString(),

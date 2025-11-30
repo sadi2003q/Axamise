@@ -103,22 +103,25 @@ export class Admin_ApproveController {
     }
 
 
-    handleReject = ({objectID="Object ID Not Assigned", recipientID = "Recipient ID Not Assigned"}) => {
+    handleReject = ({objectID="Object ID Not Assigned",
+                        recipientID = "Recipient ID Not Assigned",
+                        title = "Question title",
+                    }) => {
         
 
-        const notification = new Notification({
-            title: `${this.title}`,
-            message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
-
-            // working here
-            type: NOTIFICATION_TYPES.reject_question,
-            recipientID: recipientID,
-            objectID: ""
-        })
+        // const notification = new Notification({
+        //     title: this.title,
+        //     body: this.reason +  '\n Please modify and resubmit.',
+        //
+        //     // working here
+        //     type: NOTIFICATION_TYPES.reject_question,
+        //     recipientID: recipientID,
+        //     objectID: ""
+        // })
         // notification.printNotification();
 
-        this.notificationService.createNotification({...notification}).then()
-        this.service._Delete_Specific_Function(objectID).then();
+        // this.notificationService.createNotification({...notification}).then()
+        // this.service._Delete_Specific_Function(objectID).then();
 
 
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.REJECTED);
@@ -128,31 +131,64 @@ export class Admin_ApproveController {
     }
 
 
-    revertBack = async ({objectID="Object ID Not Assigned", recipientID = "Recipient ID Not Assigned", type = "rejected"}) => {
-        const notification = new Notification({
-            title: `${this.title}`,
-            message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
-            type: type,
-            recipientID: recipientID,
-            objectID: objectID
-        })
-        
-        notification.printNotification();
-        await this.notificationService.createNotification({...notification})
-        // this.service._Delete_Specific_Function(objectID);
+    revertBack = async ({
+                            objectID="Object ID Not Assigned",
+                            recipientID = "Recipient ID Not Assigned",
+                            type = "rejected",
+                            title = "title",
+                            reason = "This is the reason",
+                        }) => {
+
 
         this.setDisplayMode(ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION);
         if (!this.approvalOpen) this.OpenSidePage();
     }
 
 
-    handleModified = async({id}) => {
+    handleModified = async({id, NotificationType = NOTIFICATION_TYPES.modification_question, recipientID}) => {
+
+
+        const notification = new Notification({
+            title: `${this.title}`,
+            message: `Reason: ${this.reason}. \n Please modify and resubmit.`,
+            type: NotificationType,
+            recipientID: recipientID,
+            objectID: id
+        })
 
         this.service._AddModifiedQuestion({questionID: id}).then()
 
-        console.log('controller End')
+
+
+        console.log('Notification : ', notification);
+
+        this.notificationService.createNotification({...notification}).then()
+
 
     }
+
+
+    handleRejectQuestions = async ({id, NotificationType = NOTIFICATION_TYPES.reject_question, recipientID})  => {
+
+        const notification = new Notification({
+            title: `${this.title}`,
+            message: `Reason: ${this.reason}. So the Question was Rejected`,
+            type: NotificationType,
+            recipientID: recipientID,
+            objectID: id
+        })
+
+
+        console.log('THis HandleRejectQuestion function has been called');
+        console.log('Notification : ', notification);
+
+
+        this.notificationService.createNotification({...notification}).then()
+        this.service._Delete_Specific_Function(id).then();
+
+    }
+
+
 
 
 

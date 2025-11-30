@@ -115,7 +115,7 @@ export default function Notifications() {
 
     // Fetch all Notification from the database
     useEffect(() => {
-        controller._get_notifications({userID: user_uid}).then(() => {})
+        controller._get_notifications({userID: user_uid}).then()
     }, [])
 
 

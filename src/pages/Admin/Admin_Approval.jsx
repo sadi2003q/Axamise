@@ -411,8 +411,14 @@ int main() {
 
     const handleModified = (id = '123') => {
 
+        console.log('qustions : ', question)
+
+
         //ModificationStatus
-        controller.handleModified({id: id}).then()
+        controller.handleModified({id: id, recipientID: question.createdBy_uid}).then()
+
+
+
 
         // Update the UI after Status assignment...
         handleUIChange(id)
@@ -425,14 +431,18 @@ int main() {
 
     const handleDelete = ({id = '123'}) => {
 
-        //    handleReject = ({objectID="Object ID Not Assigned",
-        //                      recipientID = "Recipient ID Not Assigned"})
 
         const makerID = findContributorID(id);
         controller.handleReject({
             objectID: id,
             recipientID: makerID,
         })
+
+
+        controller.handleRejectQuestions({
+            id: question.id,
+            recipientID: question.createdBy_uid,
+        }).then();
 
 
 
@@ -498,10 +508,23 @@ int main() {
                             // Question display with action buttons
                             <Question_Showing_Description
                                 question={question}
-                                handleDeleteButton={controller.handleReject}
+                                handleDeleteButton={() => {
+                                    controller.handleReject({
+                                        objectID: question.id,
+                                        recipientID: question.createdBy,
+                                        title: question.title,
+                                    })
+                                }}
                                 handleEditButton={controller.moveToApprovalPage}
                                 handleSolveButton={() => {
-                                    controller.revertBack({type: NOTIFICATION_TYPES.modification_event})
+
+                                    controller.revertBack({
+                                        recipientID: question.createdBy_uid,
+                                        objectID: question.id,
+                                        type: NOTIFICATION_TYPES.modification_event,
+                                        title: title,
+                                        reason: reason,
+                                    }).then()
                                 }}
                                 require_Edit_Button={true}
                                 require_Delete_Button={true}
