@@ -84,6 +84,9 @@ export default function Notifications() {
             case NOTIFICATION_TYPES.event_result:
                 return "from-indigo-400/60 to-indigo-800/10";
 
+            case NOTIFICATION_TYPES.question_solved:
+                return "from-lime-400/60 to-cyan-800/10";
+
             default:
                 return "from-slate-400/60 to-slate-800/10";
         }

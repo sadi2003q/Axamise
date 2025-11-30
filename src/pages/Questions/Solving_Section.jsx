@@ -709,8 +709,32 @@ add required library as necessary
 
                             {/* Conditional Question Display */}
                             {enteredEvent === null ? (
-                                // Single question view - shows detailed question description
-                                <Question_Showing_Description question={question} />
+                                    <div>
+                                        <div className="mt-4">
+                                            {runResult && (
+                                                <div className="mt-4 p-3" style={{
+                                                    border: '1px solid #444',
+                                                    borderRadius: '8px',
+                                                    backgroundColor: '#1e1e1e',
+                                                    color: isSuccess ? 'limegreen' : 'red',
+                                                    whiteSpace: 'pre-wrap',
+                                                    fontFamily: 'monospace',
+                                                    fontWeight: 'bold', // <-- makes text bolder
+                                                    fontSize: '16px'    // optional: make text slightly bigger
+                                                }}>
+                                                    {runResult}
+                                                </div>
+                                            )}
+                                        </div>
+
+
+
+
+                                        // Single question view - shows detailed question description
+                                        <Question_Showing_Description question={question} />
+
+                                    </div>
+
                             ) : (
                                 // Event-based multiple questions view - shows question list
                                 <Event_Question questions={enteredEvent?.allQuestions || enteredEvent?.questions || []} />

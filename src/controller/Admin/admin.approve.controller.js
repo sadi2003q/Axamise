@@ -89,7 +89,10 @@ export class Admin_ApproveController {
         // console.log(`mainFunctionCode : ${approveQuestion.mainFunctionCode}`)
 
 
-        this.service.getAllPending(questionID, approveQuestion).then();
+        this.service.ApproveQuestion(questionID, approveQuestion).then();
+
+
+
     }
 
     OpenSidePage = () => this.setApprovalOpen(prev => !prev);

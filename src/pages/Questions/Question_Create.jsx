@@ -227,6 +227,7 @@ export default function Question_Create() {
          * Fetches all events available to the current user
          * Populates the events drawer with user's events
          */
+        console.log('id : ', user_uid);
         const fetchEvents = async () => {
             const result = await controller.GetAllEvents(user_uid);
             if (result.success) {

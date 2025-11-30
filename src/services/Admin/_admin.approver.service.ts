@@ -5,7 +5,7 @@
 
 // Firestore connection from firebase
 import { db } from "../../firebase.js";
-import { Database } from "../../Utilities";
+import {Database, NOTIFICATION_TYPES} from "../../Utilities";
 import { QuestionListService } from "../Questions/_question_list.service.js";
 
 // Firestore methods
@@ -29,14 +29,13 @@ export class Admin_ApproveService extends QuestionListService {
      */
 
 
-    async getAllPending(id: string, question: any) {
+    async ApproveQuestion(id: string, question: any) {
         try {
 
-            // console.log(`Approving question with ID: ${id}`);
-            
+            // console.log(`Approving question with ID: ${id}`)
 
-
-            await setDoc(doc(db, Database.approvedQuestions, id), {
+            console.log(question.question);
+            console.log({
                 approvedAt: serverTimestamp(),
                 approvedBy: question.approvedBy,
                 approvedBy_uid: question.approvedBy_uid,
@@ -52,10 +51,37 @@ export class Admin_ApproveService extends QuestionListService {
                 title: question.question.title,
                 type: question.question.type,
                 mainFunctionCode: question.mainFunctionCode
-            });
-            console.log('Document successfully written!');
-            
-            await this._Delete_Specific_Function(id);
+            })
+
+            // await setDoc(doc(db, Database.approvedQuestions, id), {
+            //     approvedAt: serverTimestamp(),
+            //     approvedBy: question.approvedBy,
+            //     approvedBy_uid: question.approvedBy_uid,
+            //     createdBy: question.question.createdBy,
+            //     createdBy_uid: question.question.createdBy_uid,
+            //     description: question.question.description,
+            //     difficulty: question.question.difficulty,
+            //     event_uid: question.question.event_uid,
+            //     functionName: question.functionName,
+            //     mark: question.question.mark,
+            //     returnType: question.returnType,
+            //     status: question.status,
+            //     title: question.question.title,
+            //     type: question.question.type,
+            //     mainFunctionCode: question.mainFunctionCode
+            // });
+            // await this._Delete_Specific_Function(id);
+
+
+            await this.SendNotification({
+                userID: question.question.createdBy_uid,
+                questionID: question.question.id,
+                title: `Question has been Approved Successfully!`,
+                body: `Your Question :: ${question.question.title}`,
+                eventID: '',
+                status: NOTIFICATION_TYPES.approve_question
+            })
+
 
             
 
@@ -67,7 +93,37 @@ export class Admin_ApproveService extends QuestionListService {
     }
 
 
+    SendNotification = async ({userID, questionID, title, body, eventID = '', status}: {
+        userID: string,
+        questionID: string,
+        title: string,
+        body: string,
+        eventID: string,
+        status: string
+    }): Promise<Firebase_Response> => {
+        try {
+            console.log('function called')
+            const notificationRef = doc(db, Database.notification, userID);
 
+            await setDoc(notificationRef, {
+                recipientID: userID,
+                questionID: questionID,
+                date: new Date().toISOString(),
+                eventID: eventID,
+                title: title,
+                body: body,
+                status: status
+            })
+
+            return {
+                success: true,
+                message: `Sent notification encountered successfully!`,
+            }
+
+        } catch (error) {
+            console.error("Error deleting the event encounter Problem:\n", error);
+        }
+    }
     
 
 

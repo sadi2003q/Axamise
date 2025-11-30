@@ -30,6 +30,8 @@ export default class LoginController {
     // Process login result
     async processResult(result) {
         if (result.success) {
+            console.log('ID is Set : ', result.id);
+
             this.setId(result.id);
 
             // fetch additional user info

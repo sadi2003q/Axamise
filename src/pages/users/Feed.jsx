@@ -187,6 +187,9 @@ export default function Feed() {
     //LEFT:
     //Error handling
     useEffect(() => {
+
+        console.log('id on Feed Page : ', user_uid);
+
         // Fetch Events and Questions
         controller.fetchEventHandler().then(() => {
             console.log('Event Fetching is now complete')

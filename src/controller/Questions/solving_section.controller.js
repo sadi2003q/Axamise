@@ -2,7 +2,7 @@
 
 import { SolveService } from "../../services/Questions/_solving_section.service.ts";
 import { QuestionService } from "../../services/Questions/_factory.question.service.js";
-import {EVENT_STATE, SERVICE} from "../../Utilities.ts";
+import {EVENT_STATE, NOTIFICATION_TYPES, SERVICE} from "../../Utilities.ts";
 import { Solve_Model} from "../../models/Solve_Model.js";
 import { evaluateQuestion } from "../../Gemini/ai.js";
 
@@ -80,6 +80,8 @@ ${this.mainPart || ''}
             this.setIsCalculatingScore(true);
 
             try {
+
+                // Evaluation Of the Code Using Gemni
                 const data = await evaluateQuestion({
                     questions: allQuestions,
                     answers: code,
@@ -87,8 +89,7 @@ ${this.mainPart || ''}
                     timeSpent
                 });
 
-                console.log('Evaluation data:', data);
-
+                // Update Score on Event Repository
                 await this.handleUpdateScore({
                     userId: id,
                     eventId: eventID,
@@ -97,6 +98,7 @@ ${this.mainPart || ''}
                     eventState: EVENT_STATE.leftOut
                 });
 
+                // Set Event Information on the User's Repository
                 await this.service._SetEventScore({
                     userID: id,
                     name,
@@ -106,7 +108,22 @@ ${this.mainPart || ''}
                     timeComplexity: data.overallTimeComplexity,
                 });
 
-                console.log('Event score successfully updated');
+
+                // Setting up score notification on the user...
+                await this.service._SentNotification({
+                    userID: id,
+                    questionID: '',
+                    title: 'Score..',
+                    body: `Your Score for the is this : ${data.score}`,
+                    eventID: eventID,
+                    status: NOTIFICATION_TYPES.event_score
+                })
+
+
+
+
+
+
 
             } catch (err) {
                 console.error('Error in processCurrentCode:', err);
@@ -134,6 +151,18 @@ ${this.mainPart || ''}
                 this.setRunResult(result.output || "");
                 this.setIsSuccess(true);
 
+                // Setting up score notification on the user...
+                await this.service._SentNotification({
+                    userID: id,
+                    questionID: '',
+                    title: 'Congratulation',
+                    body: `You have solved the `,
+                    eventID: '',
+                    status: NOTIFICATION_TYPES.event_score
+                })
+
+
+
                 // Update solver model
                 const updatedSolver = new Solve_Model({
                     ...this.solver,
@@ -141,9 +170,25 @@ ${this.mainPart || ''}
                 });
                 this.setSolver(updatedSolver);
 
+
+
+
+
+
                 if (!id) {
                     console.warn('User ID not provided, solution cannot be uploaded');
                 } else {
+
+                    // Setting up score notification on the user...
+                    await this.service._SentNotification({
+                        userID: id,
+                        questionID: '',
+                        title: 'Well done',
+                        body: `You have solved Another Important problem, Keep Going`,
+                        eventID: eventID,
+                        status: NOTIFICATION_TYPES.question_solved
+                    })
+
                     // If forEvent, calculate score
                     if (forEvent) {
                         this.setIsCalculatingScore(true);
@@ -178,6 +223,17 @@ ${this.mainPart || ''}
                             this.setRunResult(prev => {
                                 return prev + `\n\n *** SCORE :: ${data.score} ***\n`;
                             });
+
+
+                            // Setting up score notification on the user...
+                            await this.service._SentNotification({
+                                userID: id,
+                                questionID: '',
+                                title: 'Score..',
+                                body: `Your Score for the is this : ${data.score}`,
+                                eventID: eventID,
+                                status: NOTIFICATION_TYPES.event_score
+                            })
 
                         } catch (err) {
                             console.error('Error during event scoring:', err);

@@ -310,6 +310,39 @@ export class SolveService {
     }
 
 
+    _SentNotification = async ({userID, questionID, title, body, eventID = '', status}: {
+        userID: string,
+        questionID: string,
+        title: string,
+        body: string,
+        eventID: string,
+        status: string
+    }): Promise<Firebase_Response> => {
+        try {
+            console.log('function called')
+            const notificationRef = doc(db, Database.notification, userID);
+            
+            await setDoc(notificationRef, {
+                recipientID: userID,
+                questionID: questionID,
+                date: new Date().toISOString(),
+                eventID: eventID,
+                title: title,
+                body: body,
+                status: status
+            })
+
+            return {
+                success: true,
+                message: `Sent notification encountered successfully!`,
+            }
+
+        } catch (error) {
+            console.error("Error deleting the event encounter Problem:\n", error);
+        }
+    }
+
+
 
 }
 

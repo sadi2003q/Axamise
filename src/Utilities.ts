@@ -47,6 +47,8 @@ export const NOTIFICATION_TYPES = {
     event_score: 'event_score',
     event_result: 'event_result',
 
+    question_solved: 'question_solved',
+
 }
 
 
