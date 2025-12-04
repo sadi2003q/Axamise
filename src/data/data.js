@@ -2,11 +2,11 @@ import { iconsImgs } from "../utils/images";
 import { personsImgs } from "../utils/images";
 
 export const navigationLinks = [
-    { id: 1, title: 'Students', image: iconsImgs.user, path: '/' },
+    { id: 1, title: 'Students', image: iconsImgs.user, path: '/STUDENTCRUDPAGE' },
     { id: 2, title: 'Questions', image: iconsImgs.search, path: '/questions' },
     { id: 3, title: 'Events', image: iconsImgs.bell, path: '/Admin_ApprovalEvent' },
     { id: 4, title: 'Report & Analytics', image: iconsImgs.report, path: '/reports' },
-    { id: 5, title: 'Student Manager', image: iconsImgs.gears, path: '/student_manager' },
+    { id: 5, title: 'Student Manager', image: iconsImgs.gears, path: '/STUDENTCRUDPAGE' },
     { id: 6, title: 'Settings', image: iconsImgs.gears, path: '/settings' }
 ];
 

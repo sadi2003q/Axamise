@@ -26,6 +26,8 @@ import EventStart from "./pages/Events/Event_Start.jsx";
 import Notifications from "./pages/users/Notifications.jsx";
 import Logout from "./pages/Authentication/logout.jsx";
 import Dashboard from "./pages/Authentication/Admin_Dashboard.jsx";
+import StudentCrudPage from "./pages/Authentication/StudentCrudPage.jsx";
+import SettingsPage from "./pages/Settings/SettingsPage.jsx";
 
 // ============================================================
 // 🌐 Navigation Bar Component
@@ -109,13 +111,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/pending-questions" element={<PendingQuestionsPage />} />
       </Route>
 
+
             {/* 🔹 Admin Area (no navbar) */}
             <Route path="/DASHBOARD" element={<Dashboard />} />
+            <Route path="/STUDENTCRUDPAGE" element={<StudentCrudPage />} />
             <Route path="/ADMIN_LOGIN" element={<Admin_login />} />
             <Route path="/ADMIN_SETUSER" element={<Admin_SetUsr />} />
             <Route path="/ADMIN_APPROVAL" element={<Admin_Approval />} />
             <Route path="/ADMIN_APPROVALEVENT" element={<Admin_ApprovalEvent />} />
-            {/*<Route path="/DASHBOARD" element={<Dashboard />} />*/}
+            <Route path="/settings" element={<SettingsPage />} />
 
           </Routes>
         </BrowserRouter>

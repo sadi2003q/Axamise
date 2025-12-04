@@ -3,7 +3,7 @@ import { db } from "../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { PieChart, Pie, Cell, Legend } from "recharts";
 import { iconsImgs } from "../../utils/images";
-import "./Loans.css";
+import "./Events.css";
 
 const COLORS = ["#4CAF50", "#FF8042"]; // Green = approved, Orange = others
 

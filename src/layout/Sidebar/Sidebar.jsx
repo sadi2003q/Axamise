@@ -21,13 +21,43 @@ const Sidebar = () => {
     navigate(link.path);
   }
 
+  // Read admin profile from localStorage
+  const [adminProfile, setAdminProfile] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('adminProfile')) || { name: 'Admin', image: '' };
+    } catch {
+      return { name: 'Admin', image: '' };
+    }
+  });
+
+  // Listen for changes to localStorage (e.g., from SettingsPage)
+  useEffect(() => {
+    const updateProfile = () => {
+      try {
+        setAdminProfile(JSON.parse(localStorage.getItem('adminProfile')) || { name: 'Admin', image: '' });
+      } catch {
+        setAdminProfile({ name: 'Admin', image: '' });
+      }
+    };
+    window.addEventListener('storage', updateProfile);
+    window.addEventListener('adminProfileUpdated', updateProfile);
+    return () => {
+      window.removeEventListener('storage', updateProfile);
+      window.removeEventListener('adminProfileUpdated', updateProfile);
+    };
+  }, []);
+
   return (
     <div className={`sidebar ${sidebarClass}`}>
       <div className="user-info">
         <div className="info-img img-fit-cover">
-          <img src={personsImgs.person_two} alt="profile image" />
+          {adminProfile.image ? (
+            <img src={adminProfile.image} alt="profile image" />
+          ) : (
+            <img src={personsImgs.person_two} alt="profile image" />
+          )}
         </div>
-        <span className="info-name">Admin</span>
+        <span className="info-name">{adminProfile.name || 'Admin'}</span>
       </div>
 
       <nav className="navigation">
