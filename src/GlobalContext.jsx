@@ -11,6 +11,7 @@ export function GlobalProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [user_uid, setUser_uid] = useState("Not Defined");
   const [currentName, setCurrentName] = useState(null);
+  const [adminUID, setAdminUID] = useState(null);
 
 
   return (
@@ -18,6 +19,9 @@ export function GlobalProvider({ children }) {
 
         adminEmail, 
         setAdminEmail,
+
+        adminUID,
+        setAdminUID,
 
         currentUser,
         setCurrentUser,

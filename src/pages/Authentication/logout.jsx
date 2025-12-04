@@ -1,13 +1,15 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { Background_Particles } from "../../Components/__Admin_Login.jsx";
 import { useGlobal } from "../../GlobalContext.jsx";
 import { LogoutController } from "../../controller/Authentication/logout.controller.js"
 import { useNavigate } from "react-router-dom";
+import {routes} from "../../Utilities.js";
 
 export default function Logout() {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const { user_uid } = useGlobal();
 
     const {
         setCurrentUser,
@@ -24,6 +26,15 @@ export default function Logout() {
         setAdminEmail,
         navigate
     });
+
+
+
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
+
 
     return (
         <div className="relative w-screen h-screen flex items-center justify-center overflow-hidden">

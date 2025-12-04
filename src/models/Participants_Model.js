@@ -5,7 +5,7 @@ export class Participant {
         uid = '',
         name = '',
         date = '',
-        submitCount = 0,
+        submitCount = 1,
         points = 0,
 
      }) {

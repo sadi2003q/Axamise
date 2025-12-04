@@ -8,7 +8,7 @@ import { Database, Firebase_Response } from "../../Utilities";
 import Question from '../../models/Question_Model'
 
 // Firestore methods
-import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import {doc, collection, getDocs, deleteDoc, updateDoc} from "firebase/firestore";
 
 
 export class QuestionListService {
@@ -22,7 +22,13 @@ export class QuestionListService {
             const questions = querySnapshot.docs.map((doc) => ({
                 id: doc.id,        // document ID
                 ...doc.data(),     // document fields
-            }));
+            })).filter((item: any) =>
+                !item.status || item.status !== "MODIFICATION"
+            );
+
+
+
+
 
             return { success: true, data: questions };
         } catch (error) {
@@ -87,6 +93,32 @@ export class QuestionListService {
             };
         }
     };
+
+    _AddModifiedQuestion = async ({ questionID }: {
+        questionID: string;
+    }): Promise<Firebase_Response> => {
+        try {
+
+            const questionRef = doc(db, Database.question, questionID);
+
+            await updateDoc(questionRef, {
+                status: 'MODIFICATION'
+            });
+            return {
+                success: true,
+                message: `Question with ID ${questionID} added successfully into question field`,
+            }
+
+        } catch (error) {
+            console.error(error);
+            return { success: false, error: "Error adding modified question" };
+        }
+    }
+
+
+
+
+
 
 
 

@@ -27,8 +27,8 @@ import {CodeIcon} from "lucide-react";
 
 // Styles for the Event Show component
 export const Event_Show_Style = {
-    outerBox: "min-h-screen max-h-screen flex flex-col items-center pt-16 pb-16 px-4",
-    listBox: "w-full max-w-5xl p-4 rounded-lg overflow-auto",
+    outerBox: "h-auto flex flex-col items-center pt-16 pb-16 px-4",
+    listBox: "w-full max-w-5xl p-4 rounded-lg",
 };
 
 // Header component for Event Show
@@ -474,11 +474,13 @@ export const EventList = ({
   return (
     <div className={Event_Show_Style.listBox}>
       {/* Search Bar */}
-      <EventSearchBar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onAddEvent={() => controller.handleEdit({ id: null })}
-      />
+        <div className="sticky top-15 z-50 bg-black">
+            <EventSearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                onAddEvent={() => controller.handleEdit({ id: null })}
+            />
+        </div>
 
       {/* Render Event Accordions */}
       {filteredEvents.length > 0 ? (

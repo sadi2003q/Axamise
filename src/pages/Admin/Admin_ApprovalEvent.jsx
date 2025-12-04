@@ -157,9 +157,6 @@ export default function Admin_ApprovalEvent() {
         controller.fetchAllPendingEvents()
             .then()
             .catch();
-
-        console.log(eventModel)
-
     }, []);
 
 

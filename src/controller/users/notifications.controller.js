@@ -18,6 +18,8 @@ export class NotificationsController {
 
     _get_notifications = async ({userID}) => {
         this.service._Retrieve_Notification(userID).then((response) => {
+            console.log('id : ', userID);
+            console.log('response : ', response.data);
             this.setNotification(response.data);
         })
     }

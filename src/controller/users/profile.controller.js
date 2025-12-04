@@ -1,5 +1,6 @@
 
 import { _profileService } from '../../services/users/_profile.service.ts';
+import {EVENT_STATE} from "../../Utilities.js";
 
 
 
@@ -13,7 +14,8 @@ export class ProfileController {
                 setMyEventParticipant,
                 setMyParticipatedEvent,
                 setMySolvedQuestions,
-                setMyCreatedQuestions
+                setMyCreatedQuestions,
+                setEncounteredQuestionsCount
     ) {
         this.service = new _profileService();
 
@@ -25,12 +27,13 @@ export class ProfileController {
         this.setMyParticipatedEvent = setMyParticipatedEvent;
         this.setMySolvedQuestions = setMySolvedQuestions;
         this.setMyCreatedQuestions = setMyCreatedQuestions;
+        this.setEncounteredQuestionsCount = setEncounteredQuestionsCount
     }
 
 
     async getProfileInformation({id}) {
         const response = await this.service.fetch_users_Information({id})
-        console.log(response.data)
+
         this.setUser(response.data)
     }
 
@@ -47,27 +50,67 @@ export class ProfileController {
         this.setMyParticipatedEvent(response.data)
     }
 
-    async getMyEventParticipant({userID}) {
-        const response = await this.service.Fetch_Created_Event_by_Id({id: userID})
+    async getMyEventParticipant({ userID }) {
+        const response = await this.service.Fetch_Created_Event_by_Id({ id: userID });
+        const data = response.data;
 
-        const finalData = [];
+        const finalData = await Promise.all(
+            data.map(async (item) => {
+                const participantCount = await this.service.Fetch_Event_Participation_Count({ eventID: item.id });
+
+                // Parse the correct date
+                const eventDate = new Date(item.date);
+                const now = new Date();
+
+                // Determine state
+                let state;
+                if (
+                    now.getFullYear() === eventDate.getFullYear() &&
+                    now.getMonth() === eventDate.getMonth() &&
+                    now.getDate() === eventDate.getDate()
+                ) {
+                    state = EVENT_STATE.running;
+                } else if (now > eventDate) {
+                    state = EVENT_STATE.ended;
+                } else {
+                    state = EVENT_STATE.coming;
+                }
+
+                return {
+                    name: item.title,
+                    value: participantCount.data ?? 0,
+                    state,
+                    date: item.date,
+                };
+            })
+        );
+
+        this.setMyEventParticipant(finalData);
+    }
 
 
-        response.data.map(async (item) => {
-            const participantCount = await this.service.Fetch_Event_Participation_Count({eventID: item.id})
-            finalData.push({
-                title: item.title,
-                count: participantCount.data,
+    async getMySolvedQuestionList({userID}) {
+
+
+
+        const response = await this.service.Fetch_Solved_Questions_list({id: userID})
+        const combineData = [];
+
+        const data = response.data
+        data.forEach((item) => {
+            this.service.Fetch_Question_Name({questionId: item.question_id}).then(async (p) => {
+                combineData.push({
+                    date: new Date(item.date).toLocaleString(),
+                    title: p.data.title,
+                })
+
             })
 
         })
-        this.setMyEventParticipant(finalData)
 
-    }
 
-    async getMySolvedQuestionList({userID}) {
-        const response = this.service.Fetch_Solved_Questions_list({id: userID})
-        this.setMySolvedQuestions(response.data)
+
+        this.setMySolvedQuestions(combineData)
     }
 
     async getMyQuestionParticipatedInformation({userID}) {
@@ -75,18 +118,38 @@ export class ProfileController {
         const finalData = [];
 
 
+
+
         response.data.map(async (item) => {
             const participantCount = await this.service.Fetch_Question_Participant_Count({questionId:item.id})
+
+
+
             finalData.push({
                 title: item.title,
-                count: participantCount.data,
+                participationCount: participantCount.data ?? 0,
+                createdAt: item.approvedAt
+                    ? new Date(item.approvedAt.seconds * 1000).toLocaleDateString("en-GB")
+                    : "N/A"
             })
+
+
+
             this.setMyCreatedQuestions(finalData)
         })
 
     }
 
+    async getEncounteredQuestionsCount({userID, type = "encountered"}) {
+        const response = await this.service.Fetch_Relevant_Counts({userID, type})
+        this.setEncounteredQuestionsCount(response.data)
+    }
 
+
+    async getQuestionParticpationCount({questionId}) {
+        const response = await this.service.Fetch_Question_Participation_Count({questionId})
+        return response.data;
+    }
 
 
 

@@ -4,11 +4,14 @@
 import { db } from "../../firebase.js";
 import {doc, getDoc, setDoc, updateDoc, collection} from 'firebase/firestore'
 import {Database, EVENT_STATE, Firebase_Response} from "../../Utilities";
-import Question from '../../models/Question_Model'
+import { Notification } from '../../models/Notification_Model'
 import { Solve_Model} from "../../models/Solve_Model";
+import { NOTIFICATION_TYPES } from "../../Utilities";
+import { NotificationsService } from '../users/_Notifications.service'
 
 
 export class SolveService {
+
 
     /**
      * Fetch the Problem from database
@@ -180,6 +183,19 @@ export class SolveService {
             // Reference the ScoreCard subcollection
             const scoreCardRef = collection(db, Database.event, eventID, Database.eventScoreCard);
 
+            const notification: Notification = new Notification({
+                title : "Score",
+                message: `Final Score : ${score}`,
+                type: NOTIFICATION_TYPES.event_score,
+                objectID : eventID,
+                recipientID: userID,
+                isRead: false,
+                timestamp: new Date()
+            })
+
+            const notificationService = new NotificationsService();
+
+
             // Create a new document with auto-generated ID
             const newScoreRef = doc(scoreCardRef, userID);
             await setDoc(newScoreRef, {
@@ -190,6 +206,8 @@ export class SolveService {
                 timeComplexity,
                 createdAt: new Date().toISOString(),
             });
+
+            await notificationService._Send_Notification(notification);
 
             return {
                 success: true,
@@ -211,8 +229,16 @@ export class SolveService {
      * @param eventId
      * @param score
      * @param submitCount
+     * @param eventState
      */
-    _ModifyScoreAfterRun = async ({userID, eventId, score, submitCount}: {userID: string, eventId: string, score: number, submitCount: number}) : Promise<Firebase_Response> =>{
+    _ModifyScoreAfterRun = async ({userID, eventId, score, submitCount,
+                                      eventState = EVENT_STATE.solved}: {
+        userID: string,
+        eventId: string,
+        score: number,
+        submitCount: number,
+        eventState: string ,
+    }) : Promise<Firebase_Response> =>{
         try {
 
             const studentRef = doc(db, Database.student, userID, Database.participatedEvent, eventId);
@@ -221,7 +247,7 @@ export class SolveService {
 
             await updateDoc(studentRef, {
                 score: score,
-                eventState: EVENT_STATE.solved,
+                eventState: eventState,
                 submitCount: submitCount
 
             });
@@ -276,6 +302,39 @@ export class SolveService {
             return {
                 success: true,
                 message: `Problem ${questionID} encountered successfully!`,
+            }
+
+        } catch (error) {
+            console.error("Error deleting the event encounter Problem:\n", error);
+        }
+    }
+
+
+    _SentNotification = async ({userID, questionID, title, body, eventID = '', status}: {
+        userID: string,
+        questionID: string,
+        title: string,
+        body: string,
+        eventID: string,
+        status: string
+    }): Promise<Firebase_Response> => {
+        try {
+            console.log('function called')
+            const notificationRef = doc(db, Database.notification, userID);
+            
+            await setDoc(notificationRef, {
+                recipientID: userID,
+                questionID: questionID,
+                date: new Date().toISOString(),
+                eventID: eventID,
+                title: title,
+                body: body,
+                status: status
+            })
+
+            return {
+                success: true,
+                message: `Sent notification encountered successfully!`,
             }
 
         } catch (error) {

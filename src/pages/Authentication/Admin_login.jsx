@@ -30,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 export default function Admin_login() {
 
     // Global Context
-    const { adminEmail, setAdminEmail } = useGlobal();
+    const {  setAdminEmail, setAdminUID } = useGlobal();
 
 
     // State
@@ -57,7 +57,7 @@ export default function Admin_login() {
         console.log(`Email : ${user.email} Password : ${user.password}`)
 
 
-        const controller = new Admin_LoginController(user, navigate, setLoginError);
+        const controller = new Admin_LoginController(user, navigate, setLoginError, setAdminUID);
         await controller.handleEmailLogin()
 
 

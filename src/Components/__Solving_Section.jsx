@@ -4,7 +4,7 @@ import { FaQuestionCircle, FaClock, FaLayerGroup, FaStar } from "react-icons/fa"
 export const Solve_style = {
     event_description:
         // smaller section (takes 1 part)
-        "flex-1 m-2 h-auto max-h-[500px] md:h-[86vh] flex flex-col gap-6 p-2 overflow-auto",
+        "flex-1 m-2 h-auto max-h-[800px] md:h-[86vh] flex flex-col gap-6 p-2 overflow-auto",
 
     event_scheduling:
         // bigger section (takes 2 parts)

@@ -46,7 +46,7 @@ export const NotificationList = ({ notifications, handleClick, getTypeColor, onD
                         transition={{ duration: 0.25 }}
                         onClick={() => handleClick(index)}
                         className={`relative cursor-pointer group rounded-xl p-[1px] bg-gradient-to-r ${getTypeColor(
-                            notif.type
+                            notif.status
                         )} w-full max-w-3xl mx-auto`}
                     >
                         <div
@@ -70,7 +70,7 @@ export const NotificationList = ({ notifications, handleClick, getTypeColor, onD
                                         textOverflow: "ellipsis",
                                     }}
                                 >
-                                    {notif.message}
+                                    {notif.body}
                                 </p>
 
                                 {/* 🗑️ Delete Button */}
