@@ -299,6 +299,7 @@ uploadAllUsers().then(() => {
 
  */
 
+/*// --------------------- Question Upload --------------------------
 const questions = [
     // ==========================================
     // PART 1: USER PROVIDED QUESTIONS (1-41)
@@ -2694,3 +2695,2924 @@ const fetchAndDelete = async () => {
 showAllUser().then( () => {
     console.log('Uploaded')
 });
+
+ */
+
+
+
+
+
+
+
+const eventsArray = [
+    {
+        title: "Dynamic Programming & Grid Mastery",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "10:00 AM",
+        duration: "2h",
+        eventDescription:
+            "This event focuses on medium to hard dynamic programming and grid-based problems frequently seen on LeetCode and competitive programming contests. Participants will work on path optimization, state transition logic, overlapping subproblems, recursion-to-DP conversion, and high-efficiency computation. The goal is to strengthen intuition in designing DP states, minimizing redundancy, and producing optimized code suitable for interviews and competitions.",
+        questions: [
+            {
+                title: "Minimum Path Sum in Grid",
+                difficulty: "Medium",
+                points: 20,
+                description: `You are given a 2D grid of positive integers representing movement costs. You start at the top-left corner (0,0) and may only move either right or down. Compute the minimum total cost path to reach the bottom-right cell. This problem tests dynamic programming tabulation or memoization approaches.
+
+Input:
+grid = [
+  [1,3,1],
+  [1,5,1],
+  [4,2,1]
+]
+
+Output:
+7
+
+Explanation:
+The optimal path is 1 → 3 → 1 → 1 → 1 with a total cost of 7.`
+            },
+            {
+                title: "Maximum Score Path with Obstacles",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given a grid of integers where each value represents points you gain upon stepping into a cell, calculate the maximum total value achievable moving from the top-left to the bottom-right. Cells with -1 are blocked. Use dynamic programming to find the optimal path avoiding obstacles.
+
+Input:
+grid = [
+  [1, 2, 3],
+  [2, -1, 4],
+  [5, 2, 1]
+]
+
+Output:
+12
+
+Explanation:
+One optimal path is 1 → 2 → 3 → 4 → 1 summing to 12.`
+            },
+            {
+                title: "Unique Paths with Step Limit",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given m, n, and k (grid size and maximum number of moves), compute how many unique paths exist from top-left to bottom-right moving only right or down within at most k steps. Requires multidimensional DP tracking position and steps.
+
+Input:
+m = 3, n = 3, k = 4
+
+Output:
+2
+
+Explanation:
+Only two valid paths reach the destination in at most 4 steps.`
+            },
+            {
+                title: "Minimum Deletion Cost to Make Strings Equal",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given two strings s1 and s2 and arrays cost1 and cost2 representing deletion costs, find the minimum total cost to make both strings equal. Only deletions are allowed.
+
+Input:
+s1 = "sea"
+s2 = "eat"
+cost1 = [2,3,1]
+cost2 = [1,2,4]
+
+Output:
+3
+
+Explanation:
+Deleting 's' from s1 (cost 2) and 't' from s2 (cost 1) yields matching strings at minimum total cost 3.`
+            },
+            {
+                title: "Minimum Falling Path Sum with Column Restriction",
+                difficulty: "Hard",
+                points: 50,
+                description: `You are given an n×n grid of integers representing costs of stepping into positions. Starting from any cell in the top row, move downward choosing one cell per row. From each position (r,c), you may move to (r+1,c), (r+1,c-1), or (r+1,c+1), but may not revisit any previously chosen column. Find the minimum total cost.
+
+Input:
+grid = [
+  [2,1,3],
+  [6,5,4],
+  [7,8,9]
+]
+
+Output:
+13
+
+Explanation:
+Path 2 → 1 → 4 gives cost 7, but since columns cannot repeat, the best valid path has cost 13.`
+            }
+        ]
+    },
+
+    {
+        title: "Graph Algorithms Challenge",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "11:00 AM",
+        duration: "3h",
+        eventDescription:
+            "This event is centered on graph theory problems including BFS, DFS, Dijkstra, topological sorting, and cycle detection. Participants must design optimized graph algorithms and handle edge cases on large datasets.",
+        questions: [
+            {
+                title: "Shortest Path in Weighted Graph",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a directed graph with weighted edges, find the shortest path from node s to node t. Uses Dijkstra or BFS with weight tracking.
+
+Input:
+edges = [[0,1,4],[0,2,1],[2,1,2],[1,3,1],[2,3,5]], s = 0, t = 3
+
+Output:
+4
+
+Explanation:
+Path 0 → 2 → 1 → 3 has total weight 1+2+1 = 4, which is minimal.`
+            },
+            {
+                title: "Detect Cycle in Directed Graph",
+                difficulty: "Medium",
+                points: 20,
+                description: `Determine whether a directed graph contains a cycle using DFS or topological sorting.
+
+Input:
+edges = [[0,1],[1,2],[2,0]]
+
+Output:
+true
+
+Explanation:
+0 → 1 → 2 → 0 forms a cycle.`
+            },
+            {
+                title: "Strongly Connected Components",
+                difficulty: "Hard",
+                points: 30,
+                description: `Given a directed graph, return all its strongly connected components using Tarjan's or Kosaraju's algorithm.
+
+Input:
+edges = [[0,1],[1,2],[2,0],[1,3]]
+
+Output:
+[[0,1,2],[3]]
+
+Explanation:
+Nodes 0,1,2 form a cycle (SCC) and 3 is separate.`
+            },
+            {
+                title: "Minimum Edge Reversal to Reach Target",
+                difficulty: "Hard",
+                points: 30,
+                description: `Given a directed graph, find the minimum number of edges that must be reversed to create a path from source to target.
+
+Input:
+edges = [[0,1],[2,1],[1,3]], s = 0, t = 3
+
+Output:
+1
+
+Explanation:
+Reversing edge 2→1 allows path 0→1→3.`
+            },
+            {
+                title: "Course Schedule Order",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given number of courses and prerequisites, determine a valid order to complete all courses using topological sort.
+
+Input:
+numCourses = 4, prerequisites = [[1,0],[2,1],[3,2]]
+
+Output:
+[0,1,2,3]
+
+Explanation:
+0 → 1 → 2 → 3 is a valid order satisfying prerequisites.`
+            }
+        ]
+    },
+
+    {
+        title: "Binary Tree & BST Mastery",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "12:00 PM",
+        duration: "3h",
+        eventDescription:
+            "This event covers binary trees, binary search trees, recursion, DFS, tree traversal, and tree reconstruction. Participants will solve medium-to-hard problems requiring pointer manipulation and tree property reasoning.",
+        questions: [
+            {
+                title: "Lowest Common Ancestor in Binary Tree",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a binary tree and two nodes, return their lowest common ancestor.
+
+Input:
+root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+
+Output:
+3
+
+Explanation:
+Node 3 is the lowest ancestor of nodes 5 and 1.`
+            },
+            {
+                title: "Validate Binary Search Tree",
+                difficulty: "Medium",
+                points: 20,
+                description: `Check whether a given binary tree satisfies BST ordering.
+
+Input:
+root = [2,1,3]
+
+Output:
+true
+
+Explanation:
+Tree satisfies BST properties: left < root < right.`
+            },
+            {
+                title: "Recover Corrupted BST",
+                difficulty: "Hard",
+                points: 30,
+                description: `Two nodes of a BST are swapped. Restore the BST without changing structure.
+
+Input:
+root = [3,1,4,null,null,2]
+
+Output:
+[2,1,4,null,null,3]
+
+Explanation:
+Nodes 3 and 2 were swapped. Restoring order corrects BST.`
+            },
+            {
+                title: "Binary Tree Right Side View",
+                difficulty: "Medium",
+                points: 20,
+                description: `Return the visible nodes from the right side of a binary tree.
+
+Input:
+root = [1,2,3,null,5,null,4]
+
+Output:
+[1,3,4]
+
+Explanation:
+From right, visible nodes are 1,3,4.`
+            },
+            {
+                title: "Serialize and Deserialize Binary Tree",
+                difficulty: "Hard",
+                points: 30,
+                description: `Implement serialization and deserialization for a binary tree.
+
+Input:
+root = [1,2,3,null,null,4,5]
+
+Output:
+[1,2,3,null,null,4,5]
+
+Explanation:
+Serialized tree matches structure and can be deserialized back.`
+            }
+        ]
+    },
+
+    {
+        title: "Advanced String Algorithms",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "01:00 PM",
+        duration: "3h",
+        eventDescription:
+            "This event challenges participants with medium-to-hard string manipulation problems. Topics include pattern matching, string compression, palindrome detection, edit distance, and rolling hash algorithms. Participants will practice efficient string processing, DP on strings, and hashing techniques used in competitive programming and coding interviews.",
+        questions: [
+            {
+                title: "Longest Palindromic Substring",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a string s, find the longest substring which reads the same backward and forward.
+
+Input:
+s = "babad"
+
+Output:
+"bab" or "aba"
+
+Explanation:
+The longest palindromic substring is "bab" (or "aba" as another valid option).`
+            },
+            {
+                title: "Edit Distance Calculation",
+                difficulty: "Hard",
+                points: 30,
+                description: `Compute the minimum number of operations to convert one string into another. Operations allowed: insert, delete, replace a character.
+
+Input:
+s1 = "kitten", s2 = "sitting"
+
+Output:
+3
+
+Explanation:
+Operations: replace 'k' → 's', replace 'e' → 'i', append 'g'.`
+            },
+            {
+                title: "Rabin-Karp Pattern Matching",
+                difficulty: "Medium",
+                points: 20,
+                description: `Detect all occurrences of a pattern in a string using rolling hash.
+
+Input:
+Text = "ababcabc", Pattern = "abc"
+
+Output:
+[2,5]
+
+Explanation:
+Pattern "abc" occurs at indices 2 and 5.`
+            },
+            {
+                title: "String Compression",
+                difficulty: "Medium",
+                points: 20,
+                description: `Compress a string using counts of repeated characters. Replace sequences with char + count.
+
+Input:
+s = "aaabbc"
+
+Output:
+"a3b2c1"
+
+Explanation:
+Sequences: 'aaa' → 'a3', 'bb' → 'b2', 'c' → 'c1'.`
+            },
+            {
+                title: "Minimum Window Substring",
+                difficulty: "Hard",
+                points: 30,
+                description: `Find the smallest substring of s that contains all characters of t.
+
+Input:
+s = "ADOBECODEBANC", t = "ABC"
+
+Output:
+"BANC"
+
+Explanation:
+"BANC" is the smallest substring containing 'A','B','C'.`
+            }
+        ]
+    },
+    {
+        title: "Graph Theory & Shortest Paths",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "02:00 PM",
+        duration: "3h",
+        eventDescription:
+            "Participants solve graph problems involving shortest paths, connectivity, cycles, and optimization. This event emphasizes Dijkstra, Bellman-Ford, BFS/DFS, and topological sort for medium-to-hard challenges.",
+        questions: [
+            {
+                title: "Network Delay Time",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given times as edges [u,v,w], find time for signal to reach all nodes from source.
+
+Input:
+times = [[2,1,1],[2,3,1],[3,4,1]], N = 4, K = 2
+
+Output:
+2
+
+Explanation:
+Signal reaches all nodes in 2 units of time.`
+            },
+            {
+                title: "Detect Cycle in Undirected Graph",
+                difficulty: "Medium",
+                points: 20,
+                description: `Check if an undirected graph contains a cycle.
+
+Input:
+edges = [[0,1],[1,2],[2,0]]
+
+Output:
+true
+
+Explanation:
+Nodes 0-1-2-0 form a cycle.`
+            },
+            {
+                title: "Critical Connections in a Network",
+                difficulty: "Hard",
+                points: 30,
+                description: `Find edges which, if removed, increase the number of connected components (bridges).
+
+Input:
+n = 4, connections = [[0,1],[1,2],[2,0],[1,3]]
+
+Output:
+[[1,3]]
+
+Explanation:
+Removing edge [1,3] disconnects the network.`
+            },
+            {
+                title: "Cheapest Flights Within K Stops",
+                difficulty: "Hard",
+                points: 30,
+                description: `Find cheapest flight from src to dst with ≤ K stops.
+
+Input:
+n = 4, flights = [[0,1,100],[1,2,100],[2,3,100],[0,3,500]], src = 0, dst = 3, K = 1
+
+Output:
+500
+
+Explanation:
+Only path within 1 stop is 0 → 3 directly at cost 500.`
+            },
+            {
+                title: "Minimum Spanning Tree",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a weighted undirected graph, find the total weight of MST using Kruskal's algorithm.
+
+Input:
+edges = [[0,1,1],[0,2,2],[1,2,3]], n = 3
+
+Output:
+3
+
+Explanation:
+Edges 0-1 and 0-2 give MST weight 1+2=3.`
+            }
+        ]
+    },
+    {
+        title: "Binary Search & Arrays",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "03:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Participants solve array and binary search problems including searching, rotations, partitioning, and subarray optimization. Challenges are medium-to-hard and require efficient O(log n) or O(n) algorithms.",
+        questions: [
+            {
+                title: "Search in Rotated Sorted Array",
+                difficulty: "Medium",
+                points: 20,
+                description: `Search a target value in a rotated sorted array.
+
+Input:
+nums = [4,5,6,7,0,1,2], target = 0
+
+Output:
+4
+
+Explanation:
+0 is at index 4.`
+            },
+            {
+                title: "Median of Two Sorted Arrays",
+                difficulty: "Hard",
+                points: 30,
+                description: `Find the median of two sorted arrays in O(log (m+n)) time.
+
+Input:
+nums1 = [1,3], nums2 = [2]
+
+Output:
+2.0
+
+Explanation:
+Merged array [1,2,3], median is 2.`
+            },
+            {
+                title: "Find Peak Element",
+                difficulty: "Medium",
+                points: 20,
+                description: `Return index of any peak element in array where nums[i] ≠ nums[i+1].
+
+Input:
+nums = [1,2,3,1]
+
+Output:
+2
+
+Explanation:
+3 is a peak element at index 2.`
+            },
+            {
+                title: "First and Last Position of Element",
+                difficulty: "Medium",
+                points: 20,
+                description: `Find first and last position of a target in sorted array.
+
+Input:
+nums = [5,7,7,8,8,10], target = 8
+
+Output:
+[3,4]
+
+Explanation:
+Target 8 occurs at indices 3 and 4.`
+            },
+            {
+                title: "Search Insert Position",
+                difficulty: "Medium",
+                points: 20,
+                description: `Return index where target should be inserted in sorted array.
+
+Input:
+nums = [1,3,5,6], target = 5
+
+Output:
+2
+
+Explanation:
+Target 5 exists at index 2.`
+            }
+        ]
+    },
+    {
+        title: "Backtracking & Combinatorics",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "04:00 PM",
+        duration: "3h",
+        eventDescription:
+            "This event includes backtracking problems such as N-Queens, permutations, combinations, Sudoku solving, and word search. Participants must implement recursion efficiently to handle medium-to-hard problems.",
+        questions: [
+            {
+                title: "N-Queens Problem",
+                difficulty: "Hard",
+                points: 30,
+                description: `Place n queens on an n×n chessboard so that no two queens attack each other. Return all valid solutions.
+
+Input:
+n = 4
+
+Output:
+[
+ [".Q..","...Q","Q...","..Q."],
+ ["..Q.","Q...","...Q",".Q.."]
+]
+
+Explanation:
+Two solutions exist for 4x4 board.`
+            },
+            {
+                title: "Word Search",
+                difficulty: "Medium",
+                points: 20,
+                description: `Check if a word exists in a 2D board following adjacent letters (horizontally/vertically).
+
+Input:
+board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+
+Output:
+true
+
+Explanation:
+Word can be formed by moving adjacent cells.`
+            },
+            {
+                title: "Letter Combinations of a Phone Number",
+                difficulty: "Medium",
+                points: 20,
+                description: `Return all possible letter combinations from a phone number string.
+
+Input:
+digits = "23"
+
+Output:
+["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+Explanation:
+Digit mapping forms these combinations.`
+            },
+            {
+                title: "Palindrome Partitioning",
+                difficulty: "Hard",
+                points: 30,
+                description: `Partition a string into all possible palindrome substrings.
+
+Input:
+s = "aab"
+
+Output:
+[["aa","b"],["a","a","b"]]
+
+Explanation:
+All partitions where every substring is a palindrome.`
+            },
+            {
+                title: "Combination Sum",
+                difficulty: "Medium",
+                points: 20,
+                description: `Find all unique combinations where candidate numbers sum to target.
+
+Input:
+candidates = [2,3,6,7], target = 7
+
+Output:
+[[7],[2,2,3]]
+
+Explanation:
+Only these combinations sum to 7.`
+            }
+        ]
+    },
+    {
+        title: "Heap & Priority Queue Challenges",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "05:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Medium-to-hard heap and priority queue problems including top-K, merging arrays, running medians, and interval scheduling.",
+        questions: [
+            {
+                title: "Kth Largest Element in Array",
+                difficulty: "Medium",
+                points: 20,
+                description: `Find the kth largest element in an unsorted array.
+
+Input:
+nums = [3,2,1,5,6,4], k = 2
+
+Output:
+5
+
+Explanation:
+Second largest element is 5.`
+            },
+            {
+                title: "Merge K Sorted Lists",
+                difficulty: "Hard",
+                points: 30,
+                description: `Merge k sorted linked lists into one sorted list using min-heap.
+
+Input:
+lists = [[1,4,5],[1,3,4],[2,6]]
+
+Output:
+[1,1,2,3,4,4,5,6]
+
+Explanation:
+All lists merged into sorted order.`
+            },
+            {
+                title: "Top K Frequent Elements",
+                difficulty: "Medium",
+                points: 20,
+                description: `Return k most frequent elements from array.
+
+Input:
+nums = [1,1,1,2,2,3], k = 2
+
+Output:
+[1,2]
+
+Explanation:
+1 occurs 3 times, 2 occurs 2 times.`
+            },
+            {
+                title: "Sliding Window Maximum",
+                difficulty: "Hard",
+                points: 30,
+                description: `Find max in each sliding window of size k.
+
+Input:
+nums = [1,3,-1,-3,5,3,6,7], k = 3
+
+Output:
+[3,3,3,5,5,6,7]
+
+Explanation:
+Max of each window computed efficiently.`
+            }
+        ]
+    },
+    {
+        title: "Bit Manipulation & Math",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "06:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Medium-to-hard bit manipulation and math problems including XOR, AND, OR, counting bits, number theory, and combinatorial computations.",
+        questions: [
+            {
+                title: "Single Number",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a non-empty array where every element appears twice except one, find that single element using bitwise operations.
+
+Input:
+nums = [2,2,1]
+
+Output:
+1
+
+Explanation:
+XOR cancels out duplicates, leaving 1.`
+            },
+            {
+                title: "Counting Bits",
+                difficulty: "Medium",
+                points: 20,
+                description: `Return an array of counts of 1s in binary representation for numbers 0..n.
+
+Input:
+n = 5
+
+Output:
+[0,1,1,2,1,2]
+
+Explanation:
+Binary counts of each number.`
+            },
+            {
+                title: "Power of Two",
+                difficulty: "Medium",
+                points: 20,
+                description: `Check if a number is a power of two using bit manipulation.
+
+Input:
+n = 16
+
+Output:
+true
+
+Explanation:
+16 = 2^4.`
+            },
+            {
+                title: "Reverse Bits",
+                difficulty: "Hard",
+                points: 30,
+                description: `Reverse bits of a given 32-bit unsigned integer.
+
+Input:
+n = 43261596
+
+Output:
+964176192
+
+Explanation:
+Binary representation reversed.`
+            },
+            {
+                title: "Number of 1 Bits",
+                difficulty: "Medium",
+                points: 20,
+                description: `Count the number of '1' bits in a 32-bit integer.
+
+Input:
+n = 11
+
+Output:
+3
+
+Explanation:
+Binary 1011 has 3 ones.`
+            }
+        ]
+    },
+    {
+        title: "Greedy Algorithms & Intervals",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-22",
+        startTime: "07:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Medium-to-hard greedy algorithm problems including interval scheduling, activity selection, coin change, and optimization tasks that can be solved with local decisions.",
+        questions: [
+            {
+                title: "Non-overlapping Intervals",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given intervals, remove minimum number to make all intervals non-overlapping.
+
+Input:
+intervals = [[1,2],[2,3],[3,4],[1,3]]
+
+Output:
+1
+
+Explanation:
+Removing [1,3] makes intervals non-overlapping.`
+            },
+            {
+                title: "Assign Cookies",
+                difficulty: "Medium",
+                points: 20,
+                description: `Assign cookies to children to maximize satisfied children using greedy approach.
+
+Input:
+g = [1,2,3], s = [1,1]
+
+Output:
+1
+
+Explanation:
+Only one child can be satisfied.`
+            },
+            {
+                title: "Jump Game",
+                difficulty: "Medium-Hard",
+                points: 25,
+                description: `Determine if you can reach the last index in array where each element represents max jump length.
+
+Input:
+nums = [2,3,1,1,4]
+
+Output:
+true
+
+Explanation:
+Jump sequence 0→1→4 reaches last index.`
+            },
+            {
+                title: "Minimum Number of Arrows to Burst Balloons",
+                difficulty: "Hard",
+                points: 30,
+                description: `Find min arrows to burst all balloons represented as intervals.
+
+Input:
+points = [[10,16],[2,8],[1,6],[7,12]]
+
+Output:
+2
+
+Explanation:
+Shoot arrows at 6 and 12 to burst all.`
+            },
+            {
+                title: "Gas Station",
+                difficulty: "Medium",
+                points: 20,
+                description: `Determine if there is a starting gas station to travel around circuit.
+
+Input:
+gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+
+Output:
+3
+
+Explanation:
+Starting at station 3 allows completing circuit.`
+            }
+        ]
+    }
+];
+
+const newEventsArray = [
+
+    {
+        title: "Arrays & Hashing Fundamentals",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-23",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "This event covers fundamental array manipulation techniques, including two-pointer approaches, prefix sums, and heavy use of hash maps (dictionaries) for O(n) lookups. Focus is on recognizing when to use auxiliary space for efficiency, handling duplicates, and dealing with constraints like integer overflows.",
+        questions: [
+            {
+                title: "Two Sum",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given an array of integers 'nums' and an integer 'target', return indices of the two numbers such that they add up to 'target'. Assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Input:
+nums = [2,7,11,15], target = 9
+
+Output:
+[0,1]
+
+Explanation:
+nums[0] + nums[1] == 9, so we return [0, 1].`
+            },
+            {
+                title: "Group Anagrams",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an array of strings 'strs', group the anagrams together. You can return the answer in any order. An anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Input:
+strs = ["eat","tea","tan","ate","nat","bat"]
+
+Output:
+[["bat"],["nat","tan"],["ate","eat","tea"]]`
+            },
+            {
+                title: "Product of Array Except Self",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array 'nums', return an array 'answer' such that 'answer[i]' is equal to the product of all the elements of 'nums' except 'nums[i]'. You must write an algorithm that runs in O(n) time and without using the division operation.
+
+Input:
+nums = [1,2,3,4]
+
+Output:
+[24,12,8,6]`
+            },
+            {
+                title: "Longest Consecutive Sequence",
+                difficulty: "Medium",
+                points: 30,
+                description: `Given an unsorted array of integers 'nums', return the length of the longest consecutive elements sequence. Your algorithm should run in O(n) time.
+
+Input:
+nums = [100,4,200,1,3,2]
+
+Output:
+4
+
+Explanation:
+The longest consecutive elements sequence is [1, 2, 3, 4]. Its length is 4.`
+            }
+        ]
+    },
+    {
+        title: "Sliding Window Technique",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-23",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focus on the **Sliding Window** pattern, a highly efficient technique used to solve array and string problems in O(n) time. Participants will master fixed-size and variable-size windows, using hash maps or frequency arrays to track window state.",
+        questions: [
+            {
+                title: "Longest Substring Without Repeating Characters",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a string 's', find the length of the longest substring without repeating characters. This is a classic variable-size sliding window problem.
+
+Input:
+s = "abcabcbb"
+
+Output:
+3
+
+Explanation:
+The answer is "abc", with a length of 3.`
+            },
+            {
+                title: "Permutation in String",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise. In other words, return true if one of s1's permutations is the substring of s2. This uses a fixed-size window.
+
+Input:
+s1 = "ab", s2 = "eidbaooo"
+
+Output:
+true
+
+Explanation:
+s2 contains "ba" (a permutation of s1).`
+            },
+            {
+                title: "Minimum Window Substring (Recap)",
+                difficulty: "Hard",
+                points: 30,
+                description: `(Recap) Find the smallest substring of 's' that contains all characters of 't' (including duplicates). This requires a complex variable-size window with two-pointer and frequency map tracking.
+
+Input:
+s = "ADOBECODEBANC", t = "ABC"
+
+Output:
+"BANC"`
+            },
+            {
+                title: "Max Consecutive Ones III",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given a binary array 'nums' and an integer 'k', return the maximum number of consecutive 1's in the array if you can flip at most 'k' 0's.
+
+Input:
+nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+
+Output:
+6
+
+Explanation:
+The longest window after flipping two 0s is 6 (e.g., [1,1,1,0,0,1,1,1,1,1,1]).`
+            }
+        ]
+    },
+    {
+        title: "Stack, Queue, and Deque Applications",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-23",
+        startTime: "01:00 PM",
+        duration: "3h",
+        eventDescription:
+            "A deep dive into classic data structures: Stack (LIFO), Queue (FIFO), and Deque (Double-ended queue). Emphasis on monotonic stacks/queues, expression evaluation, and problems like bracket matching and sliding window maximum (using a Deque).",
+        questions: [
+            {
+                title: "Valid Parentheses",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given a string 's' containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. Uses a simple stack.
+
+Input:
+s = "()[]{}"
+
+Output:
+true`
+            },
+            {
+                title: "Daily Temperatures",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an array of integers 'temperatures', return an array 'answer' such that 'answer[i]' is the number of days you have to wait after the i-th day to get a warmer temperature. If there is no future day for which this is possible, keep 'answer[i] == 0'. Solved efficiently with a Monotonic Stack.
+
+Input:
+temperatures = [73,74,75,71,69,72,76,73]
+
+Output:
+[1,1,4,2,1,1,0,0]`
+            },
+            {
+                title: "Sliding Window Maximum (Deque)",
+                difficulty: "Hard",
+                points: 30,
+                description: `(Recap) Find the maximum value in each sliding window of size 'k' using a Deque (Double-Ended Queue) to maintain a monotonic decreasing sequence of indices.
+
+Input:
+nums = [1,3,-1,-3,5,3,6,7], k = 3
+
+Output:
+[3,3,3,5,5,6,7]`
+            },
+            {
+                title: "Min Stack",
+                difficulty: "Medium",
+                points: 25,
+                description: `Design a stack that supports push, pop, top, and retrieving the minimum element in constant time O(1). This requires using an auxiliary stack or careful tracking.
+
+Input:
+MinStack(), push(-2), push(0), push(-3), getMin(), pop(), top(), getMin()
+
+Output:
+[null, null, null, null, -3, null, 0, -2]`
+            }
+        ]
+    },
+    {
+        title: "Trie (Prefix Tree) Implementation",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-23",
+        startTime: "04:00 PM",
+        duration: "2h",
+        eventDescription:
+            "A specialized event focusing on the **Trie** data structure, optimal for efficient prefix matching and string-related operations. Participants will implement a Trie and use it to solve problems involving searching and data structure design.",
+        questions: [
+            {
+                title: "Implement Trie (Prefix Tree)",
+                difficulty: "Medium",
+                points: 20,
+                description: `Implement the Trie data structure, including the methods 'insert', 'search', and 'startsWith'.
+
+Input:
+Trie trie = new Trie(); trie.insert("apple"); trie.search("apple"); trie.startsWith("app"); trie.search("app");
+
+Output:
+[null, null, true, true, false]`
+            },
+            {
+                title: "Word Search II",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given an m x n 'board' of characters and a list of strings 'words', return all words on the board. Each word must be constructed from letters of sequentially adjacent cells, and the same letter cell may not be used more than once in the same word. Requires combining DFS/Backtracking with a Trie for optimization.
+
+Input:
+board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"]
+
+Output:
+["oath","eat"]`
+            },
+            {
+                title: "Map Sum Pairs",
+                difficulty: "Medium",
+                points: 25,
+                description: `Implement the 'MapSum' class, which has two methods: 'insert' (a key-value pair) and 'sum' (returns the sum of all the values of keys that start with a given prefix).
+
+Input:
+MapSum mapSum = new MapSum(); mapSum.insert("apple", 3); mapSum.sum("ap"); mapSum.insert("app", 2); mapSum.sum("ap");
+
+Output:
+[null, null, 3, null, 5]`
+            }
+        ]
+    },
+    {
+        title: "Advanced Linked Lists & Pointers",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-24",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "This event covers medium-to-hard problems on singly and doubly linked lists. Focus areas include the **Two-Pointer** technique (fast/slow pointers), list reversal, cycle detection (Floyd's algorithm), and in-place list modification.",
+        questions: [
+            {
+                title: "Reverse Linked List",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given the head of a singly linked list, reverse the list, and return the reversed list. Solvable iteratively or recursively.
+
+Input:
+head = [1,2,3,4,5]
+
+Output:
+[5,4,3,2,1]`
+            },
+            {
+                title: "Linked List Cycle II",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null. Uses Floyd's Tortoise and Hare algorithm.
+
+Input:
+head = [3,2,0,-4], pos = 1 (cycle connects to node at index 1)
+
+Output:
+Node with value 2`
+            },
+            {
+                title: "Reorder List",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given a singly linked list L: L0→L1→...→Ln-1→Ln, reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→... You may not modify the values in the list's nodes. Only nodes themselves may be changed. Requires splitting, reversing, and merging lists.
+
+Input:
+head = [1,2,3,4]
+
+Output:
+[1,4,2,3]`
+            },
+            {
+                title: "Merge Two Sorted Lists",
+                difficulty: "Easy",
+                points: 10,
+                description: `Merge two sorted linked lists and return it as a new sorted list. The new list should be made by splicing together the nodes of the first two lists.
+
+Input:
+list1 = [1,2,4], list2 = [1,3,4]
+
+Output:
+[1,1,2,3,4,4]`
+            }
+        ]
+    },
+    {
+        title: "Matrix & Grid Traversal (BFS/DFS)",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-24",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focus on grid-based problems, which are often a specialized form of graph problems. Participants will practice Breadth-First Search (BFS) and Depth-First Search (DFS) for finding paths, connected components, and flood fill operations in 2D arrays.",
+        questions: [
+            {
+                title: "Number of Islands",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an m x n 2D binary grid 'grid' which represents a map of '1's (land) and '0's (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. Solved using DFS or BFS to mark visited components. 
+
+Input:
+grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+
+Output:
+1`
+            },
+            {
+                title: "Rotting Oranges",
+                difficulty: "Medium",
+                points: 25,
+                description: `You are given an m x n grid where each cell can have one of three values: 0 (empty), 1 (fresh orange), 2 (rotten orange). Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes that must elapse until no fresh oranges remain. If this is impossible, return -1. A classic multi-source BFS problem.
+
+Input:
+grid = [[2,1,1],[1,1,0],[0,1,1]]
+
+Output:
+4`
+            },
+            {
+                title: "Surrounded Regions",
+                difficulty: "Medium",
+                points: 30,
+                description: `Given an m x n board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'. A region is captured by flipping all 'O's into 'X's in that surrounded region. This is solved by marking 'O's connected to the boundary.
+
+Input:
+board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
+
+Output:
+[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]`
+            }
+        ]
+    },
+    {
+        title: "Bit Manipulation & System Design",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-25",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A mix of two crucial interview areas: **Bit Manipulation** for low-level optimization (XOR, AND, shifts) and **System Design** concepts. Bit manipulation questions focus on finding single/missing numbers and optimizing boolean logic. The design question introduces key non-coding concepts.",
+        questions: [
+            {
+                title: "Single Number II",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array 'nums' where every element appears three times except for one, which appears exactly once. Find the single element. Requires an advanced bit manipulation approach or a custom state machine.
+
+Input:
+nums = [0,1,0,1,0,1,99]
+
+Output:
+99`
+            },
+            {
+                title: "Maximum XOR of Two Numbers in an Array",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given an integer array 'nums', return the maximum result of 'nums[i] XOR nums[j]', where 0 ≤ i, j < n. The most optimal solution uses a Trie (Prefix Tree) built on the binary representation of the numbers.
+
+Input:
+nums = [3,10,5,25,2,8]
+
+Output:
+28
+
+Explanation:
+5 (0101) XOR 25 (11001) = 28 (11100).`
+            },
+            {
+                title: "Design TinyURL",
+                difficulty: "Medium-Hard",
+                points: 35,
+                description: `Design a system that can shorten a long URL into a short URL, and vice versa. This involves key concepts of System Design like hashing, collision resolution, and database mapping, but is implemented using an in-memory hash map for simplicity.
+
+Input:
+encode("https://leetcode.com/problems/design-tinyurl"), decode("http://tinyurl.com/4e9iAk")
+
+Output:
+"http://tinyurl.com/4e9iAk", "https://leetcode.com/problems/design-tinyurl"`
+            }
+        ]
+    },
+
+    // --- 17 More Events to reach 20 New Events ---
+
+    {
+        title: "Heaps & K-Selection Problems (Recap/Advanced)",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-25",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A dedicated session on using Heaps (Priority Queues) for Top-K problems, finding medians, and efficient data stream processing. Emphasis is on understanding min-heap vs. max-heap and time complexity O(N log K).",
+        questions: [
+            {
+                title: "Find K Pairs with Smallest Sums",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `You are given two sorted integer arrays 'nums1' and 'nums2' and an integer 'k'. Find 'k' pairs $(u,v)$ with the smallest sums, where $u$ is from 'nums1' and $v$ is from 'nums2'. Uses a min-heap.
+
+Input:
+nums1 = [1,7,11], nums2 = [2,4,6], k = 3
+
+Output:
+[[1,2],[1,4],[1,6]]`
+            },
+            {
+                title: "Find Median from Data Stream",
+                difficulty: "Hard",
+                points: 40,
+                description: `The median is the middle value in an ordered integer list. Design a data structure that supports adding new numbers and finding the median of all elements so far. The optimal solution uses two heaps (a min-heap and a max-heap) to maintain balance.
+
+Input:
+MedianFinder(), addNum(1), addNum(2), findMedian(), addNum(3), findMedian()
+
+Output:
+[null, null, null, 1.5, null, 2.0]`
+            },
+            {
+                title: "Top K Frequent Words",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an array of strings 'words' and an integer 'k', return the 'k' most frequent strings. The result should be sorted by frequency from highest to lowest. If two words have the same frequency, the word with the lower alphabetical order comes first. Uses a Min-Heap of size K.
+
+Input:
+words = ["i","love","leetcode","i","love","coding"], k = 2
+
+Output:
+["i","love"]`
+            }
+        ]
+    },
+    {
+        title: "Advanced Dynamic Programming on Strings",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-25",
+        startTime: "02:00 PM",
+        duration: "3h",
+        eventDescription:
+            "Focuses solely on applying Dynamic Programming to string problems. This involves understanding edit distance, Longest Common Subsequence (LCS), and Longest Palindromic Subsequence (LPS), typically using a 2D DP table.",
+        questions: [
+            {
+                title: "Edit Distance Calculation (Recap)",
+                difficulty: "Hard",
+                points: 30,
+                description: `Compute the minimum number of operations (insert, delete, replace) to convert one string into another. Requires a classic $O(mn)$ DP solution.
+
+Input:
+s1 = "intention", s2 = "execution"
+
+Output:
+5`
+            },
+            {
+                title: "Longest Common Subsequence",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given two strings 'text1' and 'text2', return the length of their longest common subsequence. If there is no common subsequence, return 0.
+
+Input:
+text1 = "abcde", text2 = "ace"
+
+Output:
+3
+
+Explanation:
+The longest common subsequence is "ace" and its length is 3.`
+            },
+            {
+                title: "Palindromic Substrings",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a string 's', return the number of palindromic substrings in it. Solved either by expanding around the center or using a DP table.
+
+Input:
+s = "aaa"
+
+Output:
+6
+
+Explanation:
+The 6 palindromic substrings are: "a", "a", "a", "aa", "aa", "aaa".`
+            }
+        ]
+    },
+    {
+        title: "Interval Scheduling & Merging",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-26",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A specific event for problems involving time or numerical intervals. The key technique is **sorting** the intervals (by start or end time) and then iterating with a greedy approach to merge, count, or find overlaps.",
+        questions: [
+            {
+                title: "Merge Intervals",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an array of intervals, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+Input:
+intervals = [[1,3],[2,6],[8,10],[15,18]]
+
+Output:
+[[1,6],[8,10],[15,18]]`
+            },
+            {
+                title: "Insert Interval",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a set of non-overlapping intervals sorted by their start times, insert a new interval and merge if necessary.
+
+Input:
+intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+
+Output:
+[[1,2],[3,10],[12,16]]`
+            },
+            {
+                title: "Meeting Rooms II (Minimum Rooms)",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given an array of meeting time intervals 'intervals', find the minimum number of conference rooms required. This is optimally solved using a Min-Heap or two sorted pointers (start/end times).
+
+Input:
+intervals = [[0,30],[5,10],[15,20]]
+
+Output:
+2`
+            }
+        ]
+    },
+    {
+        title: "Backtracking: Permutations & Combinations (Advanced)",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-26",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on advanced Backtracking problems, specifically handling duplicates and constraints for generating subsets, permutations, and combinations. Mastery of the recursive state and pruning is essential.",
+        questions: [
+            {
+                title: "Combinations",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given two integers $n$ and $k$, return all possible combinations of $k$ numbers chosen from the range $[1, n]$.
+
+Input:
+n = 4, k = 2
+
+Output:
+[[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]`
+            },
+            {
+                title: "Subsets II (with Duplicates)",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array 'nums' that may contain duplicates, return all possible subsets (the power set). The solution set must not contain duplicate subsets.
+
+Input:
+nums = [1,2,2]
+
+Output:
+[[],[1],[1,2],[1,2,2],[2],[2,2]]`
+            },
+            {
+                title: "Permutations II (with Duplicates)",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given a collection of numbers, 'nums', that might contain duplicates, return all possible unique permutations in any order.
+
+Input:
+nums = [1,1,2]
+
+Output:
+[[1,1,2],[1,2,1],[2,1,1]]`
+            }
+        ]
+    },
+    {
+        title: "Two Pointers & Traversal Optimization",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-26",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "A dedicated event for the powerful **Two-Pointer** technique, used for linear-time traversal in sorted arrays, linked lists, and solving in-place modification problems. Focuses on array partition, three-sum, and container problems.",
+        questions: [
+            {
+                title: "3Sum",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array 'nums', return all the triplets [nums[i], nums[j], nums[k]] such that $i \neq j$, $i \neq k$, and $j \neq k$, and nums[i] + nums[j] + nums[k] == 0. The solution set must not contain duplicate triplets. Requires sorting and a two-pointer approach.
+
+Input:
+nums = [-1,0,1,2,-1,-4]
+
+Output:
+[[-1,-1,2],[-1,0,1]]`
+            },
+            {
+                title: "Container With Most Water",
+                difficulty: "Medium",
+                points: 20,
+                description: `You are given an integer array 'height' of length $n$. There are $n$ vertical lines drawn such that the two endpoints of the $i$-th line are $(i, 0)$ and $(i, height[i])$. Find two lines that together with the x-axis form a container, such that the container contains the most water. Solved using a converging two-pointer technique.
+
+Input:
+height = [1,8,6,2,5,4,8,3,7]
+
+Output:
+49`
+            },
+            {
+                title: "Sort Colors (Dutch National Flag)",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an array 'nums' with $n$ objects colored red, white, or blue (0, 1, and 2, respectively), sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue. Uses a three-pointer in-place sorting algorithm (Dutch National Flag problem).
+
+Input:
+nums = [2,0,2,1,1,0]
+
+Output:
+[0,0,1,1,2,2]`
+            }
+        ]
+    },
+    {
+        title: "Tree Traversals & Depth-First Search",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-27",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A deep dive into tree structure processing using Depth-First Search (DFS) variants: Pre-order, In-order, Post-order. Emphasis on recursive vs. iterative implementations and problems requiring complex state tracking during traversal.",
+        questions: [
+            {
+                title: "Binary Tree Inorder Traversal",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given the root of a binary tree, return the in-order traversal of its nodes' values. Implement both the recursive and iterative approach. 
+
+[Image of binary tree inorder traversal]
+
+
+Input:
+root = [1,null,2,3]
+
+Output:
+[1,3,2]`
+            },
+            {
+                title: "Maximum Depth of Binary Tree",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given the root of a binary tree, return its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+Input:
+root = [3,9,20,null,null,15,7]
+
+Output:
+3`
+            },
+            {
+                title: "Path Sum III",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given the root of a binary tree and an integer 'targetSum', return the number of paths where the sum of the nodes' values equals 'targetSum'. The path does not need to start or end at the root or a leaf, but it must go downwards. Uses DFS with a path sum map.
+
+Input:
+root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8
+
+Output:
+3`
+            }
+        ]
+    },
+    {
+        title: "Topological Sort & Dependencies",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-27",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on graph problems that require determining a valid linear ordering based on dependencies (Topological Sort). Solved using either DFS (recursion stack) or Kahn's algorithm (BFS with in-degrees).",
+        questions: [
+            {
+                title: "Course Schedule I (Kahn's Algorithm)",
+                difficulty: "Medium",
+                points: 20,
+                description: `There are 'numCourses' courses you have to take, labeled from 0 to 'numCourses - 1'. You are given an array 'prerequisites' where prerequisites[i] = [a_i, b_i] indicates that you must take course $b_i$ first if you want to take course $a_i$. Return true if you can finish all courses, otherwise return false. Solved by detecting a cycle (or lack thereof) via Topological Sort.
+
+Input:
+numCourses = 2, prerequisites = [[1,0]]
+
+Output:
+true`
+            },
+            {
+                title: "Course Schedule II (Order Output)",
+                difficulty: "Medium",
+                points: 25,
+                description: `Return the ordering of courses you should take to finish all courses. If it's impossible to finish all courses, return an empty array.
+
+Input:
+numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+
+Output:
+[0,1,2,3] or [0,2,1,3]`
+            },
+            {
+                title: "Alien Dictionary",
+                difficulty: "Hard",
+                points: 40,
+                description: `There is a new alien language that uses the English alphabet. Given a list of words from the alien language's dictionary, where the words are sorted lexicographically by the rules of this new language, return a string of the unique letters in the new language's sorted order. Requires building a graph of dependencies from adjacent words and then performing a Topological Sort.
+
+Input:
+words = ["wrt","wrf","er","ett","rftt"]
+
+Output:
+"wertf" or another valid order`
+            }
+        ]
+    },
+    {
+        title: "Dynamic Programming: Knapsack & Subsets",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-27",
+        startTime: "02:00 PM",
+        duration: "3h",
+        eventDescription:
+            "Focuses on classic DP problems: the **Knapsack problem** (0/1 and unbounded) and **Subset Sum** variants. These require mastering the use of one or two-dimensional DP arrays to store intermediate optimal solutions.",
+        questions: [
+            {
+                title: "Coin Change (Unbounded Knapsack)",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array of coins of different denominations and an integer 'amount', return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+Input:
+coins = [1,2,5], amount = 11
+
+Output:
+3
+
+Explanation:
+11 = 5 + 5 + 1`
+            },
+            {
+                title: "Target Sum (Subset Count)",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `You are given an integer array 'nums' and an integer 'target'. You want to build an expression by adding one of the symbols '+' or '-' before each integer in 'nums' and then concatenating all the integers. Return the number of different expressions that you can build which evaluates to 'target'. This reduces to a subset sum problem.
+
+Input:
+nums = [1,1,1,1,1], target = 3
+
+Output:
+5`
+            },
+            {
+                title: "Partition Equal Subset Sum (0/1 Knapsack)",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a non-empty array 'nums' containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal. This is equivalent to checking if a subset sum exists for half the total sum.
+
+Input:
+nums = [1,5,11,5]
+
+Output:
+true
+
+Explanation:
+The array can be partitioned as [1, 5, 5] and [11].`
+            }
+        ]
+    },
+    {
+        title: "Monotonic Stack/Queue & Window Applications",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-28",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Advanced use of Monotonic Stacks (to find Next Greater/Smaller Element) and Monotonic Queues (for Sliding Window Maximum) to solve problems in optimal $O(n)$ time.",
+        questions: [
+            {
+                title: "Next Greater Element II",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a circular integer array 'nums' (i.e., the next element of nums[n-1] is nums[0]), return the next greater number for every element. The next greater number of a number $x$ is the first greater number to its traversing order next in the array, which means you could search circularly. Solved with a monotonic stack over a doubled array.
+
+Input:
+nums = [1,2,1]
+
+Output:
+[2,-1,2]`
+            },
+            {
+                title: "Largest Rectangle in Histogram",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given an array of integers 'heights' representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram. The optimal $O(n)$ solution uses a monotonic stack to efficiently find the left and right boundary for each bar.
+
+Input:
+heights = [2,1,5,6,2,3]
+
+Output:
+10`
+            },
+            {
+                title: "Subarray Minimums",
+                difficulty: "Hard",
+                points: 35,
+                description: `Given an array of integers $A$, find the sum of $\text{min}(B)$, where $B$ ranges over every contiguous subarray of $A$. Since the answer may be large, return the answer modulo $10^9 + 7$. Solved by determining the contribution of each element as a minimum using two monotonic stacks (one for next smaller, one for previous smaller).
+
+Input:
+A = [3,1,2,4]
+
+Output:
+17`
+            }
+        ]
+    },
+    {
+        title: "Data Structure Design Challenges",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-28",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on designing custom data structures using combinations of existing ones (Hash Maps, Linked Lists, Heaps) to achieve specific time complexity goals, typically $O(1)$ for operations like retrieval and update.",
+        questions: [
+            {
+                title: "Design HashMap",
+                difficulty: "Easy",
+                points: 10,
+                description: `Implement a HashMap without using any built-in hash table libraries. This requires understanding the concept of buckets and handling collisions (e.g., with chaining).
+
+Input:
+MyHashMap(), put(1, 1), put(2, 2), get(1), get(3), put(2, 1), get(2), remove(2), get(2)
+
+Output:
+[null, null, null, 1, -1, null, 1, null, -1]`
+            },
+            {
+                title: "LRU Cache",
+                difficulty: "Medium-Hard",
+                points: 40,
+                description: `Design a Least Recently Used (LRU) cache. Implement the 'LRUCache' class with a fixed 'capacity', which supports 'get' (returns value of key, updates usage) and 'put' (inserts key-value, handles capacity, evicts LRU). Optimal solution uses a combination of a Hash Map and a Doubly Linked List for $O(1)$ operations.
+
+Input:
+LRUCache(2), put(1, 1), put(2, 2), get(1), put(3, 3), get(2), put(4, 4), get(1), get(3), get(4)
+
+Output:
+[null, null, null, 1, null, -1, null, -1, 3, 4]`
+            },
+            {
+                title: "Implement Magic Dictionary",
+                difficulty: "Medium",
+                points: 25,
+                description: `Design a Magic Dictionary that supports an operation 'search' which checks if any word in the dictionary differs from the given search word by exactly one character. Solved efficiently by using a Hash Set or a Trie, focusing on one character replacement checks.
+
+Input:
+MagicDictionary(), buildDict(["hello", "leetcode"]), search("hello"), search("hhllo"), search("hell"), search("leetcoded")
+
+Output:
+[null, null, false, true, false, false]`
+            }
+        ]
+    },
+    {
+        title: "Greedy Algorithms & Local Optimization",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-28",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "A specific event for problems where a locally optimal choice leads to a globally optimal solution. Topics include activity selection, coin change (canonical systems), and making maximum/minimum jumps.",
+        questions: [
+            {
+                title: "Jump Game II",
+                difficulty: "Hard",
+                points: 30,
+                description: `Given an array of non-negative integers 'nums' where 'nums[i]' is the maximum jump length from index $i$, return the minimum number of jumps to reach the last index. The optimal solution is a clever $O(n)$ greedy approach.
+
+Input:
+nums = [2,3,1,1,4]
+
+Output:
+2
+
+Explanation:
+Jump 1 step from 0 to 1, then 3 steps to the last index.`
+            },
+            {
+                title: "Valid Mountain Array",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given an array 'arr', return true if and only if it is a valid mountain array. A mountain array has a strictly increasing portion followed by a strictly decreasing portion. Solved with a two-pointer or single-pass greedy traversal.
+
+Input:
+arr = [0,3,2,1]
+
+Output:
+true`
+            },
+            {
+                title: "Best Time to Buy and Sell Stock (Multi-Transactions)",
+                difficulty: "Medium",
+                points: 20,
+                description: `You are given an array 'prices' where prices[i] is the price of a given stock on the $i$-th day. Find the maximum profit you can achieve. You may complete as many transactions as you like (i.e., buy one and sell one share of the stock multiple times). This is a simple greedy problem.
+
+Input:
+prices = [7,1,5,3,6,4]
+
+Output:
+7
+
+Explanation:
+Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 4. Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 3. Total profit = 4 + 3 = 7.`
+            }
+        ]
+    },
+    {
+        title: "Advanced String Matching & Hashing",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-29",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Advanced topics in string algorithms, including the KMP (Knuth-Morris-Pratt) algorithm for linear-time pattern matching and complex applications of hashing or string DP.",
+        questions: [
+            {
+                title: "Longest Happy Prefix (KMP Preprocessing)",
+                difficulty: "Medium",
+                points: 25,
+                description: `A string is called a "happy prefix" if it is a non-empty prefix which is also a suffix of the original string. Return the longest happy prefix of 's'. The optimal solution is to find the longest proper prefix that is also a suffix, which is the final value of the KMP 'LPS' array.
+
+Input:
+s = "abab"
+
+Output:
+"ab"`
+            },
+            {
+                title: "Repeated String Match",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given two strings 'a' and 'b', return the minimum number of times you have to repeat string 'a' so that string 'b' is a substring of it. If it is impossible, return -1. Solved by intelligently checking a limited number of repetitions and using efficient substring search (e.g., string search or Rabin-Karp).
+
+Input:
+a = "abcd", b = "cdabcdab"
+
+Output:
+3
+
+Explanation:
+Repeating 'a' three times is "abcdabcdabcd", in which "cdabcdab" is a substring.`
+            },
+            {
+                title: "Z-Algorithm Implementation",
+                difficulty: "Hard",
+                points: 40,
+                description: `Implement the Z-Algorithm (an efficient string matching algorithm) to compute the Z-array for a given string 's'. The Z-array $Z[i]$ is the length of the longest substring starting at $s[i]$ that is also a prefix of $s$.
+
+Input:
+s = "aabaabaab"
+
+Output:
+[9,1,0,3,1,0,3,1,0]`
+            }
+        ]
+    },
+    {
+        title: "Advanced Binary Search & Optimization",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-29",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focus on the advanced application of Binary Search on the 'answer' or 'result' (not just the index in an array) to solve optimization problems. This includes finding rates, capacity, or minimal/maximal bounds that satisfy a condition (monotonic property).",
+        questions: [
+            {
+                title: "Search in Rotated Sorted Array (Recap)",
+                difficulty: "Medium",
+                points: 20,
+                description: `(Recap) Search a target value in a rotated sorted array in $O(log n)$ time. Requires careful handling of the mid-point relative to the pivot.
+
+Input:
+nums = [4,5,6,7,0,1,2], target = 0
+
+Output:
+4`
+            },
+            {
+                title: "Koko Eating Bananas",
+                difficulty: "Medium",
+                points: 25,
+                description: `Koko loves to eat bananas. Given 'piles' (array of pile sizes) and 'h' (max hours), find the minimum integer eating speed $k$ such that Koko can eat all the bananas within $h$ hours. The solution space $[1, max(text{piles})]$ is binary searched.
+
+Input:
+piles = [3,6,7,11], h = 8
+
+Output:
+4`
+            },
+            {
+                title: "Find the Duplicate Number",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given an array of $n + 1$ integers where each integer is between 1 and $n$ (inclusive), prove that at least one duplicate number must exist. Assume there is only one duplicate number, find the duplicate one. Solve without modifying the array and using only $O(1)$ extra space, either with binary search on the range or Floyd's slow/fast pointers.
+
+Input:
+nums = [1,3,4,2,2]
+
+Output:
+2`
+            }
+        ]
+    },
+    {
+        title: "Minimum Spanning Trees & Graph Connectivity",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-29",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on graph connectivity problems, specifically the construction of Minimum Spanning Trees (MST) using Prim's or Kruskal's algorithm, and the use of the **Union-Find (Disjoint Set Union)** data structure.",
+        questions: [
+            {
+                title: "Minimum Spanning Tree (Recap)",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given a weighted undirected graph, find the total weight of MST using Kruskal's algorithm, which relies on the Union-Find data structure.
+
+Input:
+edges = [[0,1,1],[0,2,2],[1,2,3]], n = 3
+
+Output:
+3`
+            },
+            {
+                title: "Connecting Cities With Minimum Cost",
+                difficulty: "Medium",
+                points: 25,
+                description: `There are $N$ cities numbered from 1 to $N$. You are given an array 'connections' where connections[i] = [city1, city2, cost] represents the cost to connect city1 and city2. Return the minimum cost to connect all $N$ cities such that there is at least one path between any two cities. If it is impossible, return -1. A direct MST problem.
+
+Input:
+N = 3, connections = [[1,2,5],[1,3,6],[2,3,1]]
+
+Output:
+6`
+            },
+            {
+                title: "Number of Connected Components in an Undirected Graph",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given $n$ nodes labeled from 0 to $n-1$ and a list of undirected edges, write a function to find the number of connected components in the graph. Solved using DFS/BFS or the Union-Find data structure.
+
+Input:
+n = 5, edges = [[0,1],[1,2],[3,4]]
+
+Output:
+2`
+            }
+        ]
+    },
+    {
+        title: "System Design: Scalable Data Structures",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-30",
+        startTime: "09:00 AM",
+        duration: "3h",
+        eventDescription:
+            "A mixed session combining a high-difficulty data structure design problem with a classic concurrency/multithreading scenario. Focuses on design patterns and handling concurrent state.",
+        questions: [
+            {
+                title: "LFU Cache",
+                difficulty: "Hard",
+                points: 50,
+                description: `Design a Least Frequently Used (LFU) cache. Implement the 'LFUCache' class with a fixed 'capacity', which supports 'get' (returns value, updates frequency) and 'put' (inserts key-value, handles capacity, evicts LFU). This requires a complex structure often involving multiple doubly linked lists and a frequency map.
+
+Input:
+LFUCache(2), put(1, 1), put(2, 2), get(1), put(3, 3), get(2), get(3), put(4, 4), get(1), get(3), get(4)
+
+Output:
+[null, null, null, 1, null, -1, 3, null, -1, 3, 4]`
+            },
+            {
+                title: "Design Hit Counter",
+                difficulty: "Medium",
+                points: 25,
+                description: `Design a system that can count the number of hits received in the past 5 minutes (300 seconds). It must implement 'hit(timestamp)' and 'getHits(timestamp)' functions with efficient time complexity. Uses a queue or a fixed-size circular array to track hits.
+
+Input:
+HitCounter(), hit(1), hit(2), hit(3), getHits(4), hit(300), getHits(300), getHits(301)
+
+Output:
+[null, null, null, null, 3, null, 4, 3]`
+            }
+        ]
+    },
+    {
+        title: "Math & Combinatorics (Advanced)",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-30",
+        startTime: "12:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on combinatorial mathematics, number theory, and tricky math-based problems where the solution relies on an algebraic insight rather than complex data structures.",
+        questions: [
+            {
+                title: "Reverse Pairs",
+                difficulty: "Hard",
+                points: 35,
+                description: `Given an integer array 'nums', return the number of 'reverse pairs'. A reverse pair is a pair of indices $(i, j)$ such that $i < j$ and $\text{nums}[i] > 2 \times \text{nums}[j]$. Solved efficiently using Merge Sort or a specialized data structure like a Fenwick Tree/Segment Tree.
+
+Input:
+nums = [2,4,3,5,1]
+
+Output:
+3`
+            },
+            {
+                title: "Factorial Trailing Zeroes",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given an integer $n$, return the number of trailing zeroes in $n!$ (n factorial). Requires a mathematical understanding of prime factorization (counting factors of 5).
+
+Input:
+n = 30
+
+Output:
+7`
+            },
+            {
+                title: "Count Primes",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an integer $n$, return the number of prime numbers that are strictly less than $n$. The most efficient solution uses the Sieve of Eratosthenes.
+
+Input:
+n = 10
+
+Output:
+4
+
+Explanation:
+There are 4 prime numbers less than 10: 2, 3, 5, 7.`
+            }
+        ]
+    },
+    {
+        title: "Dynamic Programming on Trees",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-11-30",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "A specialized session for Tree Dynamic Programming (Tree DP). Problems involve propagating information (max/min values, sums, counts) up or down the tree structure using recursive calls and memoization.",
+        questions: [
+            {
+                title: "House Robber III",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `The thief has found himself a new place for his thievery again. There is one major obstacle: the houses are arranged in a binary tree. It will automatically contact the police if two directly-linked houses were simultaneously broken into. Determine the maximum amount of money the thief can rob without alerting the police. Solved with Tree DP, calculating (rob, not rob) for each node.
+
+Input:
+root = [3,2,3,null,3,null,1]
+
+Output:
+7`
+            },
+            {
+                title: "Diameter of Binary Tree",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given the root of a binary tree, return the length of the diameter of the tree. The diameter is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root. Solved with a post-order traversal (DFS) where each node returns its height and updates a global maximum.
+
+Input:
+root = [1,2,3,4,5]
+
+Output:
+3
+
+Explanation:
+The path 4-2-1-3 or 5-2-1-3 is the longest path.`
+            },
+            {
+                title: "Binary Tree Maximum Path Sum",
+                difficulty: "Hard",
+                points: 40,
+                description: `A path in a binary tree is any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The path does not need to pass through the root. Return the maximum path sum.
+
+Input:
+root = [1,2,3]
+
+Output:
+6`
+            }
+        ]
+    },
+    {
+        title: "Advanced Graph: All Pairs Shortest Paths",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-01",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focus on algorithms that compute the shortest path between **all** pairs of nodes. This includes the Floyd-Warshall algorithm and repeated Dijkstra/Bellman-Ford runs. Problems often involve optimizing travel costs or connectivity.",
+        questions: [
+            {
+                title: "Floyd-Warshall Implementation",
+                difficulty: "Hard",
+                points: 35,
+                description: `Implement the Floyd-Warshall algorithm to find the shortest paths between all pairs of vertices in a weighted graph.
+
+Input:
+$N=4$, Edges: $(1,2,5), (1,3,10), (2,3,2)$
+
+Output:
+Shortest Path Matrix (e.g., $D[1][3]=7$)`
+            },
+            {
+                title: "Find the City With the Smallest Number of Neighbors at a Threshold Distance",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `There are $n$ cities. Given an array of edges, you are also given a 'distanceThreshold'. Find the city with the smallest number of reachable cities within 'distanceThreshold'. If there are multiple such cities, return the city with the largest label. Requires running an All-Pairs Shortest Path algorithm (like Floyd-Warshall or N-times Dijkstra).
+
+Input:
+n = 4, edges = [[0,1,3],[1,2,1],[1,3,4],[2,3,1]], distanceThreshold = 4
+
+Output:
+3`
+            },
+            {
+                title: "Cheapest Flights Within K Stops (Recap)",
+                difficulty: "Hard",
+                points: 30,
+                description: `(Recap) Find cheapest flight from src to dst with $e K$ stops. This is a modified Shortest Path problem (often solved with a BFS/Bellman-Ford like DP approach or Dijkstra with state tracking).
+
+Input:
+$n = 3$, flights = [[0,1,100],[1,2,100],[0,2,500]], src = 0, dst = 2, K = 1
+
+Output:
+200`
+            }
+        ]
+    },
+    {
+        title: "Union-Find (DSU) Advanced Applications",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-01",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A specialized event focusing on the **Disjoint Set Union (Union-Find)** data structure. Emphasis is on implementation optimization (Path Compression, Union by Rank/Size) and its use in connectivity, cycle detection, and grouping problems.",
+        questions: [
+            {
+                title: "Number of Islands II",
+                difficulty: "Hard",
+                points: 40,
+                description: `A 2D grid is initialized with all 0s. A list of coordinates 'positions' is given. Each position turns a '0' into a '1' (land). Return an array of the number of islands after each operation. The optimal solution uses the Union-Find data structure to track the number of connected components efficiently.
+
+Input:
+m = 3, n = 3, positions = [[0,0],[0,1],[1,2],[2,1]]
+
+Output:
+[1, 1, 2, 3]`
+            },
+            {
+                title: "Redundant Connection II",
+                difficulty: "Hard",
+                points: 35,
+                description: `In a directed graph, the root is an issue. Given a list of edges representing a tree with an additional edge (forming either a cycle or a node with two parents), find the single redundant edge that can be removed to make it a tree. Requires complex Union-Find logic to handle directed edges and the "two parents" case.
+
+Input:
+edges = [[1,2],[2,3],[3,4],[4,1],[1,5]]
+
+Output:
+[4,1]`
+            },
+            {
+                title: "Satisfiability of Equality Equations",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an array of string equations like ["a==b", "b!=c", "c==a"], return true if it is possible to assign integer values to the variables so as to satisfy all the given equations. Solved by grouping equal variables with Union-Find, and then checking if any inequality contradicts a known equality.
+
+Input:
+equations = ["a==b","b!=a"]
+
+Output:
+false`
+            }
+        ]
+    },
+    {
+        title: "BFS & Shortest Path on Graphs (0/1 Weights)",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-01",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on shortest path problems where edge weights are either 0 or 1, allowing the use of a specialized BFS (0-1 BFS with a Deque) or an unweighted BFS which is faster than standard Dijkstra.",
+        questions: [
+            {
+                title: "Shortest Path in Binary Matrix",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an $n \times n$ binary matrix 'grid', return the length of the shortest clear path in the matrix. A clear path is a path from the top-left to the bottom-right that only goes through cells with 0s and is connected 8-directionally. Solved with standard BFS.
+
+Input:
+grid = [[0,1],[1,0]]
+
+Output:
+2`
+            },
+            {
+                title: "Minesweeper",
+                difficulty: "Medium",
+                points: 25,
+                description: `Let's play the minesweeper game. If a cell with 'M' is clicked, it becomes 'X'. If a cell with 'E' is clicked and it has adjacent mines, it becomes a number. If 'E' is clicked and has no adjacent mines, all 8 adjacent 'E' cells are revealed. Requires a specialized BFS/DFS to simulate the cascading effect.
+
+Input:
+board = [["E","E","E","E","E"],["E","E","M","E","E"],["E","E","E","E","E"],["E","E","E","E","E"]], click = [3,0]
+
+Output:
+... (The revealed board)`
+            },
+            {
+                title: "Bus Routes",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given an array 'routes' where 'routes[i]' is a bus route that the $i$-th bus repeats forever. Also given a source stop 'source' and a target stop 'target'. Return the least number of buses you must take to reach the target from the source. This is a BFS on the graph of **routes**, not stops.
+
+Input:
+routes = [[1,2,7],[3,6,7]], source = 1, target = 6
+
+Output:
+2`
+            }
+        ]
+    }
+];
+
+const eventsArray_final_batch = [
+    {
+        title: "DP: Longest Subsequences and Paths",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-02",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "This session tackles Dynamic Programming problems involving sequences, specifically focusing on the Longest Increasing Subsequence (LIS) variants, optimal subarray problems, and the use of binary search for DP optimization.",
+        questions: [
+            {
+                title: "Longest Increasing Subsequence",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array 'nums', return the length of the longest strictly increasing subsequence. The classic DP solution is O(n²), but the optimized solution uses binary search to achieve O(n log n).
+
+Input:
+nums = [10,9,2,5,3,7,101,18]
+
+Output:
+4
+
+Explanation:
+The longest increasing subsequence is [2,3,7,18], hence the length is 4.`
+            },
+            {
+                title: "Maximum Subarray",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given an integer array 'nums', find the contiguous subarray (containing at least one number) which has the largest sum and return its sum. Solved using Kadane's algorithm.
+
+Input:
+nums = [-2,1,-3,4,-1,2,1,-5,4]
+
+Output:
+6
+
+Explanation:
+The subarray [4,-1,2,1] has the largest sum = 6.`
+            },
+            {
+                title: "Number of Longest Increasing Subsequence",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given an integer array 'nums', return the number of longest increasing subsequences. This is an extension of LIS requiring two DP arrays: one for the length and one for the count.
+
+Input:
+nums = [1,3,5,4,7]
+
+Output:
+2
+
+Explanation:
+The two LIS are [1, 3, 5, 7] and [1, 3, 4, 7].`
+            }
+        ]
+    },
+
+    {
+        title: "Advanced Tree Structures: Range Queries",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-02",
+        startTime: "11:00 AM",
+        duration: "3h",
+        eventDescription:
+            "This event introduces advanced tree-based data structures: Segment Trees and Fenwick Trees (Binary Indexed Trees). These are essential for efficiently handling range queries (sum, min, max) and point/range updates in logarithmic time.",
+        questions: [
+            {
+                title: "Range Sum Query - Immutable (Segment Tree Implementation)",
+                difficulty: "Medium",
+                points: 30,
+                description: `Design a data structure that supports a 'sumRange' query over a static array, returning the sum of elements between indices $i$ and $j$ inclusive. Implement this using a Segment Tree for logarithmic query time.
+
+Input:
+NumArray([-2, 0, 3, -5, 2, -1]), sumRange(0, 2), sumRange(2, 5), sumRange(0, 5)
+
+Output:
+1, -1, -3`
+            },
+            {
+                title: "Range Sum Query - Mutable (Fenwick Tree)",
+                difficulty: "Hard",
+                points: 40,
+                description: `Design a data structure that supports 'update' (modifying an element) and 'sumRange'. Implement this using a Fenwick Tree for efficient $O(log n)$ update and query times.
+
+Input:
+NumArray([1, 3, 5]), sumRange(0, 2), update(1, 2), sumRange(0, 2)
+
+Output:
+9, 8`
+            },
+            {
+                title: "Count of Smaller Numbers After Self",
+                difficulty: "Hard",
+                points: 50,
+                description: `Given an integer array 'nums', return an array 'counts' where 'counts[i]' is the number of elements to the right of 'nums[i]' that are strictly smaller than 'nums[i]'. This is solved by processing the array in reverse and using a Fenwick Tree or Segment Tree on the compressed value space.
+
+Input:
+nums = [5,2,6,1]
+
+Output:
+[2,1,1,0]`
+            }
+        ]
+    },
+
+    {
+        title: "Object-Oriented Design and Concurrency",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-02",
+        startTime: "02:00 PM",
+        duration: "3h",
+        eventDescription:
+            "Focuses on implementing classes and systems that manage state and achieve efficient time complexity for specific operations. Questions involve advanced design patterns, complex state management, and handling parallel processes.",
+        questions: [
+            {
+                title: "Design Twitter (Social Graph)",
+                difficulty: "Hard",
+                points: 40,
+                description: `Design a simplified version of Twitter. Implement four primary API methods: postTweet, getNewsFeed, follow, and unfollow. The challenge is in efficiently merging feeds from multiple followed users and retrieving the 10 most recent tweets. Requires a graph structure for users and Heaps/Priority Queues for feed merging.
+
+Input:
+Twitter(), postTweet(1, 5), getNewsFeed(1), follow(1, 2), postTweet(2, 6), getNewsFeed(1), unfollow(1, 2), getNewsFeed(1)
+
+Output:
+... (Tweets and news feed lists)`
+            },
+            {
+                title: "Design Skiplist",
+                difficulty: "Hard",
+                points: 45,
+                description: `Design a Skiplist (a probabilistic data structure that allows $O(log n)$ average time complexity for search, insertion, and deletion) without using any built-in library methods. This tests understanding of advanced balanced structures.
+
+Input:
+Skiplist(), add(1), add(2), add(3), search(0), add(4), search(1), erase(0), erase(1), search(1)
+
+Output:
+... (Boolean results for operations)`
+            },
+            {
+                title: "FizzBuzz Multithreaded",
+                difficulty: "Medium",
+                points: 25,
+                description: `Write a program that outputs the sequence from 1 to $n$ but with concurrent execution rules: one thread calls 'fizz', one calls 'buzz', one calls 'fizzbuzz', and one calls 'number'. Requires using semaphores, mutexes, or condition variables to ensure synchronization and correct order.
+
+Input:
+n = 15
+
+Output:
+1, 2, fizz, 4, buzz, fizz, 7, 8, fizz, buzz, 11, fizz, 13, 14, fizzbuzz`
+            }
+        ]
+    },
+
+    {
+        title: "Graph Theory: Bipartite and Connectivity",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-03",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A specialized graph session covering the concept of Bipartite graphs (two-coloring) and flow/connectivity problems often solved with Breadth-First Search on a state space.",
+        questions: [
+            {
+                title: "Is Graph Bipartite?",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an undirected graph, return true if and only if it is bipartite. A graph is bipartite if its nodes can be divided into two disjoint and independent sets $A$ and $B$ such that every edge connects a node in $A$ to one in $B$. Solved by attempting a two-coloring (BFS or DFS).
+
+Input:
+graph = [[1,3],[0,2],[1,3],[0,2]]
+
+Output:
+true`
+            },
+            {
+                title: "Water and Jug Problem",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given two jugs with capacities $A$ and $B$, and a target amount $C$, determine if it is possible to measure exactly $C$ liters of water. Solved by recognizing that the problem is solvable if and only if $C$ is a multiple of text{GCD}(A, B)$ and $A+B  C$.
+
+Input:
+jug1Capacity = 3, jug2Capacity = 5, targetCapacity = 4
+
+Output:
+true`
+            },
+            {
+                title: "Shortest Path to Get All Keys",
+                difficulty: "Hard",
+                points: 40,
+                description: `We are given a 2D grid representing a maze. Find the shortest path to collect all keys. Keys 'a' through 'f' unlock doors 'A' through 'F'. This is a complex multi-state BFS problem where the state must track (row, column, collected keys bitmask).
+
+Input:
+grid = ["@.a.#","###.#","b.A.B"]
+
+Output:
+8`
+            }
+        ]
+    },
+
+    {
+        title: "Backtracking: State Space Pruning",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-03",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on refining the backtracking technique, particularly with constraint satisfaction problems like Sudoku, where efficient pruning (eliminating invalid branches early) is crucial for performance.",
+        questions: [
+            {
+                title: "Sudoku Solver",
+                difficulty: "Hard",
+                points: 35,
+                description: `Write a program to solve a Sudoku puzzle by filling the empty cells. The input board contains '9x9' partially filled cells. Requires a backtracking approach combined with efficient validity checks (row, column, 3x3 box).
+
+Input:
+board = [["5","3",...], ["6",".",...], ...]
+
+Output:
+... (The fully solved Sudoku board)`
+            },
+            {
+                title: "Expression Add Operators",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given a string 'num' that contains only digits and an integer 'target', return all valid expressions that can be formed by inserting the binary operators '+', '-', or '*' between the digits of 'num' such that they evaluate to 'target'. This is a challenging backtracking problem due to operator precedence (*).
+
+Input:
+num = "123", target = 6
+
+Output:
+["1+2+3", "1*2*3"]`
+            },
+            {
+                title: "Combination Sum III",
+                difficulty: "Medium",
+                points: 20,
+                description: `Find all valid combinations of $k$ numbers that sum up to a number $n$ such that only numbers from 1 to 9 are used and each combination is a unique set of numbers.
+
+Input:
+k = 3, n = 7
+
+Output:
+[[1,2,4]]`
+            }
+        ]
+    },
+
+    {
+        title: "Array and Pointer: Trapping Rain Water & Optimization",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-03",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Explores complex array traversal problems, emphasizing the **two-pointer** technique for $O(n)$ time and $O(1)$ space solutions, particularly for problems involving finding boundaries or managing two ends of an array.",
+        questions: [
+            {
+                title: "Trapping Rain Water",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given $n$ non-negative integers representing an elevation map where the width of each bar is 1, compute how much rainwater can be trapped after raining. The optimal solution uses a two-pointer approach to find the maximum boundaries in $O(n)$ time.
+
+Input:
+height = [0,1,0,2,1,0,1,3,2,1,2,1]
+
+Output:
+6`
+            },
+            {
+                title: "Remove Duplicates from Sorted Array II",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given a sorted array 'nums', remove the duplicates in-place such that each element appears at most twice. The relative order of the elements should be kept the same. Requires a two-pointer approach to track the insertion index and count.
+
+Input:
+nums = [1,1,1,2,2,3]
+
+Output:
+5, with nums = [1,1,2,2,3,_]`
+            },
+            {
+                title: "Rotate Array",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an array, rotate the array to the right by $k$ steps, where $k$ is non-negative. Solve in-place with $O(1)$ extra space. The optimal solution uses three reversals.
+
+Input:
+nums = [1,2,3,4,5,6,7], k = 3
+
+Output:
+[5,6,7,1,2,3,4]`
+            }
+        ]
+    },
+
+    {
+        title: "Advanced Intervals & Scheduling",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-04",
+        startTime: "09:00 AM",
+        duration: "2h",
+        eventDescription:
+            "A challenging event focusing on using greedy algorithms and specialized sorting for complex interval and scheduling problems, including minimizing costs and resolving overlaps.",
+        questions: [
+            {
+                title: "Minimum Number of Arrows to Burst Balloons (Recap)",
+                difficulty: "Hard",
+                points: 30,
+                description: `(Recap) Find the minimum number of arrows required to shoot through all balloons, where a balloon is represented as an interval $[x_{\text{start}}, x_{\text{end}}]$. An arrow shot at $x$ bursts all balloons whose intervals include $x$. Solved by a greedy strategy: sort by end time and find non-overlapping points.
+
+Input:
+points = [[10,16],[2,8],[1,6],[7,12]]
+
+Output:
+2`
+            },
+            {
+                title: "Minimum Interval to Include Each Query",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given a list of intervals and a list of queries, for each query $q$, find the length of the smallest interval that contains $q$. If no such interval exists, the answer is -1. Requires sorting and using a Min-Heap to efficiently track valid intervals.
+
+Input:
+intervals = [[1,4],[2,4],[3,6],[4,4]], queries = [2,3,4,5]
+
+Output:
+[2,2,1,4]`
+            },
+            {
+                title: "Maximum CPU Load",
+                difficulty: "Medium-Hard",
+                points: 30,
+                description: `Given a list of job intervals (start_time, end_time, cpu_load), find the maximum CPU load at any point in time. Solved by using a Min-Heap (or a line sweep approach) to track concurrent jobs and their loads.
+
+Input:
+jobs = [[1,4,3], [2,5,4], [7,9,6]]
+
+Output:
+7`
+            }
+        ]
+    },
+
+    {
+        title: "Math: Computational Geometry & Line Sweeping",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-04",
+        startTime: "11:00 AM",
+        duration: "2h",
+        eventDescription:
+            "Focuses on problems requiring geometrical or mathematical insights. Topics include finding properties of points on a 2D plane, collision detection, and array problems solvable with a line-sweep algorithm.",
+        questions: [
+            {
+                title: "Max Points on a Line",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given an array of points, return the maximum number of points that lie on the same straight line. Solved by iterating through pairs of points and using the slope/GCD to uniquely identify the line connecting them.
+
+Input:
+points = [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
+
+Output:
+4`
+            },
+            {
+                title: "Rectangle Overlap",
+                difficulty: "Easy",
+                points: 10,
+                description: `Given two rectangles, each defined by its bottom-left and top-right coordinates, determine if they overlap. Requires a simple mathematical check for non-overlapping conditions.
+
+Input:
+rec1 = [0,0,2,2], rec2 = [1,1,3,3]
+
+Output:
+true`
+            },
+            {
+                title: "Largest Time for Given Digits",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an array of four digits, return the largest 24-hour time that can be formed using these digits. Return an empty string if no valid time can be formed. Solved by checking all 24 permutations and applying time constraints.
+
+Input:
+arr = [1,2,3,4]
+
+Output:
+"23:41"`
+            }
+        ]
+    },
+
+    {
+        title: "Bit Manipulation: Masks & Advanced XOR",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-04",
+        startTime: "02:00 PM",
+        duration: "2h",
+        eventDescription:
+            "A session dedicated to advanced bit manipulation techniques, including using bitmasks to represent subsets or states, and complex applications of the XOR operator to find missing or unique numbers.",
+        questions: [
+            {
+                title: "Single Number III",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given an integer array 'nums', in which exactly two elements appear once and all the other elements appear exactly twice. Find the two elements that appear only once. The solution uses XOR on all elements and then separates the two unique numbers based on a differentiating bit.
+
+Input:
+nums = [1,2,1,3,2,5]
+
+Output:
+[3,5] (or [5,3])`
+            },
+            {
+                title: "Subsets (using Bitmask)",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an integer array 'nums' of unique elements, return all possible subsets (the power set). Implement this using a bitmask, where each bit position corresponds to the inclusion or exclusion of an element.
+
+Input:
+nums = [1,2,3]
+
+Output:
+[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]`
+            },
+            {
+                title: "Maximum AND Sum",
+                difficulty: "Hard",
+                points: 40,
+                description: `You are given an integer array 'nums' and an integer 'numSlots', which is the number of available slots. Find the maximum possible AND sum. The total number of elements in 'nums' is $2 \times \text{numSlots}$. This is a high-difficulty DP problem using a bitmask to represent the state of the slots (how many items are placed in each).
+
+Input:
+nums = [1,2,3,4,5,6], numSlots = 3
+
+Output:
+9`
+            }
+        ]
+    },
+
+    {
+        title: "DP on Trees & Directed Acyclic Graphs (DAGs)",
+        createdBy: "",
+        createdBy_uid: "",
+        date: "2025-12-04",
+        startTime: "04:00 PM",
+        duration: "2h",
+        eventDescription:
+            "Final session focusing on Dynamic Programming applied to tree structures (often recursive/DFS based) and DAGs (often using Topological Sort to ensure calculation order).",
+        questions: [
+            {
+                title: "Longest Path in a Directed Acyclic Graph (DAG)",
+                difficulty: "Medium",
+                points: 25,
+                description: `Given a weighted DAG, find the length of the longest path from a starting node. Solved by iterating over nodes in topological order (or using memoized DFS) to update the maximum path length.
+
+Input:
+edges = [[0,1,5],[0,2,3],[1,3,6],[2,3,7]], start = 0
+
+Output:
+10
+
+Explanation:
+Path 0→2→3 gives a total length of 3+7=10.`
+            },
+            {
+                title: "Reconstruct Itinerary",
+                difficulty: "Hard",
+                points: 40,
+                description: `Given a list of airline tickets, where 'tickets[i] = [from_i, to_i]' represents the departure and arrival airports of one flight. Find the itinerary that visits all airports exactly once. Start from "JFK". If there are multiple valid itineraries, choose the one that has the smallest lexical order. This is an Eulerian Path problem solved with Hierholzer's algorithm (DFS-based backtracking).
+
+Input:
+tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
+
+Output:
+["JFK","MUC","LHR","SFO","SJC"]`
+            },
+            {
+                title: "Maximum Product Subarray",
+                difficulty: "Medium",
+                points: 20,
+                description: `Given an integer array 'nums', find a contiguous subarray (containing at least one number) which has the largest product and return the product. Requires tracking both the maximum and minimum product seen so far to handle negative numbers.
+
+Input:
+nums = [2,3,-2,4]
+
+Output:
+6
+
+Explanation:
+Subarray [2,3] has the largest product 6.`
+            }
+        ]
+    }
+];
+
+
+
+
+
+
+
+
+const uploadEvents = async ({
+    title= "",
+    createdBy= '',
+    createdBy_uid= '',
+    date= '',
+    startTime= "",
+    eventDescription= '',
+    questions= ''
+}) => {
+    try {
+        const ref = collection(db, 'Events');
+
+        await addDoc(ref, {
+            title: title,
+            createdBy: createdBy,
+            createdBy_uid: createdBy_uid,
+            date: date,
+            startTime: startTime,
+            hours: 2,
+            minutes: 30,
+            status: 'pending',
+            description: eventDescription,
+            questions: questions
+
+
+        })
+
+
+        return {
+            success: true,
+            message: 'Uploaded'
+        }
+
+    }  catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+const fetch_All_Users_Information = async () => {
+    try {
+        const ref = collection(db, 'Students');
+        const response = await getDocs(ref);
+
+        const data = response.docs.map((doc) => ({
+            id: doc.id,       // include doc id
+            ...doc.data(),    // spread user fields
+        }));
+
+        return {
+            success: true,
+            message: '',
+            data: data
+        };
+
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: error.message, data: [] };
+    }
+};
+
+const showAllEvents = async () => {
+    const uploadedEvents = []; // track uploaded event indices
+    const uploadedUsers = []; // track users already picked
+
+    const response = await fetch_All_Users_Information(); // { data: [...] }
+    const users = response.data;
+
+    while (uploadedEvents.length < eventsArray_final_batch.length) {
+        // Pick a random user
+        let randomUserIndex;
+        do {
+            randomUserIndex = Math.floor(Math.random() * users.length);
+        } while (uploadedUsers.includes(randomUserIndex));
+
+        uploadedUsers.push(randomUserIndex);
+        const user = users[randomUserIndex];
+        const createdBy_name = `${user.firstName} ${user.lastName}`;
+        const createdBy_uid = user.id;
+
+        // Assign 3 events to this user
+        let eventsForUser = 0;
+        while (eventsForUser < 3 && uploadedEvents.length < eventsArray_final_batch.length) {
+            let randomEventIndex;
+            do {
+                randomEventIndex = Math.floor(Math.random() * eventsArray_final_batch.length);
+            } while (uploadedEvents.includes(randomEventIndex));
+
+            uploadedEvents.push(randomEventIndex);
+            const event = eventsArray_final_batch[randomEventIndex];
+
+            // Upload event with user as creator
+            await uploadEvents({
+                title: event.title,
+                createdBy: createdBy_name,
+                createdBy_uid: createdBy_uid,
+                date: event.date,
+                startTime: event.startTime,
+                eventDescription: event.eventDescription,
+                questions: event.questions
+            });
+
+            eventsForUser++;
+        }
+    }
+
+    console.log("All uploads done!");
+    console.log("Total users allocated:", uploadedUsers.length);
+    console.log("Total events uploaded:", uploadedEvents.length);
+};
+
+
+
+showAllEvents().then(() => {
+    console.log("All events done!");
+});
+
+
+
+
+
+
+
+
+
+
