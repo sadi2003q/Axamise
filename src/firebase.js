@@ -40,4 +40,3 @@ export const storage = getStorage(app);
 // authentication
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
-

@@ -25,6 +25,7 @@ import { useGlobal } from "../../GlobalContext.jsx";
 
 // Libraries
 import { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 // Models
@@ -46,6 +47,7 @@ import { Admin_ApproveController } from '../../controller/Admin/admin.approve.co
 import {ADMIN_APPROVAL_DISPLAY_MODE, NOTIFICATION_TYPES} from '../../Utilities.ts';
 
 export default function Admin_Approval() {
+    const location = useLocation();
     // =========================================================================
     // STATE MANAGEMENT
     // =========================================================================
@@ -136,6 +138,18 @@ export default function Admin_Approval() {
         controller.fetchAllRequestedQuestions();
     }, []);
 
+    // If navigated with a questionId, select that question after loading
+    useEffect(() => {
+        if (location.state && location.state.questionId && allPendingQuestions.length > 0) {
+            const match = allPendingQuestions.find(q => q.id === location.state.questionId);
+            if (match) {
+                setQuestionID(match.id);
+                setQuestion(match);
+                setApprovalOpen(false);
+            }
+        }
+    }, [location.state, allPendingQuestions]);
+
     /**
      * Generate function code template based on current function name and return type
      * Creates a C++ template with main function and test harness
@@ -208,7 +222,7 @@ int main() {
             functionName,
             returnType,
             status,
-            mainFunctionCode: generateFunctionCode()
+            mainFunctionCode: functionCode // Use the actual edited code
         });
 
         // Process approval through controller
@@ -283,7 +297,7 @@ int main() {
              */}
             <Background_Particles />
 
-            <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+            <div className="w-screen h-screen relative flex items-center justify-center gap-4" style={{background:'#23232b'}}>
                 {/* =================================================================
                     MAIN QUESTION REVIEW PANEL
                     ================================================================= */}

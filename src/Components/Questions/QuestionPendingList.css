@@ -1,0 +1,38 @@
+.question-pending-list {
+  background: #23232b;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 900px;
+  margin: 2rem auto;
+}
+.question-pending-list h2 {
+  margin-bottom: 1.5rem;
+  color: #f7e733;
+  font-family: 'Roboto Mono', monospace;
+}
+.question-pending-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #18181b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.question-pending-list th, .question-pending-list td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+.question-pending-list th {
+  background: #29221d;
+  color: #f7e733;
+}
+.question-pending-list td button {
+  padding: 0.3rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #667eea;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
