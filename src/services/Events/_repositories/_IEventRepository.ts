@@ -2,7 +2,7 @@
 import { Events_Model } from '../../../models/Event_Model'
 import {EVENT_STATE, Firebase_Response} from "../../../Utilities";
 import { db } from "../../../firebase";
-import {collection, doc, setDoc, addDoc, getDoc, query, where, getDocs, deleteDoc, updateDoc} from "firebase/firestore";
+import {collection, doc, setDoc, addDoc, getDoc, query, where, getDocs, deleteDoc} from "firebase/firestore";
 import { Database } from '../../../Utilities'
 import { EVENT_APPROVAL_STATUS } from '../../../Utilities'
 import { Participant } from '../../../models/Participants_Model'

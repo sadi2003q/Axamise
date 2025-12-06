@@ -12,6 +12,7 @@ import { Event_Showing_Description } from '../../Components/__Admin_Approval_Eve
 import {AdminPageHeader, ObservationField, EventFetchingLoadingScreen} from '../../Components/__Admin_Approval.jsx';
 import {  Drawer_Input2 } from "../../Components/__Question_Create.jsx";
 
+
 // Models
 import { Events_Model } from '../../models/Event_Model.js';
 
@@ -20,9 +21,7 @@ import { Events_Model } from '../../models/Event_Model.js';
 import { Admin_ApproveEventController } from '../../controller/Admin/admin.approve.event.controller.js';
 import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
-import { useGlobal } from "../../GlobalContext.jsx";
-import {ShowerHead} from "lucide-react";
-import {cardOverflowClasses} from "@mui/joy";
+
 import {Question_Showing_Description} from "../../Components/__Question_List.jsx";
 
 
@@ -101,8 +100,10 @@ export default function Admin_ApprovalEvent() {
     const ShowHeader = () => {
         if (!isEmpty) {
             return (
-                <AdminPageHeader questionMakerName={`Adnan Abdullah Sadi`} setDrawerOpen={setDrawerOpen} />
-            );
+                <AdminPageHeader
+                    questionMakerName={eventModel?.createdBy || "Unknown Creator"}
+                    setDrawerOpen={setDrawerOpen}
+                />            );
         } else {
             return (
                 <div></div>
@@ -154,11 +155,8 @@ export default function Admin_ApprovalEvent() {
     useEffect(() => {
 
         controller.fetchAllPendingEvents()
-            .then(eventDetails => {})
-            .catch(error => {});
-
-        console.log(eventModel)
-
+            .then()
+            .catch();
     }, []);
 
 
@@ -171,7 +169,7 @@ export default function Admin_ApprovalEvent() {
         <>
 
 
-            <div className="w-screen h-screen relative flex items-center justify-center gap-4 bg-black">
+            <div className="w-screen h-screen relative flex items-center justify-center gap-4">
                 <Background_Particles />
 
                 <Background_Particles />
@@ -220,7 +218,13 @@ export default function Admin_ApprovalEvent() {
                                         All questions associated with this event are listed below.
                                     </p>
 
-                                    {eventModel?.allQuestions?.length > 0 ? (
+                                    {eventModel?.questions?.length > 0 ? (
+                                        eventModel.questions.map((question, index) => (
+                                            <div key={index} className="my-4">
+                                                {Question_Showing_Description({ question })}
+                                            </div>
+                                        ))
+                                    ) : eventModel?.allQuestions?.length > 0 ? (
                                         eventModel.allQuestions.map((question, index) => (
                                             <div key={index} className="my-4">
                                                 {Question_Showing_Description({ question })}
@@ -229,6 +233,7 @@ export default function Admin_ApprovalEvent() {
                                     ) : (
                                         <p className="text-gray-500 italic">No questions added yet.</p>
                                     )}
+
                                 </div>
                             </div>
 

@@ -5,11 +5,11 @@
 
 // Firestore connection from firebase
 import { db } from "../../firebase.js";
-import { Database } from "../../Utilities";
+import {Database, NOTIFICATION_TYPES} from "../../Utilities";
 import { QuestionListService } from "../Questions/_question_list.service.js";
 
 // Firestore methods
-import { doc, collection, getDocs, deleteDoc, setDoc, serverTimestamp  } from "firebase/firestore";
+import {doc, collection, getDocs, deleteDoc, setDoc, serverTimestamp, addDoc} from "firebase/firestore";
 import { BaseApprovalService } from './_base/_base.approval.service'
 import { Firebase_Response} from "../../Utilities";
 import Question from '../../models/Question_Model.js'
@@ -29,11 +29,10 @@ export class Admin_ApproveService extends QuestionListService {
      */
 
 
-    async getAllPending(id: string, question: any) {
+    async ApproveQuestion(id: string, question: any) {
         try {
 
-            // console.log(`Approving question with ID: ${id}`);
-            
+
 
 
             await setDoc(doc(db, Database.approvedQuestions, id), {
@@ -53,9 +52,18 @@ export class Admin_ApproveService extends QuestionListService {
                 type: question.question.type,
                 mainFunctionCode: question.mainFunctionCode
             });
-            console.log('Document successfully written!');
-            
             await this._Delete_Specific_Function(id);
+
+
+            await this.SendNotification({
+                userID: question.question.createdBy_uid,
+                questionID: question.question.id,
+                title: `Question Approved!`,
+                body: `Your Question :: ${question.question.title} is Successfully Approved`,
+                eventID: '',
+                status: NOTIFICATION_TYPES.approve_question
+            })
+
 
             
 
@@ -67,7 +75,37 @@ export class Admin_ApproveService extends QuestionListService {
     }
 
 
+    SendNotification = async ({userID, questionID, title, body, eventID = '', status}: {
+        userID: string,
+        questionID: string,
+        title: string,
+        body: string,
+        eventID: string,
+        status: string
+    }): Promise<Firebase_Response> => {
+        try {
+            console.log('function called')
+            const notificationRef = collection(db, Database.notification);
 
+            await addDoc(notificationRef, {
+                recipientID: userID,
+                questionID: questionID,
+                date: new Date().toISOString(),
+                eventID: eventID,
+                title: title,
+                body: body,
+                status: status
+            })
+
+            return {
+                success: true,
+                message: `Sent notification encountered successfully!`,
+            }
+
+        } catch (error) {
+            console.error("Error deleting the event encounter Problem:\n", error);
+        }
+    }
     
 
 

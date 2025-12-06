@@ -6,11 +6,13 @@ import {useEffect, useState} from "react";
 import { NotificationHeader, NotificationList } from '../../Components/__Notifications.jsx'
 import { NotificationsController } from '../../controller/users/notifications.controller.js'
 import {useGlobal} from "../../GlobalContext.jsx";
+import {NOTIFICATION_TYPES, routes} from '../../Utilities.js'
+import {useNavigate} from "react-router-dom";
 
 export default function Notifications() {
 
     const { user_uid } = useGlobal()
-
+    const navigate = useNavigate()
     const [notifications, setNotifications] = useState([
         {
             title: "Hackathon Approved 🎉",
@@ -58,28 +60,35 @@ export default function Notifications() {
 
     const getTypeColor = (type) => {
         switch (type) {
-            case "approve_question":
-                return "from-emerald-400/60 to-emerald-800/10"; // ✅ calm green for approval
-            case "approve_event":
-                return "from-teal-400/60 to-teal-800/10"; // ✅ fresh teal for event approval
+            case NOTIFICATION_TYPES.approve_question:
+                return "from-emerald-400/60 to-emerald-800/10";
 
-            case "reject_question":
-                return "from-rose-400/60 to-rose-800/10"; // ❌ red-pink tone for rejection
-            case "reject_event":
-                return "from-red-400/60 to-red-800/10"; // ❌ stronger red for event rejection
+            case NOTIFICATION_TYPES.approve_event:
+                return "from-teal-400/60 to-teal-800/10";
 
-            case "modification_question":
-                return "from-amber-400/60 to-amber-800/10"; // ✏️ yellow-orange for edits
-            case "modification_event":
-                return "from-orange-400/60 to-orange-800/10"; // ✏️ orange tone for event changes
+            case NOTIFICATION_TYPES.reject_question:
+                return "from-rose-400/60 to-rose-800/10";
 
-            case "event_score":
-                return "from-sky-400/60 to-sky-800/10"; // 🧮 light blue for scoring updates
-            case "event_result":
-                return "from-indigo-400/60 to-indigo-800/10"; // 🏆 deep blue for final results
+            case NOTIFICATION_TYPES.reject_event:
+                return "from-red-400/60 to-red-800/10";
+
+            case NOTIFICATION_TYPES.modification_question:
+                return "from-amber-400/60 to-amber-800/10";
+
+            case NOTIFICATION_TYPES.modification_event:
+                return "from-orange-400/60 to-orange-800/10";
+
+            case NOTIFICATION_TYPES.event_score:
+                return "from-sky-400/60 to-sky-800/10";
+
+            case NOTIFICATION_TYPES.event_result:
+                return "from-indigo-400/60 to-indigo-800/10";
+
+            case NOTIFICATION_TYPES.question_solved:
+                return "from-lime-400/60 to-cyan-800/10";
 
             default:
-                return "from-slate-400/60 to-slate-800/10"; // 🪶 neutral fallback
+                return "from-slate-400/60 to-slate-800/10";
         }
 
     };
@@ -96,9 +105,17 @@ export default function Notifications() {
     };
 
 
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
+
+
+
     // Fetch all Notification from the database
     useEffect(() => {
-        controller._get_notifications({userID: user_uid}).then(() => {})
+        controller._get_notifications({userID: user_uid}).then()
     }, [])
 
 

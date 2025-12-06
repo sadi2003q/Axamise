@@ -1,6 +1,7 @@
 
 import { FeedService } from "../../services/users/_Feed.service.js";
-import {routes, DIFFICULTY, QUESTION_CATEGORY} from "../../Utilities.js";
+import {routes, DIFFICULTY, QUESTION_CATEGORY, CACHE_STATE} from "../../Utilities.js";
+import {LocalCache} from "../../localCache.js";
 
 export class FeedController {
     constructor(setRandomEvent,
@@ -13,7 +14,8 @@ export class FeedController {
 
                 setSolvedQuestionCount,
                 setTotalNumberOfQuestions,
-                setQuestionCount_Category
+                setQuestionCount_Category,
+                setError
    ) {
         // Server class
         this.service = new FeedService();
@@ -30,20 +32,75 @@ export class FeedController {
         this.setSolvedQuestionCount = setSolvedQuestionCount;
         this.setTotalNumberOfQuestions = setTotalNumberOfQuestions;
         this.setQuestionCount_Category = setQuestionCount_Category;
+
+
+        this.cache = new LocalCache(CACHE_STATE.eventCache);
+        this.questionCache = new LocalCache(CACHE_STATE.questionCache);
+
+        this.setError = setError;
+
     }
 
     async fetchQuestionHandler () {
-        const response = await this.service._Fetch_Questions()
 
-        console.log('\n\n\ndata(Question)', response.data)
-        this.setRandomQuestion(response.data)
+        const cache = this.questionCache.load();
+        if(cache) {
+            const shuffled = [...cache].sort(() => Math.random() - 0.5);
+
+            // Pick first 5 elements
+            const selected = shuffled.slice(0, Math.min(8, shuffled.length));
+            this.setRandomQuestion(selected)
+        }
+
+
+        const response = await this.service._Fetch_Questions()
+        const data = response.data;
+
+        if(!this.questionCache.isSame(data)) this.questionCache.save(data);
+
+
+        const shuffled = [...data].sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, Math.min(8, shuffled.length));
+        this.setRandomQuestion(selected)
+
+
+
+
     }
 
     async fetchEventHandler () {
+
+        const cache = this.cache.load();
+        if(cache) {
+            const shuffled = [...cache].sort(() => Math.random() - 0.5);
+
+            // Pick first 5 elements
+            const selected = shuffled.slice(0, Math.min(8, shuffled.length));
+            this.setRandomEvent(selected)
+
+
+        }
+
+
+
         const response = await this.service._Fetch_Events()
 
-        console.log('\n\n\ndata(Event)', response.data)
-        this.setRandomEvent(response.data)
+        if(response.success) {
+            const data = response.data
+
+            if(!this.cache.isSame(data)) this.cache.save(data);
+
+
+            const shuffled = [...data].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, Math.min(8, shuffled.length));
+            this.setRandomEvent(selected)
+
+        } else {
+            this.setError(response.message)
+        }
+
+
+
     }
 
 
@@ -79,13 +136,11 @@ export class FeedController {
 
     async fetchTotalNumberOfQuestions () {
         const response = await this.service._Fetch_QuestionCount()
-        console.log(response.message)
         this.setTotalNumberOfQuestions(response.data)
     }
 
     async fetchSolvedQuestions_count ({id}) {
         const response = await this.service._Fetch_SolvedCount({ id });
-        console.log(response.message)
         this.setSolvedQuestionCount(response.data)
     }
 
@@ -94,7 +149,6 @@ export class FeedController {
 
         for (const category of categories) {
             const response = await this.service._Fetch_QuestionByCategory({ category });
-            console.log(response.message)
             this.setQuestionCount_Category(prev => ({
                 ...prev,
                 [category]: response.data, // ✅ use bracket notation (not 'category')

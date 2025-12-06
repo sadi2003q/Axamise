@@ -33,6 +33,7 @@ import {EventCreateServiceController} from "../../controller/Events/event_create
 import {useGlobal} from "../../GlobalContext.jsx";
 // Routing
 import {useLocation, useNavigate} from "react-router-dom";
+import {routes} from "../../Utilities.js";
 
 export default function Event_Create() {
     // Context
@@ -184,6 +185,11 @@ export default function Event_Create() {
     };
 
 
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
 
     // UI
     return (
