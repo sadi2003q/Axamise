@@ -48,7 +48,7 @@ export default function Login() {
     const { setUser_uid, setCurrentName } = useGlobal()
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(new User( "adnan.sadi@northsouth.edu", "sadisadi112"));
+    const [user, setUser] = useState(new User( "", ""));
     const [loginError, setLoginError] = useState(null);
 
     const isFormValid = user.email !== "" && user.password !== "";
