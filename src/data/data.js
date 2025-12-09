@@ -3,7 +3,7 @@ import { personsImgs } from "../utils/images";
 
 export const navigationLinks = [
     { id: 1, title: 'Students', image: iconsImgs.user, path: '/STUDENTCRUDPAGE' },
-    { id: 2, title: 'Questions', image: iconsImgs.search, path: '/questions' },
+    { id: 2, title: 'Questions', image: iconsImgs.search, path: '/pending-questions' },
     { id: 3, title: 'Events', image: iconsImgs.bell, path: '/Admin_ApprovalEvent' },
     { id: 4, title: 'Report & Analytics', image: iconsImgs.report, path: '/reports' },
     { id: 5, title: 'Student Manager', image: iconsImgs.gears, path: '/STUDENTCRUDPAGE' },

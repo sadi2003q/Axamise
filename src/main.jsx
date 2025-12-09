@@ -22,6 +22,9 @@ import Admin_login from "./pages/Authentication/Admin_login.jsx";
 import Admin_SetUsr from "./pages/Authentication/Admin_SetUser.jsx";
 import Admin_Approval from "./pages/Admin/Admin_Approval.jsx";
 import Admin_ApprovalEvent from "./pages/Admin/Admin_ApprovalEvent.jsx";
+import ApprovedQuestions from './pages/Questions/ApprovedQuestions.jsx';
+
+
 import EventStart from "./pages/Events/Event_Start.jsx";
 import Notifications from "./pages/users/Notifications.jsx";
 import Logout from "./pages/Authentication/logout.jsx";
@@ -114,6 +117,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
             {/* 🔹 Admin Area (no navbar) */}
             <Route path="/DASHBOARD" element={<Dashboard />} />
+            <Route path="/approved-questions" element={<ApprovedQuestions />} />
+{/* <Route path="/approved-questions" element={<ApprovedQuestions />} /> */}
             <Route path="/STUDENTCRUDPAGE" element={<StudentCrudPage />} />
             <Route path="/ADMIN_LOGIN" element={<Admin_login />} />
             <Route path="/ADMIN_SETUSER" element={<Admin_SetUsr />} />
