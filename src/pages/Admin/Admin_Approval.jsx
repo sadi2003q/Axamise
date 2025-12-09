@@ -25,6 +25,7 @@ import { useGlobal } from "../../GlobalContext.jsx";
 
 // Libraries
 import { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 // Models
@@ -45,10 +46,9 @@ import { Admin_ApproveController } from '../../controller/Admin/admin.approve.co
 // Utilities
 import {ADMIN_APPROVAL_DISPLAY_MODE, NOTIFICATION_TYPES} from '../../Utilities.ts';
 
-
-
-
-
+// =========================================================================
+// PANEL WRAPPERS
+// =========================================================================
 
 function ApprovalPanelWrapper({
       functionName,
@@ -63,33 +63,31 @@ function ApprovalPanelWrapper({
       handleApprove,
       questionID,
       onClose
-    }) {
+}) {
     return (
-    <motion.div
-    className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.25 }}
-    >
-    <ApprovalPanel
-    functionName={functionName}
-    setFunctionName={setFunctionName}
-    returnType={returnType}
-    setReturnType={setReturnType}
-    status={status}
-    setStatus={setStatus}
-    functionCode={functionCode}
-    setFunctionCode={setFunctionCode}
-    editorRef={editorRef}
-    handleApprove={handleApprove}
-    questionID={questionID}
-    onClose={onClose}
-    />
-    </motion.div>
+        <motion.div
+            className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+        >
+            <ApprovalPanel
+                functionName={functionName}
+                setFunctionName={setFunctionName}
+                returnType={returnType}
+                setReturnType={setReturnType}
+                status={status}
+                setStatus={setStatus}
+                functionCode={functionCode}
+                setFunctionCode={setFunctionCode}
+                editorRef={editorRef}
+                handleApprove={handleApprove}
+                questionID={questionID}
+                onClose={onClose}
+            />
+        </motion.div>
     );
-    }
-
-
+}
 
 function RejectionPanelWrapper({
        title,
@@ -100,37 +98,35 @@ function RejectionPanelWrapper({
        createdBy_uid,
        onReject,
        onClose
-   }) {
-return (
-<motion.div
-className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-initial={{ opacity: 0 }}
-animate={{ opacity: 1 }}
-transition={{ duration: 0.25 }}
->
-<ObservationField
-title={title}
-setTitle={setTitle}
-backgroundColor="rgba(244, 67, 54, 0.65)"
-buttonColor="error"
-reason={reason}
-setReason={setReason}
-onReject={() =>
-onReject({
-objectID: questionID,
-recipientID: createdBy_uid
-})
+}) {
+    return (
+        <motion.div
+            className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+        >
+            <ObservationField
+                title={title}
+                setTitle={setTitle}
+                backgroundColor="rgba(244, 67, 54, 0.65)"
+                buttonColor="error"
+                reason={reason}
+                setReason={setReason}
+                onReject={() =>
+                    onReject({
+                        objectID: questionID,
+                        recipientID: createdBy_uid
+                    })
+                }
+                buttonText="Confirm Rejection"
+                onClose={onClose}
+                HeadingText="Reject Question"
+                inputLabelText="Reason for Rejection"
+            />
+        </motion.div>
+    );
 }
-buttonText="Confirm Rejection"
-onClose={onClose}
-HeadingText="Reject Question"
-inputLabelText="Reason for Rejection"
-/>
-</motion.div>
-);
-}
-
-
 
 function ModificationPanelWrapper({
       title,
@@ -141,56 +137,45 @@ function ModificationPanelWrapper({
       createdBy_uid,
       onModify,
       onClose
-  }) {
-return (
-<motion.div
-className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-initial={{ opacity: 0 }}
-animate={{ opacity: 1 }}
-transition={{ duration: 0.25 }}
->
-<ObservationField
-title={title}
-setTitle={setTitle}
-backgroundColor="rgba(76, 175, 80, 0.5)"
-buttonColor="success"
-reason={reason}
-setReason={setReason}
-onReject={() =>
-onModify({
-objectID: questionID,
-recipientID: createdBy_uid
-})
-}
-buttonText="Request for Modification"
-onClose={onClose}
-HeadingText="Ask Modification"
-inputLabelText="Things to Modify..."
-/>
-</motion.div>
-);
+}) {
+    return (
+        <motion.div
+            className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+        >
+            <ObservationField
+                title={title}
+                setTitle={setTitle}
+                backgroundColor="rgba(76, 175, 80, 0.5)"
+                buttonColor="success"
+                reason={reason}
+                setReason={setReason}
+                onReject={() =>
+                    onModify({
+                        objectID: questionID,
+                        recipientID: createdBy_uid
+                    })
+                }
+                buttonText="Request for Modification"
+                onClose={onClose}
+                HeadingText="Ask Modification"
+                inputLabelText="Things to Modify..."
+            />
+        </motion.div>
+    );
 }
 
-
+// =========================================================================
+// MAIN COMPONENT
+// =========================================================================
 
 export default function Admin_Approval() {
-    // =========================================================================
-    // STATE MANAGEMENT
-    // =========================================================================
-
-    // Global Context
+    const location = useLocation();
     const { adminEmail, adminUID } = useGlobal();
 
-    /**
-     * State for managing all pending questions awaiting approval
-     * @type {[Array, Function]}
-     */
     const [allPendingQuestions, setAllPendingQuestions] = useState([]);
-
-    /**
-     * State for currently selected question being reviewed
-     * @type {[Question, Function]}
-     */
     const [question, setQuestion] = useState(
         new Question({
             title: "3 Some Problem",
@@ -204,31 +189,18 @@ export default function Admin_Approval() {
         })
     );
 
-    // Approval Configuration States
-    const [functionName, setFunctionName] = useState("myFunction");  // Function name for code template
-    const [returnType, setReturnType] = useState("int");            // Return type for function
-    const [status, setStatus] = useState("Approved");               // Approval status
-    const [functionCode, setFunctionCode] = useState("");           // Generated function code
-
-    // UI Control States
-    const [drawerOpen, setDrawerOpen] = useState(false);            // Controls pending questions drawer
-    const [approvalOpen, setApprovalOpen] = useState(false);        // Controls approval panel visibility
-    const [questionID, setQuestionID] = useState("NOT selected");   // Currently selected question ID
-    const [isEmpty, setIsEmpty] = useState(false);                  // Flag for empty questions list
-
-    // Rejection/Modification States
+    const [functionName, setFunctionName] = useState("myFunction");
+    const [returnType, setReturnType] = useState("int");
+    const [status, setStatus] = useState("Approved");
+    const [functionCode, setFunctionCode] = useState("");
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [approvalOpen, setApprovalOpen] = useState(false);
+    const [questionID, setQuestionID] = useState("NOT selected");
+    const [isEmpty, setIsEmpty] = useState(false);
     const [displayMode, setDisplayMode] = useState(ADMIN_APPROVAL_DISPLAY_MODE.APPROVED);
-    const [reason, setReason] = useState("");                       // Reason for rejection/modification
-    const [title, setTitle] = useState("");                         // Title for rejection/modification
+    const [reason, setReason] = useState("");
+    const [title, setTitle] = useState("");
 
-    // =========================================================================
-    // CONTROLLER INITIALIZATION
-    // =========================================================================
-
-    /**
-     * Controller instance for handling approval business logic
-     * Manages API calls, state updates, and workflow transitions
-     */
     const controller = new Admin_ApproveController(
         setAllPendingQuestions,
         approvalOpen,
@@ -242,32 +214,23 @@ export default function Admin_Approval() {
         setIsEmpty
     );
 
-    // =========================================================================
-    // REFS
-    // =========================================================================
-
-    /**
-     * Reference to Monaco editor instance for code editing
-     */
     const editorRef = useRef(null);
 
-    // =========================================================================
-    // LIFECYCLE & SIDE EFFECTS
-    // =========================================================================
-
-    /**
-     * Fetch all pending questions on component mount
-     * Also logs admin email for debugging purposes
-     */
     useEffect(() => {
         controller.fetchAllRequestedQuestions();
     }, []);
 
-    /**
-     * Generate function code template based on current function name and return type
-     * Creates a C++ template with main function and test harness
-     * @returns {string} Generated C++ code template
-     */
+    useEffect(() => {
+        if (location.state && location.state.questionId && allPendingQuestions.length > 0) {
+            const match = allPendingQuestions.find(q => q.id === location.state.questionId);
+            if (match) {
+                setQuestionID(match.id);
+                setQuestion(match);
+                setApprovalOpen(false);
+            }
+        }
+    }, [location.state, allPendingQuestions]);
+
     const generateFunctionCode = () => {
         const fName = functionName || "myFunction";
         const rType = returnType || "int";
@@ -278,16 +241,13 @@ export default function Admin_Approval() {
 #include <cstdlib>  
 #include <bits/stdc++.h>
 
-
 using namespace std;
 
 //---PART01---
 
-int functionName() {
+int ${fName}() {
     // Your logic here
 }
-
-
 
 //---PART02---
 int main() {
@@ -296,14 +256,13 @@ int main() {
     
     _ output =  ;
     
-    ${rType} result = functionName();
+    ${rType} result = ${fName}();
     
     if(output == result) cout<<"Submission Accepted"<<endl;
     else {
-        // Simpler error: Print to stderr and exit
         cerr << "Wrong Answer" << endl;
-        cerr << "Expected: " << expected << "\nFound: " << result << endl;
-        exit(1);  // Exit with error code (non-zero)
+        cerr << "Expected: " << expected << "\\nFound: " << result << endl;
+        exit(1);
     }
  
     return 0;
@@ -311,10 +270,6 @@ int main() {
 `;
     };
 
-    /**
-     * Update function code whenever function name or return type changes
-     * Ensures the code editor always shows the latest template
-     */
     useEffect(() => {
         setFunctionCode(generateFunctionCode());
     }, [functionName, returnType]);
@@ -323,26 +278,26 @@ int main() {
     // EVENT HANDLERS
     // =========================================================================
 
+    const handleApprove = (id, approvedBy = adminEmail, approvedBy_uid = adminUID) => {
+        const approvedQuestion = new AdminApproval_Question({
+            question,
+            approvedBy,
+            approvedBy_uid,
+            functionName,
+            returnType,
+            status,
+            mainFunctionCode: generateFunctionCode()
+        });
 
-    const findContributorID = ({questionID}) => {
-        const question = allPendingQuestions.filter(question => question.id === questionID);
-        return question.createdBy_uid
-    }
-
-
-    const handleUIChange = (id) => {
+        controller.handleApprove(id, approvedQuestion);
         setApprovalOpen(false);
 
-        // Update pending questions list by removing approved question
-        setAllPendingQuestions((prev) => {
-            const updated = prev.filter((q) => q.id !== id);
-
+        setAllPendingQuestions(prev => {
+            const updated = prev.filter(q => q.id !== id);
             if (updated.length > 0) {
-                // If questions remain, select the first one
                 setQuestion(updated[0]);
                 setQuestionID(updated[0].id);
             } else {
-                // If no questions left, reset to empty state
                 setQuestion(new Question({
                     title: "",
                     description: "",
@@ -356,176 +311,50 @@ int main() {
                 setQuestionID("NOT selected");
                 setIsEmpty(true);
             }
-
-            // Reset form states
             setFunctionName("myFunction");
             setReturnType("int");
             setStatus("Approved");
             setFunctionCode(functionCode);
-
             return updated;
         });
-    }
-
-
-
-    /**
-     * Handle question approval workflow
-     * - Creates approved question object
-     * - Updates pending questions list
-     * - Resets form states
-     * - Closes approval panel
-     *
-     * @param {string} id - The ID of the question being approved
-     * @param approvedBy
-     * @param approvedBy_uid
-     */
-    const handleApprove = (id, approvedBy = adminEmail, approvedBy_uid = adminUID) => {
-        // Create approved question object with all necessary data
-        const approvedQuestion = new AdminApproval_Question({
-            question,
-            approvedBy: approvedBy,
-            approvedBy_uid: approvedBy_uid,
-            functionName,
-            returnType,
-            status,
-            mainFunctionCode: functionCode
-        });
-
-        // Process approval through controller
-        controller.handleApprove(id, approvedQuestion);
-
-
-        // Update the UI after Status assignment...
-        handleUIChange(id)
-
-
-        // LEFT: Notification send
-
-
     };
-
-
-
-
 
     const handleModified = (id = '123') => {
-
-        console.log('qustions : ', question)
-
-
-        //ModificationStatus
-        controller.handleModified({id: id, recipientID: question.createdBy_uid}).then()
-
-
-
-
-        // Update the UI after Status assignment...
-        handleUIChange(id)
-
-
-        // LEFT : Notification send
-
-    }
-
-
-    const handleDelete = ({id = '123'}) => {
-
-
-        const makerID = findContributorID(id);
-        controller.handleReject({
-            objectID: id,
-            recipientID: makerID,
-        })
-
-
-        controller.handleRejectQuestions({
-            id: question.id,
-            recipientID: question.createdBy_uid,
-        }).then();
-
-
-
-        // Update the UI after Status assignment...
-        handleUIChange(id)
-    }
-
-
-
-
-    // =========================================================================
-    // RENDER COMPONENTS
-    // =========================================================================
-
-    /**
-     * Conditionally renders the admin page header
-     * Only shows when there are questions to review
-     *
-     * @returns {JSX.Element} Admin page header or empty fragment
-     */
-    const ShowHeader = () => {
-        if (!isEmpty) {
-            return (
-                <AdminPageHeader
-                    questionMakerName={question.createdBy}
-                    setDrawerOpen={setDrawerOpen}
-                />
-            );
-        } else {
-            return <></>;
-        }
+        controller.handleModified({id, recipientID: question.createdBy_uid}).then();
     };
 
+    const handleDelete = ({id = '123'}) => {
+        controller.handleReject({ objectID: id, recipientID: question.createdBy_uid });
+        controller.handleRejectQuestions({ id: question.id, recipientID: question.createdBy_uid }).then();
+    };
+
+    const ShowHeader = () => !isEmpty ? <AdminPageHeader questionMakerName={question.createdBy} setDrawerOpen={setDrawerOpen} /> : <></>;
+
     // =========================================================================
-    // MAIN COMPONENT RENDER
+    // RENDER
     // =========================================================================
 
     return (
         <>
-            {/**
-             * Animated background particles
-             */}
             <Background_Particles />
 
-            <div className="w-screen h-screen relative flex items-center justify-center gap-4">
-                {/* =================================================================
-                    MAIN QUESTION REVIEW PANEL
-                    ================================================================= */}
+            <div className="w-screen h-screen relative flex items-center justify-center gap-4" style={{background:'#23232b'}}>
                 <motion.div
                     className="h-[86vh] rounded-2xl z-40 flex flex-col justify-between"
                     animate={{ width: approvalOpen ? "40vw" : "66vw" }}
                     transition={{ duration: 0.25 }}
                 >
-                    {/* Conditional header rendering */}
                     <ShowHeader />
 
-                    {/* Question Description Area */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
                         {isEmpty ? (
-                            // Empty state - no questions to review
                             <EventFetchingLoadingScreen title="No Question Found" />
                         ) : (
-                            // Question display with action buttons
                             <Question_Showing_Description
                                 question={question}
-                                handleDeleteButton={() => {
-                                    controller.handleReject({
-                                        objectID: question.id,
-                                        recipientID: question.createdBy,
-                                        title: question.title,
-                                    })
-                                }}
+                                handleDeleteButton={() => controller.handleReject({ objectID: question.id, recipientID: question.createdBy, title: question.title })}
                                 handleEditButton={controller.moveToApprovalPage}
-                                handleSolveButton={() => {
-
-                                    controller.revertBack({
-                                        recipientID: question.createdBy_uid,
-                                        objectID: question.id,
-                                        type: NOTIFICATION_TYPES.modification_event,
-                                        title: title,
-                                        reason: reason,
-                                    }).then()
-                                }}
+                                handleSolveButton={() => controller.revertBack({ recipientID: question.createdBy_uid, objectID: question.id, type: NOTIFICATION_TYPES.modification_event, title, reason }).then()}
                                 require_Edit_Button={true}
                                 require_Delete_Button={true}
                                 require_Solve_Button={true}
@@ -533,12 +362,6 @@ int main() {
                         )}
                     </div>
                 </motion.div>
-
-                {/* =================================================================
-                    APPROVAL/REJECTION/MODIFICATION SIDEBAR PANEL
-                    ================================================================= */}
-
-
 
                 {approvalOpen && (
                     <>
@@ -558,7 +381,6 @@ int main() {
                                 onClose={controller.OpenSidePage}
                             />
                         )}
-
                         {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED && (
                             <RejectionPanelWrapper
                                 title={title}
@@ -567,13 +389,10 @@ int main() {
                                 setReason={setReason}
                                 questionID={questionID}
                                 createdBy_uid={question.createdBy_uid}
-                                onReject={() => {
-                                    handleDelete({id: questionID})
-                                }}
+                                onReject={() => handleDelete({id: questionID})}
                                 onClose={controller.OpenSidePage}
                             />
                         )}
-
                         {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION && (
                             <ModificationPanelWrapper
                                 title={title}
@@ -582,41 +401,27 @@ int main() {
                                 setReason={setReason}
                                 questionID={questionID}
                                 createdBy_uid={question.createdBy_uid}
-                                onModify={() => {
-                                    handleModified(questionID)
-                                }}
+                                onModify={() => handleModified(questionID)}
                                 onClose={controller.OpenSidePage}
                             />
                         )}
                     </>
                 )}
 
-
-
-
-
-
-
+                <Drawer_Input2
+                    drawerOpen={drawerOpen}
+                    onClose={() => setDrawerOpen(false)}
+                    item={allPendingQuestions}
+                    iconColor="cyan"
+                    onItemClick={(item) => {
+                        setQuestionID(item.id);
+                        setQuestion(item);
+                        setDrawerOpen(false);
+                        setApprovalOpen(false);
+                    }}
+                    anchor="left"
+                />
             </div>
-
-            {/* =================================================================
-                PENDING QUESTIONS DRAWER
-                Shows list of all questions awaiting review
-                ================================================================= */}
-            <Drawer_Input2
-                drawerOpen={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-                item={allPendingQuestions}
-                iconColor="cyan"
-                onItemClick={(item) => {
-                    // Handle question selection from drawer
-                    setQuestionID(item.id);
-                    setQuestion(item);
-                    setDrawerOpen(false);
-                    setApprovalOpen(false);  // Close approval panel when selecting new question
-                }}
-                anchor="left"
-            />
         </>
     );
 }

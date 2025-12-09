@@ -170,6 +170,7 @@ export default function Admin_ApprovalEvent() {
 
 
             <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+                <Background_Particles />
 
                 <Background_Particles />
 

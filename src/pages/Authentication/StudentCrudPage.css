@@ -1,0 +1,174 @@
+.student-crud-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-crud-card {
+  background: #181818;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 4px 32px #000a;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.student-crud-title {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.student-crud-form {
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.student-crud-input {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 1rem;
+  flex: 1 1 120px;
+  min-width: 0;
+}
+.student-crud-input-wide {
+  flex: 2 1 200px;
+}
+.student-crud-input-date {
+  flex: 1 1 160px;
+}
+
+.student-crud-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  flex: 1 1 120px;
+  transition: background 0.2s;
+}
+.student-crud-btn:hover {
+  background: #0056b3;
+}
+.student-crud-btn-cancel {
+  background: #444;
+  margin-left: 8px;
+}
+.student-crud-error {
+  color: #ff4d4f;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.student-crud-table-wrap {
+  overflow-x: auto;
+}
+.student-crud-table {
+  width: 100%;
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 15px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.student-crud-table th {
+  background: #333;
+  padding: 8px;
+  text-align: left;
+}
+.student-crud-table td {
+  padding: 8px;
+  vertical-align: middle;
+}
+.student-crud-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.student-crud-btn-edit {
+  background: #ffc107;
+  color: #222;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+.student-crud-btn-edit:hover {
+  background: #e0a800;
+}
+.student-crud-btn-delete {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.student-crud-btn-delete:hover {
+  background: #d32f2f;
+}
+@media (max-width: 900px) {
+  .student-crud-card {
+    padding: 16px;
+    max-width: 98vw;
+    border-radius: 8px;
+  }
+  .student-crud-title {
+    font-size: 1.2rem;
+  }
+  .student-crud-form {
+    gap: 8px;
+  }
+  .student-crud-input {
+    font-size: 0.95rem;
+    padding: 5px;
+  }
+  .student-crud-btn {
+    font-size: 0.95rem;
+    padding: 5px 10px;
+  }
+}
+@media (max-width: 600px) {
+  .student-crud-card {
+    padding: 8px;
+    border-radius: 4px;
+  }
+  .student-crud-title {
+    font-size: 1rem;
+  }
+  .student-crud-form {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .student-crud-input,
+  .student-crud-input-wide,
+  .student-crud-input-date {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .student-crud-btn {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .student-crud-table th,
+  .student-crud-table td {
+    font-size: 0.95rem;
+    padding: 6px;
+  }
+}

@@ -1,0 +1,60 @@
+/* Unified card style for Transactions */
+.grid-content {
+  background: rgba(41, 34, 29, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  color: var(--clr-white);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  transition: box-shadow 0.3s;
+}
+.grid-content:hover {
+  box-shadow: 0 12px 48px 0 rgba(102, 126, 234, 0.18);
+}
+/* grid c2 */
+.grid-c2 .grid-item {
+  display: flex;
+}
+.grid-c2 .grid-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.grid-c2 .grid-item:last-child {
+  margin-bottom: 0;
+}
+.grid-c2 .grid-item p {
+  color: var(--clr-silver-v1);
+}
+.grid-c2 .grid-item-l .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+.grid-c2 .grid-item-l {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.grid-c2 .grid-item-l .text {
+  font-weight: 600;
+}
+.grid-c2 .grid-item-l span {
+  display: block;
+  font-weight: 400;
+  margin-top: 4px;
+  font-size: 15px;
+  color: #8a8587;
+}
+.grid-c2 .grid-item-r span {
+  font-weight: 500;
+}
+
+.text-blue {
+  color: #FF8042;
+  font-weight: 600;
+}
