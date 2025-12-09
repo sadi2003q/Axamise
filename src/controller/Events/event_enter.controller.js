@@ -93,6 +93,22 @@ export class EventEnterController  {
                 console.error(error)
             }
     }
+
+
+
+    sortParticipants = async ({eventID}) => {
+        const res = await this.service.FetchAllParticipationList({eventID: eventID});
+        if(res.data.length > 0){
+            console.log('Here are all Participants ', res.data);
+        } else {
+            console.log('No participation found this Event');
+        }
+    }
+
+
+
+
+
 }
 
 

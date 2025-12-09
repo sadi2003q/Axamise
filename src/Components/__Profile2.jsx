@@ -7,6 +7,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { Flag, Users } from "lucide-react";
 import { Calendar, Star, Award, Activity, Bookmark, Clock } from "lucide-react";
 import {EVENT_STATE} from "../Utilities.js";
+import { format } from "date-fns";
 
 
 
@@ -366,12 +367,7 @@ export function ParticipatedEvent({data}) {
                             </div>
                         </th>
 
-                        <th className="px-4 py-2 text-right font-semibold">
-                            <div className="flex items-center gap-2 justify-end">
-                                <Award size={16}/>
-                                Rank
-                            </div>
-                        </th>
+
                     </tr>
                     </thead>
 
@@ -384,7 +380,15 @@ export function ParticipatedEvent({data}) {
                         >
                             <td className="px-4 py-2">{row.title}</td>
 
-                            <td className="px-4 py-2">{row.time_of_participation}</td>
+                            <td className="px-4 py-2">
+                                {new Date(row.time_of_participation).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                })}
+                            </td>
 
                             {/* STATUS WITH COLORED DOT */}
                             <td className="px-4 py-2 capitalize">
@@ -397,8 +401,6 @@ export function ParticipatedEvent({data}) {
                             </td>
 
                             <td className="px-4 py-2 text-right">{row.score}</td>
-
-                            <td className="px-4 py-2 text-right">{row.rank}</td>
                         </tr>
                     ))}
                     </tbody>

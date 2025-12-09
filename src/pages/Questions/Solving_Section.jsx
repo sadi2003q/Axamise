@@ -132,7 +132,8 @@ export default function Solving_Section() {
      * @type {[string, Function]}
      */
     const [currentCode, setCurrentCode] = useState("");
-    const [submitCount, setSubmitCount] = useState(0);
+    const [submitCount, setSubmitCount] = useState(1);
+    const [timerSpent, setTimeSpent] = useState(0);
 
     // =========================================================================
     // CODE SEGMENTATION STATE
@@ -665,7 +666,7 @@ add required library as necessary
                                             timeSpent: `${elapsedSeconds}s`
                                         }).then();
                                         setSubmitCount(prev => prev + 1);
-                                        console.log('clicked')
+                                        console.log('submit count : ', submitCount);
                                     }}
                                     variant="contained"
                                     disabled={ isButtonDisabled() }

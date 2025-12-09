@@ -2,7 +2,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
-const apiKey = 'AIzaSyDtVZfWHEoLRSsgri9-DEzaJ3jrVjkTUsA'
+const apiKey = 'AIzaSyA1oqAY-bJIvWVSKMnKPXzLJPm22Or6PeM'
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
@@ -39,6 +39,9 @@ Example structure:
     'OverallTimeComplexity' : ...
     'state' : ...
 }
+
+
+make sure in order to get the full mark all the questions must be solved with optimum solution, other then that its not permitted to give the full mark
 `,
     generationConfig: {
         responseMimeType: "application/json",

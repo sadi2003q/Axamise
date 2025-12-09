@@ -48,6 +48,9 @@ export default function EventStart() {
     // Determines if the user is restricted from entering again
     const [entryRestricted, setEntryRestricted] = useState(false);
 
+    // Button Text
+    const [buttonText, setButtonText] = useState("Let's Compete");
+
     // Determine total mark
     const [totalMark, setTotalMark] = useState(0);
 
@@ -91,14 +94,53 @@ export default function EventStart() {
 
     // -------------------- Entry Permission Check --------------------
     useEffect(() => {
-        // If event data exists, check whether user can still enter the event
-        if (location.state?.item) {
-            const eventUID = location.state?.item?.id;
-            controller._handleEventEntry({ eventID: eventUID, userID: user_uid }).then((response) => {
-                setEntryRestricted(response.data);
-            });
-        }
+        const handleEventLogic = async () => {
+            if (location.state?.item) {
+                const eventUID = location.state.item.id;
+                const eventDate = location.state.item.date; // "2025-11-22"
+
+
+
+
+
+                // Get today's date in YYYY-MM-DD format
+                const today = new Date().toISOString().split("T")[0];
+
+                // ✅ EVENT IS OVER
+                if (today > eventDate) {
+                    setEntryRestricted(true);
+                    setButtonText("Event is Over");
+
+                    await controller.sortParticipants({eventID: eventUID}); // ✅ NOW VALID
+                    return;
+                }
+
+                // ✅ UPCOMING EVENT
+                if (today < eventDate) {
+                    setEntryRestricted(true);
+                    setButtonText("Upcoming");
+                    return;
+                }
+
+                // ✅ EVENT IS TODAY → Allow backend check
+                setEntryRestricted(false);
+
+
+                controller._handleEventEntry({ eventID: eventUID, userID: user_uid }).then((response) => {
+                    setEntryRestricted(response.data);
+                });
+
+
+            }
+        };
+
+        handleEventLogic().then(); // ✅ Call the async function
     }, []);
+
+
+
+
+
 
     // -------------------- Fetch Score Card --------------------
     useEffect(() => {
@@ -360,7 +402,7 @@ export default function EventStart() {
                                     transition: "0.3s",
                                 }}
                             >
-                                {entryRestricted ? "Can't Enter More" : "Start Event"}
+                                {buttonText}
                             </Button>
                         </Box>
                     </Box>
@@ -368,46 +410,36 @@ export default function EventStart() {
             </div>
 
 
-            {/* -------------------- Score Card -------------------- */}
-            <div className="w-full h-[86vh] m-2 rounded-lg bg-transparent text-white flex flex-col items-center overflow-y-auto">
-                <Typography
-                    variant="h4"
+            {/* -------------------- Score Card -------------------- */}<div className="w-full m-2 rounded-lg bg-transparent text-white flex flex-col items-center overflow-y-auto">
+
+            {currentScoreState.length === 0 ? (
+                // Fallback view when no participants
+                <Box
                     sx={{
-                        fontWeight: "bold",
-                        mt: 3,
-                        mb: 2,
+                        width: "90%",
+                        maxWidth: "600px",
+                        mt: 10,
+                        p: 4,
                         textAlign: "center",
-                        color: "#ff1744",
+                        background: "rgba(255,255,255,0.05)",
+                        borderRadius: "15px",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        boxShadow: "0 0 15px rgba(255,255,255,0.1)",
                     }}
                 >
-                    Event Score Card
-                </Typography>
-
-                {currentScoreState.length === 0 ? (
-                    // Fallback view when no participants
-                    <Box
-                        sx={{
-                            width: "90%",
-                            maxWidth: "600px",
-                            mt: 10,
-                            p: 4,
-                            textAlign: "center",
-                            background: "rgba(255,255,255,0.05)",
-                            borderRadius: "15px",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            boxShadow: "0 0 15px rgba(255,255,255,0.1)",
-                        }}
-                    >
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                            No participants yet
-                        </Typography>
-                        <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                            Nobody has participated in this event so far.
-                        </Typography>
-                    </Box>
-                ) : (
-                    // Map through participants
-                    currentScoreState.map((user, index) => (
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                        No participants yet
+                    </Typography>
+                    <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                        Nobody has participated in this event so far.
+                    </Typography>
+                </Box>
+            ) : (
+                // Sort by score descending before mapping
+                currentScoreState
+                    .slice()
+                    .sort((a, b) => b.score - a.score)
+                    .map((user, index) => (
                         <Box
                             key={user.userID}
                             sx={{
@@ -419,7 +451,7 @@ export default function EventStart() {
                                 mb: 2,
                                 display: "flex",
                                 flexDirection: { xs: "column", md: "row" },
-                                alignItems: "center",
+                                alignItems: "center", // keeps vertical centering
                                 justifyContent: "space-between",
                                 boxShadow: "0 0 15px rgba(255,255,255,0.1)",
                                 border: "1px solid rgba(255,255,255,0.1)",
@@ -440,13 +472,14 @@ export default function EventStart() {
                                 </Typography>
                             </Box>
 
-                            {/* Middle: Score & Status */}
+                            {/* Middle: Score & Status (kept centered) */}
                             <Box
                                 sx={{
                                     flex: 1,
                                     display: "flex",
                                     flexDirection: "column",
-                                    alignItems: "center",
+                                    alignItems: "center", // center horizontally
+                                    justifyContent: "center",
                                 }}
                             >
                                 <Typography variant="h6" sx={{ color: "#ffb3b3", fontWeight: 600 }}>
@@ -468,12 +501,7 @@ export default function EventStart() {
                             </Box>
 
                             {/* Right: Time & Complexity */}
-                            <Box
-                                sx={{
-                                    flex: 1,
-                                    textAlign: { xs: "center", md: "right" },
-                                }}
-                            >
+                            <Box sx={{ flex: 1, textAlign: { xs: "center", md: "right" } }}>
                                 <Typography variant="body2" sx={{ opacity: 0.8 }}>
                                     Complexity: {user.timeComplexity}
                                 </Typography>
@@ -483,8 +511,10 @@ export default function EventStart() {
                             </Box>
                         </Box>
                     ))
-                )}
+            )}
+
             </div>
+
 
 
         </div>

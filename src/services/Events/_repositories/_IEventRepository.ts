@@ -328,6 +328,45 @@ export class FirebaseEventRepository implements IEventRepository {
         }
     }
 
+
+
+    async _FetchAllParticipants(eventID: string): Promise<Firebase_Response> {
+        try {
+            console.log(eventID);
+
+            const ref = collection(db, Database.event, eventID, Database.event_participants);
+            const snapShot = await getDocs(ref);
+
+            if (snapShot.empty) {
+                return {
+                    success: true,
+                    data: [] // ✅ return empty array properly
+                };
+            }
+
+            const data = snapShot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            return {
+                success: true,
+                data: data // ✅ RETURN DATA
+            };
+
+        } catch (error: any) {
+            console.log(`Error fetching participants: ${error}`);
+
+            return {
+                success: false,
+                error: error.message || error,
+            };
+        }
+    }
+
+
+
+
 }
 
 

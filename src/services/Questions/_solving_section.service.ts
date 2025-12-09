@@ -178,6 +178,7 @@ export class SolveService {
         score: string,
         state: string,
         timeComplexity: string,
+        requiredTime: number
     }): Promise<Firebase_Response> => {
         try {
             // Reference the ScoreCard subcollection
@@ -241,6 +242,8 @@ export class SolveService {
     }) : Promise<Firebase_Response> =>{
         try {
 
+            console.log('submit count : ', submitCount);
+
             const studentRef = doc(db, Database.student, userID, Database.participatedEvent, eventId);
             const eventRef = doc(db, Database.event, eventId, Database.event_participants, userID);
 
@@ -248,8 +251,7 @@ export class SolveService {
             await updateDoc(studentRef, {
                 score: score,
                 eventState: eventState,
-                submitCount: submitCount
-
+                submitCount: submitCount,
             });
             await updateDoc(eventRef, { points: score });
 

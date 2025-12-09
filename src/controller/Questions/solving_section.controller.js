@@ -58,6 +58,7 @@ export class SolvingSectionController {
                            }) => {
 
         console.log('Clicked: handleRunCode started');
+        this.setRunResult("");
 
         if (!this.editorRef?.current) {
             console.warn('Editor not ready yet!');
@@ -81,13 +82,18 @@ ${this.mainPart || ''}
 
             try {
 
-                // Evaluation Of the Code Using Gemni
+                console.log('submit count : ', this.submitCount);
+
+                // Evaluation Of the Code Using Gemini
                 const data = await evaluateQuestion({
                     questions: allQuestions,
                     answers: code,
                     submissionTime: this.submitCount,
-                    timeSpent
+                    timeSpent: timeSpent,
                 });
+
+
+
 
                 // Update Score on Event Repository
                 await this.handleUpdateScore({
@@ -95,7 +101,8 @@ ${this.mainPart || ''}
                     eventId: eventID,
                     score: data.score,
                     submitCount: this.submitCount,
-                    eventState: EVENT_STATE.leftOut
+                    eventState: EVENT_STATE.leftOut,
+                    requiredTime: timeSpent
                 });
 
                 // Set Event Information on the User's Repository
@@ -105,7 +112,9 @@ ${this.mainPart || ''}
                     eventID,
                     score: data.score,
                     state: data.state,
+                    submitCount: this.submitCount,
                     timeComplexity: data.overallTimeComplexity,
+                    requiredTime: timeSpent
                 });
 
 
@@ -198,10 +207,8 @@ ${this.mainPart || ''}
                                 questions: allQuestions,
                                 answers: code,
                                 submissionTime: this.submitCount,
-                                timeSpent
-                            });
 
-                            console.log('Event evaluation data:', data);
+                            });
 
                             await this.handleUpdateScore({
                                 userId: id,
@@ -218,6 +225,7 @@ ${this.mainPart || ''}
                                 score: data.score,
                                 state: data.state,
                                 timeComplexity: data.overallTimeComplexity
+
                             });
 
                             this.setRunResult(prev => {
@@ -288,15 +296,16 @@ ${this.mainPart || ''}
     }
 
 
-    handleUpdateScore = async ({userId, eventId, score, submitCount, eventState = EVENT_STATE.solved}) => {
+    handleUpdateScore = async ({userId, eventId, score, submitCount, eventState = EVENT_STATE.solved, requiredTime}) => {
         const response = await this.service._ModifyScoreAfterRun({
             userID: userId,
             eventId: eventId,
             score: score,
             submitCount: submitCount,
-            eventState: eventState
+            eventState: eventState,
+            requiredTime: requiredTime
         })
-        console.log(response.message)
+        console.log('Submit count ', submitCount)
     }
 
 
