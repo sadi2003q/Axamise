@@ -6,12 +6,13 @@ import {useEffect, useState} from "react";
 import { NotificationHeader, NotificationList } from '../../Components/__Notifications.jsx'
 import { NotificationsController } from '../../controller/users/notifications.controller.js'
 import {useGlobal} from "../../GlobalContext.jsx";
-import { NOTIFICATION_TYPES } from '../../Utilities.js'
+import {NOTIFICATION_TYPES, routes} from '../../Utilities.js'
+import {useNavigate} from "react-router-dom";
 
 export default function Notifications() {
 
     const { user_uid } = useGlobal()
-
+    const navigate = useNavigate()
     const [notifications, setNotifications] = useState([
         {
             title: "Hackathon Approved 🎉",
@@ -83,6 +84,9 @@ export default function Notifications() {
             case NOTIFICATION_TYPES.event_result:
                 return "from-indigo-400/60 to-indigo-800/10";
 
+            case NOTIFICATION_TYPES.question_solved:
+                return "from-lime-400/60 to-cyan-800/10";
+
             default:
                 return "from-slate-400/60 to-slate-800/10";
         }
@@ -101,9 +105,17 @@ export default function Notifications() {
     };
 
 
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
+
+
+
     // Fetch all Notification from the database
     useEffect(() => {
-        controller._get_notifications({userID: user_uid}).then(() => {})
+        controller._get_notifications({userID: user_uid}).then()
     }, [])
 
 

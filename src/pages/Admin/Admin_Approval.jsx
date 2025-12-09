@@ -46,6 +46,134 @@ import { Admin_ApproveController } from '../../controller/Admin/admin.approve.co
 // Utilities
 import {ADMIN_APPROVAL_DISPLAY_MODE, NOTIFICATION_TYPES} from '../../Utilities.ts';
 
+
+
+
+
+
+function ApprovalPanelWrapper({
+      functionName,
+      setFunctionName,
+      returnType,
+      setReturnType,
+      status,
+      setStatus,
+      functionCode,
+      setFunctionCode,
+      editorRef,
+      handleApprove,
+      questionID,
+      onClose
+    }) {
+    return (
+    <motion.div
+    className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.25 }}
+    >
+    <ApprovalPanel
+    functionName={functionName}
+    setFunctionName={setFunctionName}
+    returnType={returnType}
+    setReturnType={setReturnType}
+    status={status}
+    setStatus={setStatus}
+    functionCode={functionCode}
+    setFunctionCode={setFunctionCode}
+    editorRef={editorRef}
+    handleApprove={handleApprove}
+    questionID={questionID}
+    onClose={onClose}
+    />
+    </motion.div>
+    );
+    }
+
+
+
+function RejectionPanelWrapper({
+       title,
+       setTitle,
+       reason,
+       setReason,
+       questionID,
+       createdBy_uid,
+       onReject,
+       onClose
+   }) {
+return (
+<motion.div
+className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+initial={{ opacity: 0 }}
+animate={{ opacity: 1 }}
+transition={{ duration: 0.25 }}
+>
+<ObservationField
+title={title}
+setTitle={setTitle}
+backgroundColor="rgba(244, 67, 54, 0.65)"
+buttonColor="error"
+reason={reason}
+setReason={setReason}
+onReject={() =>
+onReject({
+objectID: questionID,
+recipientID: createdBy_uid
+})
+}
+buttonText="Confirm Rejection"
+onClose={onClose}
+HeadingText="Reject Question"
+inputLabelText="Reason for Rejection"
+/>
+</motion.div>
+);
+}
+
+
+
+function ModificationPanelWrapper({
+      title,
+      setTitle,
+      reason,
+      setReason,
+      questionID,
+      createdBy_uid,
+      onModify,
+      onClose
+  }) {
+return (
+<motion.div
+className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+initial={{ opacity: 0 }}
+animate={{ opacity: 1 }}
+transition={{ duration: 0.25 }}
+>
+<ObservationField
+title={title}
+setTitle={setTitle}
+backgroundColor="rgba(76, 175, 80, 0.5)"
+buttonColor="success"
+reason={reason}
+setReason={setReason}
+onReject={() =>
+onModify({
+objectID: questionID,
+recipientID: createdBy_uid
+})
+}
+buttonText="Request for Modification"
+onClose={onClose}
+HeadingText="Ask Modification"
+inputLabelText="Things to Modify..."
+/>
+</motion.div>
+);
+}
+
+
+
 export default function Admin_Approval() {
     const location = useLocation();
     // =========================================================================
@@ -53,7 +181,7 @@ export default function Admin_Approval() {
     // =========================================================================
 
     // Global Context
-    const { adminEmail } = useGlobal();
+    const { adminEmail, adminUID } = useGlobal();
 
     /**
      * State for managing all pending questions awaiting approval
@@ -134,7 +262,6 @@ export default function Admin_Approval() {
      * Also logs admin email for debugging purposes
      */
     useEffect(() => {
-        console.log(`Admin Email in Approval Page: ${adminEmail}`);
         controller.fetchAllRequestedQuestions();
     }, []);
 
@@ -163,13 +290,19 @@ export default function Admin_Approval() {
 #include <iostream>
 #include <string>
 #include <cstdlib>  
+#include <bits/stdc++.h>
 
-//---PART01---
+
 using namespace std;
 
-${rType} ${fName}() {
+//---PART01---
+
+int functionName() {
     // Your logic here
 }
+
+
+
 //---PART02---
 int main() {
     
@@ -177,7 +310,7 @@ int main() {
     
     _ output =  ;
     
-    ${rType} result = ${fName}();
+    ${rType} result = functionName();
     
     if(output == result) cout<<"Submission Accepted"<<endl;
     else {
@@ -225,8 +358,13 @@ int main() {
             mainFunctionCode: functionCode // Use the actual edited code
         });
 
-        // Process approval through controller
-        controller.handleApprove(id, approvedQuestion);
+    const findContributorID = ({questionID}) => {
+        const question = allPendingQuestions.filter(question => question.id === questionID);
+        return question.createdBy_uid
+    }
+
+
+    const handleUIChange = (id) => {
         setApprovalOpen(false);
 
         // Update pending questions list by removing approved question
@@ -261,7 +399,93 @@ int main() {
 
             return updated;
         });
+    }
+
+
+
+    /**
+     * Handle question approval workflow
+     * - Creates approved question object
+     * - Updates pending questions list
+     * - Resets form states
+     * - Closes approval panel
+     *
+     * @param {string} id - The ID of the question being approved
+     * @param approvedBy
+     * @param approvedBy_uid
+     */
+    const handleApprove = (id, approvedBy = adminEmail, approvedBy_uid = adminUID) => {
+        // Create approved question object with all necessary data
+        const approvedQuestion = new AdminApproval_Question({
+            question,
+            approvedBy: approvedBy,
+            approvedBy_uid: approvedBy_uid,
+            functionName,
+            returnType,
+            status,
+            mainFunctionCode: functionCode
+        });
+
+        // Process approval through controller
+        controller.handleApprove(id, approvedQuestion);
+
+
+        // Update the UI after Status assignment...
+        handleUIChange(id)
+
+
+        // LEFT: Notification send
+
+
     };
+
+
+
+
+
+    const handleModified = (id = '123') => {
+
+        console.log('qustions : ', question)
+
+
+        //ModificationStatus
+        controller.handleModified({id: id, recipientID: question.createdBy_uid}).then()
+
+
+
+
+        // Update the UI after Status assignment...
+        handleUIChange(id)
+
+
+        // LEFT : Notification send
+
+    }
+
+
+    const handleDelete = ({id = '123'}) => {
+
+
+        const makerID = findContributorID(id);
+        controller.handleReject({
+            objectID: id,
+            recipientID: makerID,
+        })
+
+
+        controller.handleRejectQuestions({
+            id: question.id,
+            recipientID: question.createdBy_uid,
+        }).then();
+
+
+
+        // Update the UI after Status assignment...
+        handleUIChange(id)
+    }
+
+
+
 
     // =========================================================================
     // RENDER COMPONENTS
@@ -318,10 +542,23 @@ int main() {
                             // Question display with action buttons
                             <Question_Showing_Description
                                 question={question}
-                                handleDeleteButton={controller.handleReject}
+                                handleDeleteButton={() => {
+                                    controller.handleReject({
+                                        objectID: question.id,
+                                        recipientID: question.createdBy,
+                                        title: question.title,
+                                    })
+                                }}
                                 handleEditButton={controller.moveToApprovalPage}
                                 handleSolveButton={() => {
-                                    controller.revertBack({type: NOTIFICATION_TYPES.modification_event})
+
+                                    controller.revertBack({
+                                        recipientID: question.createdBy_uid,
+                                        objectID: question.id,
+                                        type: NOTIFICATION_TYPES.modification_event,
+                                        title: title,
+                                        reason: reason,
+                                    }).then()
                                 }}
                                 require_Edit_Button={true}
                                 require_Delete_Button={true}
@@ -334,17 +571,13 @@ int main() {
                 {/* =================================================================
                     APPROVAL/REJECTION/MODIFICATION SIDEBAR PANEL
                     ================================================================= */}
+
+
+
                 {approvalOpen && (
-                    <motion.div
-                        className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.25 }}
-                    >
-                        {/* Conditional rendering based on current display mode */}
-                        {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.APPROVAL ? (
-                            // APPROVAL PANEL - For reviewing and approving questions
-                            <ApprovalPanel
+                    <>
+                        {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.APPROVAL && (
+                            <ApprovalPanelWrapper
                                 functionName={functionName}
                                 setFunctionName={setFunctionName}
                                 returnType={returnType}
@@ -358,50 +591,46 @@ int main() {
                                 questionID={questionID}
                                 onClose={controller.OpenSidePage}
                             />
-                        ) : (
-                            // REJECTION/MODIFICATION PANEL - For providing feedback
-                            <ObservationField
+                        )}
+
+                        {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED && (
+                            <RejectionPanelWrapper
                                 title={title}
                                 setTitle={setTitle}
-                                backgroundColor={
-                                    displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "rgba(244, 67, 54, 0.65)" :  // Red for rejection
-                                        "rgba(76, 175, 80, 0.5)"     // Green for modification
-                                }
-                                buttonColor={
-                                    displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "error" : "success"  // Color scheme based on action type
-                                }
                                 reason={reason}
                                 setReason={setReason}
-                                onReject={
-                                    displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        () => controller.handleReject({
-                                            objectID: questionID,
-                                            recipientID: question.createdBy_uid
-                                        }) :
-                                        () => controller.revertBack({
-                                            objectID: questionID,
-                                            recipientID: question.createdBy_uid
-                                        })
-                                }
-                                buttonText={
-                                    displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "Confirm Rejection" : "Request for Modification"
-                                }
+                                questionID={questionID}
+                                createdBy_uid={question.createdBy_uid}
+                                onReject={() => {
+                                    handleDelete({id: questionID})
+                                }}
                                 onClose={controller.OpenSidePage}
-                                HeadingText={
-                                    displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "Reject Question" : "Ask Modification"
-                                }
-                                inputLabelText={
-                                    displayMode === ADMIN_APPROVAL_DISPLAY_MODE.REJECTED ?
-                                        "Reason for Rejection" : "Things to be Modify..."
-                                }
                             />
                         )}
-                    </motion.div>
+
+                        {displayMode === ADMIN_APPROVAL_DISPLAY_MODE.MODIFICATION && (
+                            <ModificationPanelWrapper
+                                title={title}
+                                setTitle={setTitle}
+                                reason={reason}
+                                setReason={setReason}
+                                questionID={questionID}
+                                createdBy_uid={question.createdBy_uid}
+                                onModify={() => {
+                                    handleModified(questionID)
+                                }}
+                                onClose={controller.OpenSidePage}
+                            />
+                        )}
+                    </>
                 )}
+
+
+
+
+
+
+
             </div>
 
             {/* =================================================================

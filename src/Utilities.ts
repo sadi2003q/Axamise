@@ -47,6 +47,8 @@ export const NOTIFICATION_TYPES = {
     event_score: 'event_score',
     event_result: 'event_result',
 
+    question_solved: 'question_solved',
+
 }
 
 
@@ -119,6 +121,7 @@ export const EVENT_STATE = {
     leftOut: 'LeftOut',
     Incomplete: 'Incomplete',
     solved: 'Solved',
+    coming: 'Up-Coming',
 }
 
 export const CACHE_STATE = {

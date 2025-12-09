@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
+import { Button } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { FaUser, FaQuestionCircle, FaClock, FaLayerGroup, FaStar } from "react-icons/fa";
 
@@ -21,6 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import { TbTargetArrow } from "react-icons/tb";
+import {useNavigate} from "react-router-dom";
 
 export const Question_style = {
     event_description:
@@ -224,9 +225,94 @@ export const Edit_Delete_Button = ({
 
 
 
+//
+// export const NestedList = ({ items, onSelect, solvedProblem = [] }) => {
+//     const [searchQuery, setSearchQuery] = useState("");
+//
+//     const filteredItems = items.filter((item) =>
+//         item.title.toLowerCase().includes(searchQuery.toLowerCase())
+//     );
+//
+//     return (
+//         <div className="w-full">
+//             {/* Search Bar */}
+//             <div className="relative w-full mb-2">
+//
+//                 <div className="absolute left-0 top-0 h-full flex items-center pl-2 pointer-events-none text-white">
+//                     <FaSearch />
+//                 </div>
+//
+//                 <input
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Search..."
+//                     className="w-full bg-transparent border-b border-white text-white font-mono pl-8 py-1 focus:outline-none focus:border-green-400"
+//                 />
+//             </div>
+//
+//             {/* Nested List */}
+//             <List
+//                 sx={{
+//                     width: "100%",
+//                     bgcolor: "transparent",
+//                 }}
+//             >
+//                 {filteredItems.length > 0 ? (
+//                     filteredItems.map((item, index) => (
+//                         <ListItemButton
+//                             key={index}
+//                             onClick={() => onSelect(item)}
+//                             sx={{
+//                                 width: "100%",
+//                                 bgcolor: "transparent",
+//                                 "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
+//                                 borderBottom: "1px solid rgba(255,255,255,0.2)",
+//                             }}
+//                         >
+//                             <ListItemIcon sx={{ color: "#fff", minWidth: "30px" }}>
+//                                 <InfoIcon />
+//                             </ListItemIcon>
+//
+//                             <ListItemText
+//                                 primary={item.title}
+//                                 primaryTypographyProps={{
+//                                     style: {
+//                                         color: "#fff",
+//                                         fontFamily: "monospace",
+//                                     },
+//                                 }}
+//                             />
+//
+//                             {/* ✅ Green Circle Icon if solved */}
+//                             {solvedProblem.includes(item.id) && (
+//                                 <CheckCircleOutlineIcon
+//                                     sx={{
+//                                         color: "limegreen",
+//                                         fontSize: 22,
+//                                         ml: 1,
+//                                     }}
+//                                 />
+//                             )}
+//                         </ListItemButton>
+//                     ))
+//                 ) : (
+//                     <ListItemText
+//                         primary="No matching items"
+//                         primaryTypographyProps={{
+//                             style: { color: "yellow", fontFamily: "monospace" },
+//                         }}
+//                     />
+//                 )}
+//             </List>
+//         </div>
+//     );
+// };
+
 
 export const NestedList = ({ items, onSelect, solvedProblem = [] }) => {
     const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate(); // for routing
 
     const filteredItems = items.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -234,28 +320,34 @@ export const NestedList = ({ items, onSelect, solvedProblem = [] }) => {
 
     return (
         <div className="w-full">
-            {/* Search Bar */}
-            <div className="relative w-full mb-2">
-                <div className="absolute left-0 top-0 h-full flex items-center pl-2 pointer-events-none text-white">
-                    <FaSearch />
+            {/* Search Bar + Button */}
+            <div className="relative w-full mb-2 flex items-center gap-2">
+                <div className="relative flex-1">
+                    <div className="absolute left-0 top-0 h-full flex items-center pl-2 pointer-events-none text-white">
+                        <FaSearch />
+                    </div>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search..."
+                        className="w-full bg-transparent border-b border-white text-white font-mono pl-8 py-1 focus:outline-none focus:border-green-400"
+                    />
                 </div>
 
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="w-full bg-transparent border-b border-white text-white font-mono pl-8 py-1 focus:outline-none focus:border-green-400"
-                />
+                {/* Button to route */}
+                <Button
+                    variant="contained"
+                    color="error" // red background
+                    onClick={() => navigate("/QUESTION_CREATE")}
+                    sx={{ height: "38px" }} // match input height
+                >
+                    Add Question
+                </Button>
             </div>
 
             {/* Nested List */}
-            <List
-                sx={{
-                    width: "100%",
-                    bgcolor: "transparent",
-                }}
-            >
+            <List sx={{ width: "100%", bgcolor: "transparent" }}>
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item, index) => (
                         <ListItemButton
@@ -284,10 +376,10 @@ export const NestedList = ({ items, onSelect, solvedProblem = [] }) => {
 
                             {/* ✅ Green Circle Icon if solved */}
                             {solvedProblem.includes(item.id) && (
-                                <CheckCircleOutlineIcon
+                                <CheckCircleIcon
                                     sx={{
-                                        color: "limegreen",
-                                        fontSize: 22,
+                                        color: "#32CD32", // brighter green for contrast
+                                        fontSize: 24,     // slightly larger to stand out
                                         ml: 1,
                                     }}
                                 />
@@ -306,9 +398,6 @@ export const NestedList = ({ items, onSelect, solvedProblem = [] }) => {
         </div>
     );
 };
-
-
-
 
 
 

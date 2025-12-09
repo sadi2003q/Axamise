@@ -1,12 +1,11 @@
 
 
-import {Database, EVENT_APPROVAL_STATUS, Firebase_Response} from "../../Utilities";
+import {Database, Firebase_Response} from "../../Utilities";
 import {collection,writeBatch, addDoc, getCountFromServer,  query, where, getDocs, doc, getDoc, deleteDoc, QueryDocumentSnapshot, orderBy,
     limit} from "firebase/firestore";
 import { db } from "../../firebase.js";
 import { Notification } from '../../models/Notification_Model'
-import { DIFFICULTY } from "../../Utilities";
-import {data} from "framer-motion/m";
+
 
 
 interface IUsersRepository {
@@ -210,7 +209,6 @@ export class UsersRepository implements IUsersRepository{
                 // Replace 'date' with the actual timestamp field in your Firestore documents (e.g. 'createdAt')
                 // If you store Firestore Timestamp, this works fine.
                 orderBy('date', 'desc'),
-                limit(5)
             );
 
 
@@ -239,6 +237,11 @@ export class UsersRepository implements IUsersRepository{
             }
         } catch (error) {
             console.error(error);
+            return {
+                success: false,
+                message: 'Failed to fetch random event',
+                error: error
+            }
         }
     }
 
@@ -251,7 +254,6 @@ export class UsersRepository implements IUsersRepository{
             const questionRef = query(
                 collection(db, Database.approvedQuestions),
                 orderBy('approvedAt', 'desc'),
-                limit(5)
             )
 
             const snapshot = await getDocs(questionRef);
@@ -438,6 +440,9 @@ export class UsersRepository implements IUsersRepository{
                 ...doc.data(),
             }));
 
+
+            console.log("The data that is assigned:", data);
+
             return {
                 success: true,
                 data: data,
@@ -486,9 +491,27 @@ export class UsersRepository implements IUsersRepository{
             const eventParticipateSnapshot = collection(db, Database.student, id, Database.solvedProblems);
 
             const response = await getDocs(eventParticipateSnapshot);
-            const data = response.docs.map((doc) => ({
-                id: doc.id,
-            }))
+            const data = response.docs.map((doc) => {
+                const raw = doc.data();
+                const converted = {};
+
+                for (const key in raw) {
+                    const value = raw[key];
+
+                    // Firestore Timestamp check
+                    if (value?.seconds !== undefined && value?.nanoseconds !== undefined) {
+                        converted[key] = value.toDate().toISOString(); // Convert to string
+                    } else {
+                        converted[key] = value;
+                    }
+                }
+
+                return {
+                    id: doc.id,
+                    ...converted,
+                };
+            });
+
 
             return {
                 success: true,
@@ -500,6 +523,9 @@ export class UsersRepository implements IUsersRepository{
             console.error(error);
         }
     }
+
+
+
 
     /**
      * Fetch All those Event that was Participated
@@ -544,7 +570,7 @@ export class UsersRepository implements IUsersRepository{
 
             const countSnapshot = await getCountFromServer(ref);
 
-            const count = countSnapshot.data().count;
+            const count = countSnapshot.data().count ?? 0;
 
             return {
                 success: true,
@@ -564,9 +590,11 @@ export class UsersRepository implements IUsersRepository{
     async _Fetch_Event_Participant_Count({eventID}: {eventID: string}): Promise<Firebase_Response> {
         try {
 
-            const eventRef = collection(db, Database.event, eventID, Database.participatedEvent);
+            const eventRef = collection(db, Database.event, eventID, Database.event_participants);
             const countSnapshot = await getCountFromServer(eventRef);
-            const count = countSnapshot.data().count;
+            const count = countSnapshot.data().count ?? 0;
+
+            console.log(`event id : ${eventID} count: ${count}`);
 
 
             return {
@@ -580,10 +608,93 @@ export class UsersRepository implements IUsersRepository{
         }
     }
 
+    /**
+     * Return Question item from Approve Question database
+     * @param questionID
+     */
+    async _Fetch_Solved_Question_name({questionID}: {questionID: string}): Promise<Firebase_Response> {
+        try {
+            const ref = doc(db, Database.approvedQuestions, questionID);
+            const snapshot = await getDoc(ref);
 
 
+            const data = snapshot.data();
+
+            return {
+                success: true,
+                data: data,  // contains the question data
+                message: "Name found"
+            };
+
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                data: null,
+                message: "Error fetching question"
+            };
+        }
+    }
+
+    /**
+     * Fetch Count of relevant Events, Questions
+     * @param userID
+     * @param type
+     */
+    async _Fetch_Problem_EventCount({userID, type}: {userID: string, type: string}): Promise<Firebase_Response> {
+        try {
+
+            let database: string;
+
+            switch (type.toLowerCase()) {
+                case "encountered":
+                    database = Database.problemEncounteredList; break;
+                case "solved":
+                    database = Database.SolvedQuestionList; break;
+                case "participated":
+                    database = Database.participatedEvent; break;
+                default:
+                    database = Database.SolvedQuestionList;
+
+            }
 
 
+            const questionRef = collection(db, Database.student, userID, database);
+
+            const response = await getCountFromServer(questionRef)
+
+            const count = response.data().count ?? 0
+
+            return {
+                success: true,
+                data: count,
+                message: "Encountered Question Count"
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    async _Fetching_Question_Participation_Count({questionID}: {questionID: string}): Promise<Firebase_Response> {
+        try {
+
+            const ref = collection(db, Database.approvedQuestions, questionID, Database.SolvedQuestionList);
+            const response = await getCountFromServer(ref);
+            const count = response.data().count ?? 0
+
+            return {
+                success: true,
+                data: count,
+                message: "Encountered Question Count : " + count
+            }
+
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
 
 }

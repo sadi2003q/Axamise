@@ -50,6 +50,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 // Controller
 import { SolvingSectionController } from "../../controller/Questions/solving_section.controller.js";
 import { Background_Particles } from "../../Components/__Admin_Login.jsx";
+import {routes} from "../../Utilities.js";
 
 export default function Solving_Section() {
     // =========================================================================
@@ -299,6 +300,18 @@ add required library as necessary
 
 
     const totalSecondsRef = useRef(0);
+
+
+
+
+    useEffect(() => {
+        if(!user_uid) {
+            navigate(routes.login)
+        }
+    }, []);
+
+
+
 
     useEffect(() => {
         if (!enteredEvent) return;
@@ -597,15 +610,48 @@ add required library as necessary
                     {/* =================================================================
                         LEFT PANEL - PROBLEM DESCRIPTION & CONTROLS
                         ================================================================= */}
-                    <div style={{flex: 1 - editorWidth, minWidth: "200px"}}>
+                    <div style={{flex: 1 - editorWidth, minWidth: "200px", minHeight: "300px"}}>
                         <Solve_Description>
                             {/* Code Execution Controls */}
-                            <div className="flex flex-col space-y-3 mx-1.">
+                            <div className="flex flex-col gap-3 space-y-3 m-2 overflow-auto">
+
+                                {/* Submit Button - Only for Event */}
+                                {enteredEvent != null && (
+                                    <Button
+                                        onClick={async () => {
+                                            const currentRemaining = hour * 3600 + minute * 60 + second;
+                                            const elapsedSeconds = totalSecondsRef.current - currentRemaining;
+
+
+                                            await controller.handleRunCode({
+                                                id: user_uid,
+                                                dryRun: dryRun,
+                                                forEvent: forEvent,
+                                                eventID: enteredEvent?.id ?? '',
+                                                allQuestions: enteredEvent?.questions ?? [],
+                                                name: currentName,
+                                                timeSpent: `${elapsedSeconds}s`,
+                                                processCurrentCode: true,
+                                            })
+                                            navigate(-1); // Navigate back to previous page
+                                        }}
+                                        variant="contained"
+                                        sx={{
+                                            backgroundColor: "green",
+                                            color: "white",
+                                            "&:hover": {
+                                                backgroundColor: "#028a0f"
+                                            },
+
+                                        }}
+                                    >
+                                        Submit
+                                    </Button>
+                                )}
+
+                                {/* Run Button */}
                                 <Button
                                     onClick={() => {
-
-
-                                        // Calculating how many seconds hae passed
                                         const currentRemaining = hour * 3600 + minute * 60 + second;
                                         const elapsedSeconds = totalSecondsRef.current - currentRemaining;
 
@@ -620,9 +666,7 @@ add required library as necessary
                                         }).then();
                                         setSubmitCount(prev => prev + 1);
                                         console.log('clicked')
-
                                     }}
-
                                     variant="contained"
                                     disabled={ isButtonDisabled() }
                                     sx={{
@@ -637,49 +681,63 @@ add required library as necessary
                                         <div className="flex items-center gap-2 text-white">
                                             <CircularProgress size={20} sx={{ color: "white" }} />
                                             {isRunning && "Running..."}
-                                            {isCalculatingScore && "Calculating score..."}
+                                            {isCalculatingScore && "Calculating score..." }
                                         </div>
                                     ) : (
                                         "Run the code"
                                     )}
-
                                 </Button>
 
-                                {/* Code Execution Output Display */}
-                                {runResult && (
-                                    <div
-                                        style={{
-                                            backgroundColor: "rgba(0,0,0,0.7)",
-                                            color: isSuccess ? "#4ade80" : "#f87171",
-                                            padding: "10px",
-                                            borderRadius: "6px",
-                                            fontFamily: "monospace",
-                                            whiteSpace: "pre-wrap",
-                                            maxHeight: "200px",
-                                            overflowY: "scroll",
-                                            scrollbarWidth: "none", // Firefox
-                                            msOverflowStyle: "none", // IE 10+
-                                        }}
-                                    >
-                                        {runResult}
-                                        <style>
-                                            {`
-                    div::-webkit-scrollbar {
-                        display: none; /* Chrome, Safari, Opera */
-                    }
-                `}
-                                        </style>
-                                    </div>
-                                )}
+                                <div className="mt-4">
+                                    {runResult && (
+                                        <div className="mt-4 p-3" style={{
+                                            border: '1px solid #444',
+                                            borderRadius: '8px',
+                                            backgroundColor: '#1e1e1e',
+                                            color: isSuccess ? 'limegreen' : 'red',
+                                            whiteSpace: 'pre-wrap',
+                                            fontFamily: 'monospace',
+                                            fontWeight: 'bold', // <-- makes text bolder
+                                            fontSize: '16px'    // optional: make text slightly bigger
+                                        }}>
+                                            {runResult}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+
 
                             {/* Conditional Question Display */}
                             {enteredEvent === null ? (
-                                // Single question view - shows detailed question description
-                                <Question_Showing_Description question={question} />
+                                    <div>
+                                        <div className="mt-4">
+                                            {runResult && (
+                                                <div className="mt-4 p-3" style={{
+                                                    border: '1px solid #444',
+                                                    borderRadius: '8px',
+                                                    backgroundColor: '#1e1e1e',
+                                                    color: isSuccess ? 'limegreen' : 'red',
+                                                    whiteSpace: 'pre-wrap',
+                                                    fontFamily: 'monospace',
+                                                    fontWeight: 'bold', // <-- makes text bolder
+                                                    fontSize: '16px'    // optional: make text slightly bigger
+                                                }}>
+                                                    {runResult}
+                                                </div>
+                                            )}
+                                        </div>
+
+
+
+
+                                        // Single question view - shows detailed question description
+                                        <Question_Showing_Description question={question} />
+
+                                    </div>
+
                             ) : (
                                 // Event-based multiple questions view - shows question list
-                                <Event_Question questions={enteredEvent?.allQuestions || []} />
+                                <Event_Question questions={enteredEvent?.allQuestions || enteredEvent?.questions || []} />
                             )}
                         </Solve_Description>
                     </div>
