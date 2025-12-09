@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "./SettingsPage.css";
+
 
 const SettingsPage = () => {
   const [form, setForm] = useState({
@@ -22,37 +24,37 @@ const SettingsPage = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#000", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ background: "#181818", padding: 32, borderRadius: 16, minWidth: 320 }}>
-        <h2>Edit Admin Profile</h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <label>
+    <div className="settings-responsive-bg">
+      <div className="settings-responsive-card">
+        <h2 className="settings-responsive-title">Edit Admin Profile</h2>
+        <form onSubmit={handleSubmit} className="settings-responsive-form">
+          <label className="settings-responsive-label">
             Name:
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
-              style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, marginTop: 4 }}
+              className="settings-responsive-input"
             />
           </label>
-          <label>
+          <label className="settings-responsive-label">
             Image URL:
             <input
               type="text"
               name="image"
               value={form.image}
               onChange={handleChange}
-              style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, marginTop: 4 }}
+              className="settings-responsive-input"
               onClick={e => e.target.select()}
             />
           </label>
-          <button type="submit" style={{ background: "#007bff", color: "#fff", border: "none", borderRadius: 4, padding: "8px 16px" }}>Save</button>
+          <button type="submit" className="settings-responsive-btn">Save</button>
         </form>
-        {message && <div style={{ color: "#0f0", marginTop: 16 }}>{message}</div>}
+        {message && <div className="settings-responsive-message">{message}</div>}
         {form.image && (
-          <div style={{ marginTop: 16 }}>
-            <img src={form.image} alt="Admin" style={{ width: 64, height: 64, borderRadius: "50%" }} />
+          <div className="settings-responsive-img-wrap">
+            <img src={form.image} alt="Admin" className="settings-responsive-img" />
           </div>
         )}
       </div>

@@ -1,6 +1,8 @@
 
 
 import React, { useEffect, useState } from "react";
+
+import "./StudentCrudPage.css";
 import { db } from "../../firebase";
 import {
   collection,
@@ -115,17 +117,17 @@ const StudentCrudPage = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", width: "100vw", background: "#000", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ padding: 32, maxWidth: 800, width: "100%", background: "#181818", borderRadius: 16, color: "#fff", boxShadow: "0 4px 32px #000a" }}>
-        <h1>Students CRUD Operations</h1>
-        <form onSubmit={handleSubmit} style={{ marginBottom: 24, display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+    <div className="student-crud-bg">
+      <div className="student-crud-card">
+        <h1 className="student-crud-title">Students CRUD Operations</h1>
+        <form onSubmit={handleSubmit} className="student-crud-form">
           <input
             type="text"
             name="firstName"
             placeholder="First Name"
             value={form.firstName}
             onChange={handleChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '1 1 120px' }}
+            className="student-crud-input"
           />
           <input
             type="text"
@@ -133,7 +135,7 @@ const StudentCrudPage = () => {
             placeholder="Last Name"
             value={form.lastName}
             onChange={handleChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '1 1 120px' }}
+            className="student-crud-input"
           />
           <input
             type="email"
@@ -141,7 +143,7 @@ const StudentCrudPage = () => {
             placeholder="Email"
             value={form.email}
             onChange={handleChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '2 1 200px' }}
+            className="student-crud-input student-crud-input-wide"
           />
           <input
             type="text"
@@ -149,13 +151,13 @@ const StudentCrudPage = () => {
             placeholder="Student ID"
             value={form.studentId}
             onChange={handleChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '1 1 120px' }}
+            className="student-crud-input"
           />
           <select
             name="gender"
             value={form.gender}
             onChange={handleChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '1 1 120px' }}
+            className="student-crud-input"
           >
             <option value="">Gender</option>
             <option value="Male">Male</option>
@@ -168,7 +170,7 @@ const StudentCrudPage = () => {
             placeholder="Date of Birth"
             value={form.dob}
             onChange={handleDateChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '1 1 160px' }}
+            className="student-crud-input student-crud-input-date"
           />
           <input
             type="text"
@@ -176,57 +178,59 @@ const StudentCrudPage = () => {
             placeholder="Image URL (optional)"
             value={form.image}
             onChange={handleChange}
-            style={{ background: "#222", color: "#fff", border: "1px solid #444", borderRadius: 4, padding: 6, flex: '2 1 200px' }}
+            className="student-crud-input student-crud-input-wide"
             onClick={e => e.target.select()}
           />
-          <button type="submit" style={{ background: "#007bff", color: "#fff", border: "none", borderRadius: 4, padding: "6px 16px", flex: '1 1 120px' }}>{editId ? "Update" : "Add"} Student</button>
+          <button type="submit" className="student-crud-btn">{editId ? "Update" : "Add"} Student</button>
           {editId && (
-            <button type="button" onClick={() => { setEditId(null); setForm({ firstName: "", lastName: "", email: "", gender: "", dob: "", image: "", studentId: "" }); }} style={{ background: "#444", color: "#fff", border: "none", borderRadius: 4, padding: "6px 16px", flex: '1 1 120px' }}>
+            <button type="button" onClick={() => { setEditId(null); setForm({ firstName: "", lastName: "", email: "", gender: "", dob: "", image: "", studentId: "" }); }} className="student-crud-btn student-crud-btn-cancel">
               Cancel
             </button>
           )}
         </form>
-        {error && <div style={{ color: "#ff4d4f", marginBottom: 16 }}>{error}</div>}
+        {error && <div className="student-crud-error">{error}</div>}
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <table border="0" cellPadding="8" style={{ width: "100%", background: "#222", color: "#fff", borderRadius: 8, fontSize: 15 }}>
-            <thead>
-              <tr style={{ background: "#333" }}>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Student ID</th>
-                <th>Gender</th>
-                <th>DOB</th>
-                <th>Created At</th>
-                <th>Image</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.length === 0 ? (
-                <tr><td colSpan="9">No students found.</td></tr>
-              ) : (
-                students.map((student) => (
-                  <tr key={student.id}>
-                    <td>{student.firstName}</td>
-                    <td>{student.lastName}</td>
-                    <td>{student.email}</td>
-                    <td>{student.studentId}</td>
-                    <td>{student.gender}</td>
-                    <td>{student.dob && student.dob.seconds ? new Date(student.dob.seconds * 1000).toLocaleDateString() : ""}</td>
-                    <td>{student.createdAt && student.createdAt.seconds ? new Date(student.createdAt.seconds * 1000).toLocaleString() : ""}</td>
-                    <td>{student.image ? <img src={student.image} alt="student" style={{ width: 32, height: 32, borderRadius: "50%" }} /> : ""}</td>
-                    <td>
-                      <button onClick={() => handleEdit(student)} style={{ background: "#ffc107", color: "#222", border: "none", borderRadius: 4, padding: "4px 12px" }}>Edit</button>
-                      <button onClick={() => handleDelete(student.id)} style={{ marginLeft: 8, background: "#ff4d4f", color: "#fff", border: "none", borderRadius: 4, padding: "4px 12px" }}>Delete</button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+          <div className="student-crud-table-wrap">
+            <table className="student-crud-table">
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Student ID</th>
+                  <th>Gender</th>
+                  <th>DOB</th>
+                  <th>Created At</th>
+                  <th>Image</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.length === 0 ? (
+                  <tr><td colSpan="9">No students found.</td></tr>
+                ) : (
+                  students.map((student) => (
+                    <tr key={student.id}>
+                      <td>{student.firstName}</td>
+                      <td>{student.lastName}</td>
+                      <td>{student.email}</td>
+                      <td>{student.studentId}</td>
+                      <td>{student.gender}</td>
+                      <td>{student.dob && student.dob.seconds ? new Date(student.dob.seconds * 1000).toLocaleDateString() : ""}</td>
+                      <td>{student.createdAt && student.createdAt.seconds ? new Date(student.createdAt.seconds * 1000).toLocaleString() : ""}</td>
+                      <td>{student.image ? <img src={student.image} alt="student" className="student-crud-img" /> : ""}</td>
+                      <td>
+                        <button onClick={() => handleEdit(student)} className="student-crud-btn-edit">Edit</button>
+                        <button onClick={() => handleDelete(student.id)} className="student-crud-btn-delete">Delete</button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
