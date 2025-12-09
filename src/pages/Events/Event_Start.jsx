@@ -410,7 +410,21 @@ export default function EventStart() {
             </div>
 
 
-            {/* -------------------- Score Card -------------------- */}<div className="w-full m-2 rounded-lg bg-transparent text-white flex flex-col items-center overflow-y-auto">
+            {/* -------------------- Score Card -------------------- */}
+            <div className="w-full m-2 rounded-lg bg-transparent text-white flex flex-col items-center overflow-y-auto">
+
+                <Typography
+                    variant="h4"
+                    sx={{
+                        fontWeight: "bold",
+                        mt: 3,
+                        mb: 2,
+                        textAlign: "center",
+                        color: "#ff1744",
+                    }}
+                >
+                    Event Score Card
+                </Typography>
 
             {currentScoreState.length === 0 ? (
                 // Fallback view when no participants

@@ -731,7 +731,7 @@ add required library as necessary
 
 
 
-                                        // Single question view - shows detailed question description
+                                        {/* Single question view - shows detailed question description*/}
                                         <Question_Showing_Description question={question} />
 
                                     </div>
