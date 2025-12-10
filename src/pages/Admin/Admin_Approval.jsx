@@ -35,6 +35,9 @@ import { Background_Particles } from '../../Components/__Admin_Login.jsx';
 import { Question_Showing_Description } from '../../Components/__Question_List.jsx';
 import { Drawer_Input2 } from "../../Components/__Question_Create.jsx";
 import { ApprovalPanel, ObservationField, AdminPageHeader, EventFetchingLoadingScreen } from '../../Components/__Admin_Approval.jsx';
+import { HeadingS } from '../../Components/__Admin_Approval.jsx'
+
+
 
 // Model
 import { AdminApproval_Question } from '../../models/AdminApproval_Model.js';
@@ -44,6 +47,7 @@ import { Admin_ApproveController } from '../../controller/Admin/admin.approve.co
 
 // Utilities
 import {ADMIN_APPROVAL_DISPLAY_MODE, NOTIFICATION_TYPES} from '../../Utilities.ts';
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -51,125 +55,126 @@ import {ADMIN_APPROVAL_DISPLAY_MODE, NOTIFICATION_TYPES} from '../../Utilities.t
 
 
 function ApprovalPanelWrapper({
-      functionName,
-      setFunctionName,
-      returnType,
-      setReturnType,
-      status,
-      setStatus,
-      functionCode,
-      setFunctionCode,
-      editorRef,
-      handleApprove,
-      questionID,
-      onClose
-    }) {
+                                  functionName,
+                                  setFunctionName,
+                                  returnType,
+                                  setReturnType,
+                                  status,
+                                  setStatus,
+                                  functionCode,
+                                  setFunctionCode,
+                                  editorRef,
+                                  handleApprove,
+                                  questionID,
+                                  onClose
+                              }) {
     return (
-    <motion.div
-    className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.25 }}
-    >
-    <ApprovalPanel
-    functionName={functionName}
-    setFunctionName={setFunctionName}
-    returnType={returnType}
-    setReturnType={setReturnType}
-    status={status}
-    setStatus={setStatus}
-    functionCode={functionCode}
-    setFunctionCode={setFunctionCode}
-    editorRef={editorRef}
-    handleApprove={handleApprove}
-    questionID={questionID}
-    onClose={onClose}
-    />
-    </motion.div>
+        <motion.div
+            className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+        >
+            <ApprovalPanel
+                functionName={functionName}
+                setFunctionName={setFunctionName}
+                returnType={returnType}
+                setReturnType={setReturnType}
+                status={status}
+                setStatus={setStatus}
+                functionCode={functionCode}
+                setFunctionCode={setFunctionCode}
+                editorRef={editorRef}
+                handleApprove={handleApprove}
+                questionID={questionID}
+                onClose={onClose}
+            />
+        </motion.div>
     );
-    }
+}
 
 
 
 function RejectionPanelWrapper({
-       title,
-       setTitle,
-       reason,
-       setReason,
-       questionID,
-       createdBy_uid,
-       onReject,
-       onClose
-   }) {
-return (
-<motion.div
-className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-initial={{ opacity: 0 }}
-animate={{ opacity: 1 }}
-transition={{ duration: 0.25 }}
->
-<ObservationField
-title={title}
-setTitle={setTitle}
-backgroundColor="rgba(244, 67, 54, 0.65)"
-buttonColor="error"
-reason={reason}
-setReason={setReason}
-onReject={() =>
-onReject({
-objectID: questionID,
-recipientID: createdBy_uid
-})
-}
-buttonText="Confirm Rejection"
-onClose={onClose}
-HeadingText="Reject Question"
-inputLabelText="Reason for Rejection"
-/>
-</motion.div>
-);
+                                   title,
+                                   setTitle,
+                                   reason,
+                                   setReason,
+                                   questionID,
+                                   createdBy_uid,
+                                   onReject,
+                                   onClose
+                               }) {
+    return (
+        <motion.div
+            className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+        >
+            <ObservationField
+                title={title}
+                setTitle={setTitle}
+                backgroundColor="rgba(244, 67, 54, 0.65)"
+                buttonColor="error"
+                reason={reason}
+                setReason={setReason}
+                onReject={() =>
+                    onReject({
+                        objectID: questionID,
+                        recipientID: createdBy_uid
+                    })
+                }
+                buttonText="Confirm Rejection"
+                onClose={onClose}
+                HeadingText="Reject Question"
+                inputLabelText="Reason for Rejection"
+            />
+        </motion.div>
+    );
 }
 
 
 
 function ModificationPanelWrapper({
-      title,
-      setTitle,
-      reason,
-      setReason,
-      questionID,
-      createdBy_uid,
-      onModify,
-      onClose
-  }) {
-return (
-<motion.div
-className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-initial={{ opacity: 0 }}
-animate={{ opacity: 1 }}
-transition={{ duration: 0.25 }}
->
-<ObservationField
-title={title}
-setTitle={setTitle}
-backgroundColor="rgba(76, 175, 80, 0.5)"
-buttonColor="success"
-reason={reason}
-setReason={setReason}
-onReject={() =>
-onModify({
-objectID: questionID,
-recipientID: createdBy_uid
-})
+                                      title,
+                                      setTitle,
+                                      reason,
+                                      setReason,
+                                      questionID,
+                                      createdBy_uid,
+                                      onModify,
+                                      onClose
+                                  }) {
+    return (
+        <motion.div
+            className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+        >
+            <ObservationField
+                title={title}
+                setTitle={setTitle}
+                backgroundColor="rgba(76, 175, 80, 0.5)"
+                buttonColor="success"
+                reason={reason}
+                setReason={setReason}
+                onReject={() =>
+                    onModify({
+                        objectID: questionID,
+                        recipientID: createdBy_uid
+                    })
+                }
+                buttonText="Request for Modification"
+                onClose={onClose}
+                HeadingText="Ask Modification"
+                inputLabelText="Things to Modify..."
+            />
+        </motion.div>
+    );
 }
-buttonText="Request for Modification"
-onClose={onClose}
-HeadingText="Ask Modification"
-inputLabelText="Things to Modify..."
-/>
-</motion.div>
-);
-}
+
 
 
 
@@ -221,6 +226,8 @@ export default function Admin_Approval() {
     const [reason, setReason] = useState("");                       // Reason for rejection/modification
     const [title, setTitle] = useState("");                         // Title for rejection/modification
 
+    const navigate = useNavigate();
+
     // =========================================================================
     // CONTROLLER INITIALIZATION
     // =========================================================================
@@ -239,7 +246,8 @@ export default function Admin_Approval() {
         setDisplayMode,
         title,
         reason,
-        setIsEmpty
+        setIsEmpty,
+        navigate
     );
 
     // =========================================================================
@@ -411,18 +419,11 @@ int main() {
 
     const handleModified = (id = '123') => {
 
-        console.log('qustions : ', question)
-
-
         //ModificationStatus
         controller.handleModified({id: id, recipientID: question.createdBy_uid}).then()
 
-
-
-
         // Update the UI after Status assignment...
         handleUIChange(id)
-
 
         // LEFT : Notification send
 
@@ -487,23 +488,36 @@ int main() {
              */}
             <Background_Particles />
 
+            <HeadingS
+                title={"Question Approval Panel"}
+                subtitle={"Questions Effect On the Quality"}
+                eventButton={controller.handleNavigation_Event}
+                questionButton={controller.handleNavigation_Question}
+                dashboardButton={ () => console.log("Dashboard")}
+            />
+
+
             <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+
+
                 {/* =================================================================
                     MAIN QUESTION REVIEW PANEL
                     ================================================================= */}
                 <motion.div
                     className="h-[86vh] rounded-2xl z-40 flex flex-col justify-between"
-                    animate={{ width: approvalOpen ? "40vw" : "66vw" }}
-                    transition={{ duration: 0.25 }}
+                    animate={{width: approvalOpen ? "40vw" : "66vw"}}
+                    transition={{duration: 0.25}}
                 >
+
+
                     {/* Conditional header rendering */}
-                    <ShowHeader />
+                    <ShowHeader/>
 
                     {/* Question Description Area */}
                     <div className="p-4 flex-grow gap-3 overflow-y-auto">
                         {isEmpty ? (
                             // Empty state - no questions to review
-                            <EventFetchingLoadingScreen title="No Question Found" />
+                            <EventFetchingLoadingScreen title="No Question Found"/>
                         ) : (
                             // Question display with action buttons
                             <Question_Showing_Description
@@ -537,7 +551,6 @@ int main() {
                 {/* =================================================================
                     APPROVAL/REJECTION/MODIFICATION SIDEBAR PANEL
                     ================================================================= */}
-
 
 
                 {approvalOpen && (
@@ -590,11 +603,6 @@ int main() {
                         )}
                     </>
                 )}
-
-
-
-
-
 
 
             </div>

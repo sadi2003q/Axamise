@@ -53,6 +53,10 @@ export default class LoginController {
         this.navigate(routes.signup);
     }
 
+    handleAdminLogin = () => {
+        this.navigate(routes.admin_login)
+    }
+
 
 
 

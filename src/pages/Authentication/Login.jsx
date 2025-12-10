@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import TextField from "@mui/material/TextField";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 // Custom Components & Styles & assets
 import { _LOGIN_styles, LogoForm, LoginName } from "../../Components/__LogIn.jsx";
@@ -148,6 +149,29 @@ export default function Login() {
                         >
                             Don't have an Account, Signup
                         </Button>
+
+
+                        <Button
+                            variant="contained"
+                            onClick={controller.handleAdminLogin}
+                            endIcon={<AdminPanelSettingsIcon />}
+                            type="submit"
+                            sx={{
+                                backgroundColor: "#b71c1c",       // deep admin red
+                                color: "white",
+                                borderRadius: "10px",
+                                paddingX: 3,
+                                paddingY: 1.2,
+                                fontWeight: "bold",
+                                textTransform: "none",
+                                "&:hover": {
+                                    backgroundColor: "#8b0000"   // darker hover red
+                                }
+                            }}
+                        >
+                            Admin Login
+                        </Button>
+
 
                     </div>
                 </div>

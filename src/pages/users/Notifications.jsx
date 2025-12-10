@@ -100,8 +100,8 @@ export default function Notifications() {
      * @param id of the Notification
      */
     const handleDeleteNotification = (id) => {
-        // You can do anything here
         console.log(id);
+        controller._delete_notification({notificationID: id}).then();
     };
 
 

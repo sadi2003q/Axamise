@@ -27,6 +27,8 @@ export class NotificationsController {
 
     _delete_notification = async ({notificationID}) => {
         this.service._Delete_Notification(notificationID).then(result => {
+            console.log(notificationID)
+
             console.log(result.message);
 
             this.setNotification((prev) =>

@@ -32,6 +32,7 @@ export class NotificationsService {
      * @param notificationID Notification ID
      */
     async _Delete_Notification(notificationID: string): Promise<Firebase_Response> {
+        console.log(notificationID)
         return await this.repository._DeleteNotification(notificationID);
     }
 

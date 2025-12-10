@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { Event_Showing_Description } from '../../Components/__Admin_Approval_Events.jsx';
 import {AdminPageHeader, ObservationField, EventFetchingLoadingScreen} from '../../Components/__Admin_Approval.jsx';
 import {  Drawer_Input2 } from "../../Components/__Question_Create.jsx";
-
+import { HeadingS } from '../../Components/__Admin_Approval.jsx'
 
 // Models
 import { Events_Model } from '../../models/Event_Model.js';
@@ -23,6 +23,7 @@ import {ADMIN_APPROVAL_DISPLAY_MODE} from "../../Utilities.ts";
 
 
 import {Question_Showing_Description} from "../../Components/__Question_List.jsx";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Admin_ApprovalEvent() {
@@ -58,6 +59,8 @@ export default function Admin_ApprovalEvent() {
 
     ));
 
+    const navigate = useNavigate();
+
 
 
     // Controller Instance
@@ -73,7 +76,8 @@ export default function Admin_ApprovalEvent() {
         reason: reason,
         setIsEmpty: setIsEmpty,
         eventID: eventID,
-        setEventID: setEventID
+        setEventID: setEventID,
+        navigate: navigate
     });
 
 
@@ -169,118 +173,130 @@ export default function Admin_ApprovalEvent() {
         <>
 
 
-            <div className="w-screen h-screen relative flex items-center justify-center gap-4">
+            <div className="w-screen h-auto relative flex items-center justify-center gap-4">
 
                 <Background_Particles />
 
-                {/* Main Div */}
-                <motion.div
-                    className="h-[86vh] rounded-2xl z-40 flex flex-col justify-between"
-                    animate={{ width: approvalOpen ? "40vw" : "66vw" }}
-                    transition={{ duration: 0.25 }}
-                >
+                <div>
+                    <HeadingS
+                        title={"Event Approval Panel"}
+                        subtitle={"Make Like Competitive with Taugh Events"}
+                        eventButton={controller.handleNavigation_Event}
+                        questionButton={controller.handleNavigation_Question}
+                        dashboardButton={() => console.log("Dashboard")}
+                    />
 
-                    <ShowHeader/>
+                    <div className="w-screen h-auto relative flex items-center justify-center gap-4">
 
-                    {/* Question Description */}
-                    <div className="p-4 flex-grow gap-3 overflow-y-auto">
+                        <motion.div
+                            className="h-[86vh] rounded-2xl z-40 flex flex-col justify-between"
+                            animate={{width: approvalOpen ? "40vw" : "66vw"}}
+                            transition={{duration: 0.25}}
+                        >
 
-                        { !isEmpty ? (
-                            <div className="w-full text-white space-y-8">
+                            <ShowHeader/>
 
-                                {/* === Event Description Section === */}
-                                <div>
-                                    <h2 className="text-3xl font-bold text-indigo-400 border-b border-indigo-700 pb-2 mb-3">
-                                        🎯 Event Description
-                                    </h2>
-                                    <p className="text-sm text-gray-400 mb-4">
-                                        Overview and administrative actions for the selected event.
-                                    </p>
+                            {/* Question Description */}
+                            <div className="p-4 flex-grow gap-3 overflow-y-auto">
 
-                                    <Event_Showing_Description
-                                        event={eventModel}
-                                        handleDeleteButton={controller.handleRejectionPanel}
-                                        handleNotifyButton={controller.handleNotificationPanel}
-                                        handleDirectApprove={controller.handleApprovalPanel}
-                                        require_Delete_Button={true}
-                                        require_Revert_Back_Button={true}
-                                        require_direct_approve_Button={true}
-                                    />
-                                </div>
+                                {!isEmpty ? (
+                                    <div className="w-full text-white space-y-8">
 
-                                {/* === Event Questions Section === */}
-                                <div>
-                                    <h2 className="text-3xl font-bold text-cyan-400 border-b border-cyan-700 pb-2 mb-3">
-                                        🧠 Event Questions
-                                    </h2>
-                                    <p className="text-sm text-gray-400 mb-4">
-                                        All questions associated with this event are listed below.
-                                    </p>
+                                        {/* === Event Description Section === */}
+                                        <div>
+                                            <h2 className="text-3xl font-bold text-indigo-400 border-b border-indigo-700 pb-2 mb-3">
+                                                🎯 Event Description
+                                            </h2>
+                                            <p className="text-sm text-gray-400 mb-4">
+                                                Overview and administrative actions for the selected event.
+                                            </p>
 
-                                    {eventModel?.questions?.length > 0 ? (
-                                        eventModel.questions.map((question, index) => (
-                                            <div key={index} className="my-4">
-                                                {Question_Showing_Description({ question })}
-                                            </div>
-                                        ))
-                                    ) : eventModel?.allQuestions?.length > 0 ? (
-                                        eventModel.allQuestions.map((question, index) => (
-                                            <div key={index} className="my-4">
-                                                {Question_Showing_Description({ question })}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p className="text-gray-500 italic">No questions added yet.</p>
-                                    )}
+                                            <Event_Showing_Description
+                                                event={eventModel}
+                                                handleDeleteButton={controller.handleRejectionPanel}
+                                                handleNotifyButton={controller.handleNotificationPanel}
+                                                handleDirectApprove={controller.handleApprovalPanel}
+                                                require_Delete_Button={true}
+                                                require_Revert_Back_Button={true}
+                                                require_direct_approve_Button={true}
+                                            />
+                                        </div>
 
-                                </div>
+                                        {/* === Event Questions Section === */}
+                                        <div>
+                                            <h2 className="text-3xl font-bold text-cyan-400 border-b border-cyan-700 pb-2 mb-3">
+                                                🧠 Event Questions
+                                            </h2>
+                                            <p className="text-sm text-gray-400 mb-4">
+                                                All questions associated with this event are listed below.
+                                            </p>
+
+                                            {eventModel?.questions?.length > 0 ? (
+                                                eventModel.questions.map((question, index) => (
+                                                    <div key={index} className="my-4">
+                                                        {Question_Showing_Description({question})}
+                                                    </div>
+                                                ))
+                                            ) : eventModel?.allQuestions?.length > 0 ? (
+                                                eventModel.allQuestions.map((question, index) => (
+                                                    <div key={index} className="my-4">
+                                                        {Question_Showing_Description({question})}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p className="text-gray-500 italic">No questions added yet.</p>
+                                            )}
+
+                                        </div>
+                                    </div>
+
+                                ) : (
+                                    <EventFetchingLoadingScreen/>
+                                )}
                             </div>
 
-                        ) : (
-                            <EventFetchingLoadingScreen />
+
+                        </motion.div>
+
+                        {/* Approval/Rejection/Modification Panel */}
+                        {approvalOpen && (
+                            <motion.div
+                                className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                transition={{duration: 0.25}}
+                            >
+
+
+                                <ObservationField
+                                    title={title}
+                                    setTitle={setTitle}
+                                    reason={reason}
+                                    setReason={setReason}
+                                    onClose={() => setApprovalOpen(false)}
+
+                                    backgroundColor={panelConfig.backgroundColor}
+                                    buttonColor={panelConfig.buttonColor}
+                                    buttonText={panelConfig.buttonText}
+                                    HeadingText={panelConfig.headingText}
+                                    inputLabelText={panelConfig.inputLabelText}
+
+                                    directApproval={panelConfig.directApproval}
+                                    editorRef={editorRef}
+                                    setFunctionCode={setFunctionCode}
+                                    onReject={panelConfig.onClick}
+                                    onApprove={panelConfig.onClick}
+                                />
+
+
+                            </motion.div>
                         )}
                     </div>
 
+                </div>
 
+                {/* Main Div */}
 
-                </motion.div>
-
-                {/* Approval/Rejection/Modification Panel */}
-                {approvalOpen && (
-                    <motion.div
-                        className="h-[86vh] w-[30vw] rounded-2xl overflow-auto"
-                        initial={{opacity: 0}}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.25 }}
-                    >
-
-
-                        <ObservationField
-                            title={title}
-                            setTitle={setTitle}
-                            reason={reason}
-                            setReason={setReason}
-                            onClose={() => setApprovalOpen(false)}
-
-                            backgroundColor={panelConfig.backgroundColor}
-                            buttonColor={panelConfig.buttonColor}
-                            buttonText={panelConfig.buttonText}
-                            HeadingText={panelConfig.headingText}
-                            inputLabelText={panelConfig.inputLabelText}
-
-                            directApproval={panelConfig.directApproval}
-                            editorRef={editorRef}
-                            setFunctionCode={setFunctionCode}
-                            onReject={panelConfig.onClick}
-                            onApprove={panelConfig.onClick}
-                        />
-
-
-
-
-
-                    </motion.div>
-                )}
             </div>
 
 
@@ -300,6 +316,7 @@ export default function Admin_ApprovalEvent() {
                 anchor="left"
                 showSearch={false}
             />
+
         </>
     );
 

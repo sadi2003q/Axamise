@@ -12,10 +12,11 @@ import { NotificationService } from "../../services/users/_Notification.service.
 import { ApprovalService } from '../../services/Admin/_base/_factory.approval.service.ts'
 import { SERVICE} from "../../Utilities.ts";
 
+
 export class Admin_ApproveController {
 
 
-    constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason, setIsEmpty) {
+    constructor(setAllPendingQuestions, approvalOpen, setApprovalOpen, setQuestion, setQuestionID, displayMode, setDisplayMode, title, reason, setIsEmpty, navigate) {
         
         // this.service = new Admin_ApproveService();
         this.service = ApprovalService.createService(SERVICE.APPROVAL_QUESTION)
@@ -34,6 +35,7 @@ export class Admin_ApproveController {
         this.title = title;
         this.reason = reason;
         this.setIsEmpty = setIsEmpty;
+        this.navigate = navigate;
 
     }
 
@@ -188,6 +190,15 @@ export class Admin_ApproveController {
 
     }
 
+
+    handleNavigation_Question = () => {
+        this.navigate("/ADMIN_APPROVAL")
+    }
+
+    handleNavigation_Event = () => {
+        this.navigate("/ADMIN_APPROVALEVENT")
+
+    }
 
 
 

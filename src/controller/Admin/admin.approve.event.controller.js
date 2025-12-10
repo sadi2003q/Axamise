@@ -9,7 +9,7 @@ import { ApprovalService } from '../../services/Admin/_base/_factory.approval.se
 import { SERVICE} from "../../Utilities.ts";
 
 export class Admin_ApproveEventController {
-    constructor({allEvents,  setAllEvents, eventModel, setEventModel, approvalOpen, setApprovalOpen, setDisplayMode, title, reason, setIsEmpty, eventID, setEventID}) {
+    constructor({allEvents,  setAllEvents, eventModel, setEventModel, approvalOpen, setApprovalOpen, setDisplayMode, title, reason, setIsEmpty, eventID, setEventID, navigate}) {
 
         // this.service = new Admin_ApproveEventService();
         this.service = ApprovalService.createService(SERVICE.APPROVAL_EVENT)
@@ -30,7 +30,7 @@ export class Admin_ApproveEventController {
         this.setIsEmpty = setIsEmpty;
         this.eventID = eventID
         this.setEventID = setEventID;
-
+        this.navigate = navigate;
 
     }
 
@@ -203,6 +203,16 @@ export class Admin_ApproveEventController {
             return { success: false, error };
         }
     };
+
+
+    handleNavigation_Question = () => {
+        this.navigate("/ADMIN_APPROVAL")
+    }
+
+    handleNavigation_Event = () => {
+        this.navigate("/ADMIN_APPROVALEVENT")
+
+    }
 
 
 }

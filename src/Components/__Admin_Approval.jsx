@@ -9,10 +9,14 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
+import {Heading} from "./__Event_Question.jsx";
 
 
 // Editor
 import Editor from "@monaco-editor/react";
+import AddTaskIcon from "@mui/icons-material/AddTask";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 
 export const ApprovalPanel = ({
@@ -279,3 +283,44 @@ export const EventFetchingLoadingScreen = ({title = "Still Nothing Found...."}) 
 
 
 
+export const HeadingS = ({
+                             title = "Admin Approval Panel",
+                             subtitle = "Subtitle",
+                             questionButton = () => {},
+                             eventButton = () => {},
+                             dashboardButton = () => {},
+                         }) => {
+    return (
+        <div className="w-screen h-auto text-center">
+            <Heading title={title} subtitle={subtitle} />
+
+            <div className="w-full h-auto flex gap-6 justify-center">
+
+                {/* Questions */}
+                <div className="flex flex-col items-center">
+                    <IconButton size="small" onClick={questionButton}>
+                        <AddTaskIcon sx={{ color: "yellow" }} />
+                    </IconButton>
+                    <span className="text-xs text-yellow-300">Questions</span>
+                </div>
+
+                {/* Events */}
+                <div className="flex flex-col items-center">
+                    <IconButton size="small" onClick={eventButton}>
+                        <VerifiedIcon sx={{ color: "yellow" }} />
+                    </IconButton>
+                    <span className="text-xs text-yellow-300">Events</span>
+                </div>
+
+                {/* Dashboard */}
+                <div className="flex flex-col items-center">
+                    <IconButton size="small" onClick={dashboardButton}>
+                        <DashboardIcon sx={{ color: "yellow" }} />
+                    </IconButton>
+                    <span className="text-xs text-yellow-300">Dashboard</span>
+                </div>
+
+            </div>
+        </div>
+    );
+};

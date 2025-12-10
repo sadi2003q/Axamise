@@ -119,6 +119,9 @@ export class UsersRepository implements IUsersRepository{
      */
     async _DeleteNotification(notificationID: string): Promise<Firebase_Response> {
         try {
+
+            console.log('Notification ID : ', notificationID);
+
             // Reference to the specific notification document
             const notificationRef = doc(db, Database.notification, notificationID);
             const notificationSnap = await getDoc(notificationRef);

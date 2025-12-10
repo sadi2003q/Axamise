@@ -41,73 +41,19 @@ export default function Profile() {
 
 
     // My created event
-    const [myEventParticipant, setMyEventParticipant] = useState([{
-        event01: 22,
-        event02: 23,
-        event03: 24,
-        event04: 25,
-        event05: 26,
-    }]);
+    const [myEventParticipant, setMyEventParticipant] = useState([{}]);
 
 
     // All those Event's that I have Participated
-    const [myParticipatedEvent, setMyParticipatedEvent] = useState([
-        {
-            title: "Binary Battle Championship",
-            time_of_participation: "12/11/2024",
-            eventState: "running",
-            score: 4.3,
-            rank: "Not Fixed",
-        },
-        {
-            title: "Algorithm Masters Cup",
-            time_of_participation: "03/02/2024",
-            eventState: "completed",
-            score: 8.7,
-            rank: 12,
-        },
-        {
-            title: "Hackathon 360",
-            time_of_participation: "18/07/2024",
-            eventState: "completed",
-            score: 6.5,
-            rank: 27,
-        },
-        {
-            title: "Data Structure Duel",
-            time_of_participation: "25/08/2024",
-            eventState: "running",
-            score: 3.9,
-            rank: "Not Fixed",
-        },
-        {
-            title: "CodeSprint Global",
-            time_of_participation: "30/09/2024",
-            eventState: "completed",
-            score: 9.1,
-            rank: 3,
-        },
-    ]);
+    const [myParticipatedEvent, setMyParticipatedEvent] = useState([]);
 
 
     // My solved Question
-    const [mySolvedQuestions, setMySolvedQuestions] = useState([
-        { title: "Two sum", date: "18/07/2024" },
-        { title: "Three sum", date: "18/07/2024" },
-        { title: "Four sum", date: "18/07/2024" },
-        { title: "Four sum", date: "18/07/2024" },
-        { title: "Four sum", date: "18/07/2024" },
-    ]);
+    const [mySolvedQuestions, setMySolvedQuestions] = useState([]);
 
 
     // My created Question
-    const [myCreatedQuestion, setMyCreatedQuestions] = useState([
-        { title: "question01", participationCount: 21, createdAt: "12/12/2025" },
-        { title: "question02", participationCount: 22, createdAt: "13/12/2025" },
-        { title: "question03", participationCount: 23, createdAt: "14/12/2025" },
-        { title: "question04", participationCount: 24, createdAt: "15/12/2025" },
-        { title: "question05", participationCount: 25, createdAt: "16/12/2025" },
-    ]);
+    const [myCreatedQuestion, setMyCreatedQuestions] = useState([]);
 
 
     // Counts
@@ -230,7 +176,7 @@ export default function Profile() {
                         <CustomCard
                             problemEncounter={encounteredQuestionsCount}
                             problemCount={mySolvedQuestions.length}
-                            eventParticipated={8}
+                            eventParticipated={myParticipatedEvent.length}
                         />
 
                         {/* My Created Event with Participant */}
