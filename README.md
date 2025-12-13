@@ -92,6 +92,7 @@ Axamise/
 │   │   ├── AdminInfo_Model.js
 │   │   ├── Base_Model.js
 │   │   ├── Event_Model.js
+│   │   ├── Event_ParticipationModel.js
 │   │   ├── Notification_Model.js
 │   │   ├── Question_Model.js
 │   │   ├── Solve_Model.ts
@@ -106,9 +107,11 @@ Axamise/
 │   │   │   ├── Admin_login.jsx
 │   │   │   ├── Admin_SetUser.jsx
 │   │   │   ├── Login.jsx
+│   │   │   ├── Logout.jsx
 │   │   │   └── Signup.jsx
 │   │   ├── Events/
 │   │   │   ├── Event_Create.jsx
+│   │   │   ├── Event_Start.jsx
 │   │   │   └── Event_Show.jsx
 │   │   ├── Questions/
 │   │   │   ├── Question_Create.jsx
@@ -116,6 +119,7 @@ Axamise/
 │   │   │   └── Solving_Section.jsx
 │   │   ├── users/
 │   │   │   ├── Feed.jsx
+│   │   │   ├── Notification.jsx
 │   │   │   └── Profile.jsx
 │   │   └── test.jsx
 │   ├── services/
@@ -123,18 +127,38 @@ Axamise/
 │   │   │   ├── _admin.approve.event.service.ts
 │   │   │   └── _admin.approver.service.ts
 │   │   ├── Authentication/
-│   │   │   ├── README.md
+│   │   │   ├── _base
+│   │   │   │   ├── _base.approval.service.ts
+│   │   │   │   └── _factory.approval.service.ts
 │   │   │   ├── _admin.login.service.ts
 │   │   │   ├── _admin.setUser.service.ts
 │   │   │   ├── _factory.Authentication.service.ts
 │   │   │   ├── _login.service.ts
+│   │   │   ├── _logout.service.ts
 │   │   │   └── _signup.service.ts
 │   │   ├── Events/
+│   │   │   ├── _repository
+│   │   │   │   ├── _factory.event.service.ts
+│   │   │   │   └──_IEventRepistory.ts
+│   │   │   ├── _Event_create.service.ts
+│   │   │   ├── _event_show.service.ts
+│   │   │   └── _event_start.service.ts
 │   │   ├── Others/
 │   │   └── Questions/
-│   ├── ViewModel/
-│   │   └── Profile_ViewModel.js
+│   │   │   ├── _Factory.question.service.ts
+│   │   │   ├── _question_create.service.ts
+│   │   │   ├── _solving_section.service.ts
+│   │   │   └── _question_list.service.ts
+│   │   └── users/
+│   │   │   ├── _Feed.service.ts
+│   │   │   ├── _Notification.service.ts
+│   │   │   ├── _Notifications.service.ts
+│   │   │   ├── repository.ts
+│   │   │   └── _profile.service.ts
 │   ├── GlobalContext.jsx
+│   ├── EventContext.jsx
+│   ├── localCache.js
+│   ├── DataUpload.jsx
 │   ├── Utilities.ts
 │   ├── firebase.js
 │   └── main.jsx
@@ -143,6 +167,7 @@ Axamise/
 │   ├── login.controller.test.js
 │   └── signup.controller.test.js
 ├── index.html
+├── esline.config.js
 ├── style.css
 ├── tailwind.config.js
 ├── vite.config.js
@@ -162,6 +187,7 @@ The project follows a scalable architecture inspired by **MVC (Model-View-Contro
 -   **Controllers (`src/controller/`)**: Act as the "brain" for each feature. They orchestrate the data flow, process user actions, and communicate between the Views and Services.
 -   **Models (`src/models/`)**: ES6 classes that define the shape and default values of our data entities (e.g., `User`, `Event`, `Question`). This ensures data consistency throughout the app.
 -   **Services (`src/services/`)**: This layer encapsulates all external interactions, primarily with **Firebase**. It handles all Firestore queries, Firebase Authentication calls, and any other external API interactions. This abstraction prevents Firebase logic from leaking into the rest of the application.
+-   **Others**:This Layer sololy focus on the configuration structure, it all leads to data upload, Global context, Event Context, Firebase configuration, local cache, and Utilities to help the other file to run the project
 
 ### Design Patterns
 
@@ -198,6 +224,13 @@ The `services` directory makes extensive use of the **Factory Pattern** to decou
 4.  **Service (`_login.service.ts`)**: The `LoginService` instance performs the actual Firebase call.
 
 This pattern allows us to easily swap or add new authentication methods (e.g., SAML, OAuth) without changing any controller logic.
+
+#### Repository Design Pattern
+In some Files, the Factory Design pattern is showing some weird error by making a red line under the function name where it says that the function is not being utilised where the function was called in multiple location sometime, therefore, we move on to ***Repository design pattern*** which leads to a more stable environment setup as well as more regid and scalable structure combining code communicating between the firebase and the local project makes our code reliable scalable as well as more efficient to find bug and to resolve them.
+
+-   **Location**: `src/services/Events/_repository/.IEventRepository.ts`,
+`src/services/users/_repository`
+
 
 ---
 
