@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com)
 [![React Version](https://img.shields.io/badge/react-^18.2.0-blue)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/vite-^5.0.0-purple)](https://vitejs.dev/)
-[![Code Quality: Qodana](https://github.com/Sadi-/Axamise/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/Sadi-/Axamise/actions/workflows/qodana_code_quality.yml)
+
 
 **Axamise** is a modern, full-featured web application designed to streamline the creation, management, and execution of online assessments. It provides a seamless experience for both administrators and students, featuring role-based access, real-time code evaluation, and a comprehensive event and question management system.
 
