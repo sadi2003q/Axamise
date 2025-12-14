@@ -268,3 +268,51 @@ This project is licensed under the **MIT License**.
 Project maintained by **Sadi** - [AXAMISS.com](https://AXAMISS.com/)
 
 For any inquiries or feedback, please open an issue on GitHub.
+
+---
+
+## Contact & Maintainer
+
+**Axamise** is actively developed and maintained with a focus on scalability, performance, and clean architecture.
+
+### 👤 Project Maintainer
+
+**MD. Adnan Abdullah Sadi**  
+Founder & Lead Developer of **Axamise**
+
+🌐 Website: [AXAMISS.com](https://AXAMISS.com/)  
+📘 Facebook: [facebook.com/adnan.abdullah324414](https://www.facebook.com/adnan.abdullah324414)
+
+---
+
+### 📬 Support & Communication
+
+For:
+- Bug reports
+- Feature requests
+- Architectural discussions
+- Contribution proposals
+
+Please open an issue on GitHub or reach out through the provided contact links.
+
+---
+
+### 🧠 Philosophy
+
+Axamise is built with a strong emphasis on:
+- **Clean architecture**
+- **Design patterns (Factory & Repository)**
+- **Scalability-first thinking**
+- **Maintainable frontend-backend separation**
+
+Every module is designed to evolve independently without breaking existing functionality.
+
+---
+
+<div align="center">
+
+✨ **Developed & maintained with passion by**
+### **[MD. Adnan Abdullah Sadi](https://www.facebook.com/adnan.abdullah324414)**
+
+</div>
+
