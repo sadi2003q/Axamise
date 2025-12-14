@@ -8,6 +8,23 @@
 
 **Axamise** is a modern, full-featured web application designed to streamline the creation, management, and execution of online assessments. It provides a seamless experience for both administrators and students, featuring role-based access, real-time code evaluation, and a comprehensive event and question management system.
 
+## 🎬 Project Demo
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=fs_lQfJit5c" target="_blank">
+    <img src="https://img.youtube.com/vi/fs_lQfJit5c/maxresdefault.jpg"
+         alt="Axamise Demo Video"
+         width="800" />
+  </a>
+</p>
+
+<p align="center">
+  ▶️ <b>Click to watch the full Axamise demo on YouTube</b>
+</p>
+
+
+
+
 ---
 
 ## Table of Contents
