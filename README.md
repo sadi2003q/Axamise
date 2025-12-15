@@ -328,7 +328,7 @@ Every module is designed to evolve independently without breaking existing funct
 
 <div align="center">
 
-✨ **Developed & maintained with passion by**
+✨ **Developed & maintained by**
 ### **[MD. Adnan Abdullah Sadi](https://www.facebook.com/adnan.abdullah324414)**
 
 </div>
